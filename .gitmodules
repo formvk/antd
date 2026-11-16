@@ -1,0 +1,3 @@
+[submodule "vendor/formily-antd"]
+	path = vendor/formily-antd
+	url = https://github.com/formilyjs/antd.git
