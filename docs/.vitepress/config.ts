@@ -6,6 +6,10 @@ import { vitepressDemoPlugin } from 'vitepress-demo-plugin/markdown'
 
 const rootDir = fileURLToPath(new URL('../..', import.meta.url))
 
+// GitHub Pages 项目站点部署在 /antd/ 子路径下，CI 通过 DOCS_BASE 注入；
+// 本地开发与预览未设置该变量时回退到根路径，无需改动访问方式
+const docsBase = process.env.DOCS_BASE ?? '/'
+
 const reactDependencies = {
   '@formvk/antd': '^1.0.0',
   '@formvk/react': '^1.1.1',
@@ -57,6 +61,7 @@ export default defineConfig({
   lang: 'zh-CN',
   title: '@formvk/antd',
   description: 'Formvk 的 Ant Design v6 组件桥接层',
+  base: docsBase,
   lastUpdated: true,
   cleanUrls: true,
   markdown: {
