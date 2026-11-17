@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "paths": {
+      "@formvk/antd": ["../packages/components/src/index.ts"]
+    }
+  },
+  "include": ["demos", ".vitepress"]
+}

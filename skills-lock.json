@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "skills": {
+    "formvk-component-bridge": {
+      "source": "formvk/core",
+      "commit": "ae6acbb0f08689810f57a676c033f2e645fcabaa",
+      "sourceType": "github",
+      "skillPath": "skills/formvk-component-bridge/SKILL.md",
+      "computedHash": "5a473d09d8fde75244bbb3cfa871d6fcb38ae54ec254b578849587493c486eff"
+    }
+  }
+}
