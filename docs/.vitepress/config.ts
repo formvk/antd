@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -6,17 +7,27 @@ import { vitepressDemoPlugin } from 'vitepress-demo-plugin/markdown'
 
 const rootDir = fileURLToPath(new URL('../..', import.meta.url))
 
+const readJson = <T>(file: string) => JSON.parse(readFileSync(path.join(rootDir, file), 'utf8')) as T
+
+const componentManifest = readJson<{
+  version: string
+  dependencies: Record<string, string>
+}>('packages/components/package.json')
+const rootManifest = readJson<{ devDependencies: Record<string, string> }>('package.json')
+
 // GitHub Pages 项目站点部署在 /antd/ 子路径下，CI 通过 DOCS_BASE 注入；
 // 本地开发与预览未设置该变量时回退到根路径，无需改动访问方式
 const docsBase = process.env.DOCS_BASE ?? '/'
 
+// 在线沙箱依赖与仓库实际依赖保持一致：
+// @formvk/antd 取包版本，@formvk/react 取包依赖，antd/dayjs/react 取实际安装版本
 const reactDependencies = {
-  '@formvk/antd': '^1.0.0',
-  '@formvk/react': '^1.1.1',
-  antd: '^6.0.0',
-  dayjs: '^1.11.0',
-  react: '^19.0.0',
-  'react-dom': '^19.0.0',
+  '@formvk/antd': `^${componentManifest.version}`,
+  '@formvk/react': componentManifest.dependencies['@formvk/react'],
+  antd: rootManifest.devDependencies.antd,
+  dayjs: componentManifest.dependencies.dayjs,
+  react: rootManifest.devDependencies.react,
+  'react-dom': rootManifest.devDependencies['react-dom'],
 }
 
 const reactPackageJson = (options: { scripts?: Record<string, string>; vite?: boolean } = {}) =>
