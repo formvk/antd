@@ -1,7 +1,7 @@
 import { connect, mapProps, mapReadPretty } from '@formvk/react'
 import { Checkbox as AntdCheckbox } from 'antd'
 
-import { PreviewText } from '../preview-text'
+import { TextSelect } from '../preview-text'
 
 const InternalCheckbox: typeof AntdCheckbox = connect(
   AntdCheckbox,
@@ -16,14 +16,11 @@ const Group = connect(
   mapProps({
     dataSource: 'options',
   }),
-  mapReadPretty(PreviewText.Select, {
+  mapReadPretty(TextSelect, {
     mode: 'tags',
   })
 )
 
-export const Checkbox = Object.assign(InternalCheckbox, {
-  __ANT_CHECKBOX: true,
-  Group,
-})
+export const CheckboxGroup = Group
 
-export default Checkbox
+export const Checkbox = InternalCheckbox

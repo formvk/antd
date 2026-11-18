@@ -1,0 +1,62 @@
+import { Form, FormItem, Input, Select } from '@formvk/antd'
+import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { useState } from 'react'
+
+const { SchemaField, fragment: f } = createSchemaField({
+  components: { Input, Select },
+  voidComponents: { FormItem },
+  defaultDecorator: 'FormItem',
+})
+
+const schema = createSchema({
+  alignLeft: f.Input({
+    title: '控件左对齐（默认）',
+    decoratorProps: { wrapperAlign: 'left' },
+  }),
+  alignRight: f.Input({
+    title: '控件右对齐',
+    decoratorProps: { wrapperAlign: 'right' },
+  }),
+  width: f.Input({
+    title: '控件固定 240px',
+    decoratorProps: { wrapperWidth: 240 },
+  }),
+  auto: f.Input({
+    title: '控件宽度 auto',
+    decoratorProps: { wrapperWidth: 'auto' },
+  }),
+  wrap: f.Select({
+    title: '控件允许换行',
+    decoratorProps: { wrapperWidth: 120, wrapperWrap: true },
+    componentProps: {
+      mode: 'multiple',
+      options: [
+        { label: '选项一', value: 1 },
+        { label: '选项二', value: 2 },
+        { label: '选项三', value: 3 },
+      ],
+    },
+  }),
+  fullness: f.Input({
+    title: '撑满整行',
+    decoratorProps: { fullness: true },
+  }),
+  inset: f.Input({
+    title: '隐藏两侧留白',
+    decoratorProps: { inset: true },
+  }),
+  noBorder: f.Input({
+    title: '隐藏边框',
+    decoratorProps: { bordered: false },
+  }),
+})
+
+export default () => {
+  const [form] = useState(() => createForm())
+
+  return (
+    <Form form={form}>
+      <SchemaField schema={schema} />
+    </Form>
+  )
+}

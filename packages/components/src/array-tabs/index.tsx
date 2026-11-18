@@ -4,7 +4,8 @@ import { observer } from '@formvk/reactive-react'
 import type { ReactFC } from '@formvk/reactive-react'
 import { Badge, Tabs } from 'antd'
 import type { TabsProps } from 'antd/es/tabs'
-import React, { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 import { ArrayItemField } from '../__builtins__'
 
@@ -27,7 +28,7 @@ const FeedbackBadge: ReactFC<IFeedbackBadgeProps> = observer(props => {
   return <Fragment>{tab}</Fragment>
 })
 
-export const ArrayTabs: React.FC<React.PropsWithChildren<TabsProps>> = observer(props => {
+export const ArrayTabs: FC<PropsWithChildren<TabsProps>> = observer(props => {
   const field = useField<ArrayField>()
   const schema = useFieldSchema()
   const [activeKey, setActiveKey] = useState('tab-0')
@@ -75,5 +76,3 @@ export const ArrayTabs: React.FC<React.PropsWithChildren<TabsProps>> = observer(
     />
   )
 })
-
-export default ArrayTabs

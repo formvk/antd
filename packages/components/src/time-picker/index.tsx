@@ -1,15 +1,16 @@
 import { connect, mapProps, mapReadPretty } from '@formvk/react'
 import { TimePicker as AntdTimePicker } from 'antd'
-import type { TimePickerProps as AntdTimePickerProps, TimeRangePickerProps } from 'antd/es/time-picker'
+import type {
+  TimePickerProps as AntdTimePickerProps,
+  TimeRangePickerProps as AntdTimeRangePickerProps,
+} from 'antd/es/time-picker'
 import type dayjs from 'dayjs'
-import React from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 import { dayjsable, formatDayjsValue } from '../__builtins__'
-import { PreviewText } from '../preview-text'
+import { TextTimePicker, TextTimeRangePicker } from '../preview-text'
 
-type ComposedTimePicker = React.FC<React.PropsWithChildren<AntdTimePickerProps>> & {
-  RangePicker?: React.FC<React.PropsWithChildren<TimeRangePickerProps>>
-}
+type TimePickerProps = FC<PropsWithChildren<AntdTimePickerProps>>
 
 const mapTimeFormat = function () {
   return (props: any) => {
@@ -28,20 +29,18 @@ const mapTimeFormat = function () {
   }
 }
 
-const InternalTimePicker: ComposedTimePicker = connect(
+const InternalTimePicker: TimePickerProps = connect(
   AntdTimePicker,
   mapProps(mapTimeFormat()),
-  mapReadPretty(PreviewText.TimePicker)
+  mapReadPretty(TextTimePicker)
 )
 
-const RangePicker = connect(
+const InternalRangePicker: typeof AntdTimePicker.RangePicker = connect(
   AntdTimePicker.RangePicker,
   mapProps(mapTimeFormat()),
-  mapReadPretty(PreviewText.TimeRangePicker)
+  mapReadPretty(TextTimeRangePicker)
 )
 
-export const TimePicker: ComposedTimePicker = Object.assign(InternalTimePicker, {
-  RangePicker,
-})
+export const TimePicker = InternalTimePicker
 
-export default TimePicker
+export const TimeRangePicker: FC<PropsWithChildren<AntdTimeRangePickerProps>> = InternalRangePicker

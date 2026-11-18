@@ -1,7 +1,7 @@
 import { RecursionField } from '@formvk/react'
 import type { ISchemaFilter, ISchemaMapper } from '@formvk/react'
 import type { Schema } from '@formvk/schema'
-import React from 'react'
+import type { FC } from 'react'
 
 export interface IArrayItemFieldProps {
   schema: Schema
@@ -25,7 +25,7 @@ export interface IArrayItemFieldProps {
  *
  * 原始类型数组项（string/number 等）无子属性，不受缺陷影响，走原始渲染。
  */
-export const ArrayItemField: React.FC<IArrayItemFieldProps> = ({ schema, index, filterProperties, mapProperties }) => {
+export const ArrayItemField: FC<IArrayItemFieldProps> = ({ schema, index, filterProperties, mapProperties }) => {
   if (schema?.type !== 'object' && schema?.type !== 'void') {
     return (
       <RecursionField schema={schema} name={index} filterProperties={filterProperties} mapProperties={mapProperties} />
@@ -44,5 +44,3 @@ export const ArrayItemField: React.FC<IArrayItemFieldProps> = ({ schema, index, 
     </>
   )
 }
-
-export default ArrayItemField

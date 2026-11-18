@@ -11,13 +11,24 @@ import type { SelectProps } from 'antd/es/select'
 import type { ColumnProps, ColumnsType } from 'antd/es/table'
 import type { TableProps } from 'antd/es/table'
 import cls from 'classnames'
-import React, { createContext, forwardRef, Fragment, useContext, useRef, useState } from 'react'
+import {
+  createContext,
+  createElement,
+  forwardRef,
+  Fragment,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import type { HTMLAttributes, ReactElement, ReactNode, Ref } from 'react'
 
 import { isComponentOf, SortableContainer, SortableElement, usePrefixCls } from '../__builtins__'
 import type { ISortableContainerProps } from '../__builtins__'
-import { ArrayBase } from '../array-base'
-import type { ArrayBaseMixins } from '../array-base'
-import useStyle from './style'
+import { Addition, ArrayBase, ArrayBaseItem, useArray } from '../array-base'
+import type { IAdditionProps } from '../array-base'
+import { useStyle } from './style'
 
 interface ObservableColumnSource {
   field?: GeneralField
@@ -31,11 +42,11 @@ interface IArrayTablePaginationProps extends PaginationProps {
   showPagination: boolean
   children?: (
     dataSource: any[],
-    pagination: React.ReactNode,
+    pagination: ReactNode,
     options: {
       startIndex: number
     }
-  ) => React.ReactElement
+  ) => ReactElement
 }
 
 interface IStatusSelectProps extends SelectProps<any> {
@@ -52,13 +63,13 @@ interface PaginationAction {
 const SortableRow = SortableElement(props => <tr {...props} />)
 
 const SortableBodyRaw = SortableContainer<
-  React.HTMLAttributes<HTMLTableSectionElement> & {
-    tbodyRef: React.Ref<HTMLTableSectionElement>
+  HTMLAttributes<HTMLTableSectionElement> & {
+    tbodyRef: Ref<HTMLTableSectionElement>
   }
 >(({ tbodyRef, ...props }) => <tbody {...props} ref={tbodyRef} />)
 const SortableBody = forwardRef<
   HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement> & ISortableContainerProps
+  HTMLAttributes<HTMLTableSectionElement> & ISortableContainerProps
 >((props, ref) => <SortableBodyRaw {...props} tbodyRef={ref} />)
 
 const isColumnComponent = (schema: Schema) => {
@@ -76,36 +87,39 @@ const isAdditionComponent = (schema: Schema) => {
 const useArrayTableSources = () => {
   const arrayField = useField()
   const schema = useFieldSchema()
-  const parseSources = (schema: Schema): ObservableColumnSource[] => {
-    if (isColumnComponent(schema) || isOperationsComponent(schema) || isAdditionComponent(schema)) {
-      if (!schema.componentProps?.['dataIndex'] && !schema['name']) return []
-      const name = schema.componentProps?.['dataIndex'] || schema['name']
+  const parseSources = (columnSchema: Schema): ObservableColumnSource[] => {
+    if (isColumnComponent(columnSchema) || isOperationsComponent(columnSchema) || isAdditionComponent(columnSchema)) {
+      if (!columnSchema.componentProps?.['dataIndex'] && !columnSchema['name']) return []
+      const name = columnSchema.componentProps?.['dataIndex'] || columnSchema['name']
       const field = arrayField?.query(arrayField.address.concat(name)).take()
-      const columnProps = (field?.component as any[] | undefined)?.[1] || schema.componentProps || {}
-      const display = field?.display || schema.display
+      const columnProps = (field?.component as any[] | undefined)?.[1] || columnSchema.componentProps || {}
+      const display = field?.display || columnSchema.display
       return [
         {
           name,
           display,
           field,
-          schema,
+          schema: columnSchema,
           columnProps,
         },
       ]
-    } else if (schema.properties) {
-      return schema.reduceProperties<ObservableColumnSource[], ObservableColumnSource[]>((buf, schema) => {
-        return buf.concat(parseSources(schema))
-      }, [])
+    } else if (columnSchema.properties) {
+      return columnSchema.reduceProperties<ObservableColumnSource[], ObservableColumnSource[]>(
+        (buf, propertySchema) => {
+          return buf.concat(parseSources(propertySchema))
+        },
+        []
+      )
     }
     return []
   }
 
-  const parseArrayItems = (schema: Schema['items']) => {
-    if (!schema) return []
+  const parseArrayItems = (schemaItems: Schema['items']) => {
+    if (!schemaItems) return []
     const sources: ObservableColumnSource[] = []
-    const items = isArr(schema) ? schema : [schema]
-    return items.reduce((columns, schema) => {
-      const item = parseSources(schema)
+    const items = isArr(schemaItems) ? schemaItems : [schemaItems]
+    return items.reduce((columns, itemSchema) => {
+      const item = parseSources(itemSchema)
       if (item) {
         return columns.concat(item)
       }
@@ -136,9 +150,9 @@ const useArrayTableColumns = (
         const index = record[indexKey]
 
         const children = (
-          <ArrayBase.Item index={index} record={() => field?.value?.[index]}>
+          <ArrayBaseItem index={index} record={() => field?.value?.[index]}>
             <RecursionField schema={schema} name={index} onlyRenderProperties />
-          </ArrayBase.Item>
+          </ArrayBaseItem>
         )
 
         return index > -1 ? children : null
@@ -149,9 +163,9 @@ const useArrayTableColumns = (
 
 const useAddition = () => {
   const schema = useFieldSchema()
-  return schema?.reduceProperties((addition, schema, key) => {
-    if (isAdditionComponent(schema)) {
-      return <RecursionField schema={schema} name={key} />
+  return schema?.reduceProperties((addition, propertySchema, key) => {
+    if (isAdditionComponent(propertySchema)) {
+      return <RecursionField schema={propertySchema} name={key} />
     }
     return addition
   }, null)
@@ -237,12 +251,12 @@ const ArrayTablePagination: ReactFC<IArrayTablePaginationProps> = props => {
       value: page,
     }
   })
-  const handleChange = (current: number) => {
-    setCurrent(current)
-  }
-  const handleSizeChange = (_: number, size: number) => {
-    setPageSize(size)
-  }
+  const handleChange = useCallback((nextPage: number) => {
+    setCurrent(nextPage)
+  }, [])
+  const handleSizeChange = useCallback((_: number, nextPageSize: number) => {
+    setPageSize(nextPageSize)
+  }, [])
 
   // 渲染期对齐 props.pageSize 变化（React 官方推荐的 state 派生模式，避免 effect 级联渲染）
   const [prevPageSizeProp, setPrevPageSizeProp] = useState(props.pageSize)
@@ -283,9 +297,14 @@ const ArrayTablePagination: ReactFC<IArrayTablePaginationProps> = props => {
     )
   }
 
+  const paginationContext = useMemo(
+    () => ({ totalPage, pageSize, startIndex, changePage: handleChange }),
+    [totalPage, pageSize, startIndex, handleChange]
+  )
+
   return wrapSSR(
     <Fragment>
-      <PaginationContext.Provider value={{ totalPage, pageSize, startIndex, changePage: handleChange }}>
+      <PaginationContext.Provider value={paginationContext}>
         {props.children?.(
           showPagination ? dataSource?.slice(startIndex, endIndex + 1) : dataSource,
           renderPagination(),
@@ -298,7 +317,7 @@ const ArrayTablePagination: ReactFC<IArrayTablePaginationProps> = props => {
   )
 }
 
-const WrapperComp = (props: React.HTMLAttributes<HTMLTableSectionElement>) => {
+const WrapperComp = (props: HTMLAttributes<HTMLTableSectionElement>) => {
   // callback ref 落地为 state，避免渲染期读取 ref.current，同时让 accessibility.container 拿到真实节点
   const [tbodyEl, setTbodyEl] = useState<HTMLTableSectionElement | null>(null)
   const field = useField<ArrayField>()
@@ -342,7 +361,7 @@ const WrapperComp = (props: React.HTMLAttributes<HTMLTableSectionElement>) => {
   )
 }
 
-const RowComp: ReactFC<React.HTMLAttributes<HTMLTableRowElement>> = props => {
+const RowComp: ReactFC<HTMLAttributes<HTMLTableRowElement>> = props => {
   const prefixCls = usePrefixCls('formvk-array-table')
   const index = (props as any)['data-row-key'] || 0
   return (
@@ -376,7 +395,7 @@ const InternalArrayTable: ReactFC<TableProps<any>> = observer((props: TableProps
 
   return wrapSSR(
     <ArrayTablePagination {...pagination} dataSource={dataSource} showPagination={showPagination}>
-      {(dataSource, pager) => {
+      {(pageDataSource, pager) => {
         return (
           <div ref={ref} className={cls(prefixCls, hashId)}>
             <ArrayBase>
@@ -388,7 +407,7 @@ const InternalArrayTable: ReactFC<TableProps<any>> = observer((props: TableProps
                 onChange={() => {}}
                 pagination={false}
                 columns={columns}
-                dataSource={dataSource}
+                dataSource={pageDataSource}
                 components={{
                   body: {
                     wrapper: WrapperComp as any,
@@ -400,7 +419,7 @@ const InternalArrayTable: ReactFC<TableProps<any>> = observer((props: TableProps
               {sources.map((column, key) => {
                 //专门用来承接对Column的状态管理
                 if (!isColumnComponent(column.schema)) return
-                return React.createElement(RecursionField, {
+                return createElement(RecursionField, {
                   name: column.name,
                   schema: column.schema,
                   onlyRenderSelf: true,
@@ -416,15 +435,15 @@ const InternalArrayTable: ReactFC<TableProps<any>> = observer((props: TableProps
   )
 })
 
-const Column: ReactFC<ColumnProps<any>> = () => {
+export const ArrayTableColumn: ReactFC<ColumnProps<any>> = () => {
   return <Fragment />
 }
 
-const Addition: ArrayBaseMixins['Addition'] = props => {
-  const array = ArrayBase.useArray()
+export const ArrayTableAddition: ReactFC<IAdditionProps> = props => {
+  const array = useArray()
   const { totalPage = 0, pageSize = 10, changePage } = usePagination()
   return (
-    <ArrayBase.Addition
+    <Addition
       {...props}
       onClick={e => {
         // 如果添加数据后将超过当前页，则自动切换到下一页
@@ -438,11 +457,4 @@ const Addition: ArrayBaseMixins['Addition'] = props => {
   )
 }
 
-export const ArrayTable = Object.assign(ArrayBase.mixin(InternalArrayTable), {
-  Column,
-  Addition,
-})
-
-ArrayTable.displayName = 'ArrayTable'
-
-export default ArrayTable
+export const ArrayTable = InternalArrayTable

@@ -16,12 +16,13 @@ import type {
 import type { DefaultOptionType } from 'antd/es/cascader'
 import type { RangePickerProps as DateRangePickerProps } from 'antd/es/date-picker'
 import cls from 'classnames'
-import React, { createContext, useContext } from 'react'
+import { createContext, useContext } from 'react'
+import type { FC, HTMLAttributes, PropsWithChildren, ReactNode } from 'react'
 
 import { formatDayjsValue, usePrefixCls } from '../__builtins__'
-import useStyle from './style'
+import { useStyle } from './style'
 
-export const PlaceholderContext = createContext<React.ReactNode>('N/A')
+export const PlaceholderContext = createContext<ReactNode>('N/A')
 
 export const Placeholder = PlaceholderContext.Provider
 
@@ -30,7 +31,7 @@ export const usePlaceholder = (value?: any) => {
   return isValid(value) && value !== '' ? value : placeholder
 }
 
-const Input: React.FC<React.PropsWithChildren<InputProps>> = observer(props => {
+export const TextInput: FC<PropsWithChildren<InputProps>> = observer(props => {
   const prefixCls = usePrefixCls('form-text', props)
   const [wrapSSR, hashId] = useStyle(prefixCls)
   return wrapSSR(
@@ -44,7 +45,7 @@ const Input: React.FC<React.PropsWithChildren<InputProps>> = observer(props => {
   )
 })
 
-const NumberPicker: React.FC<React.PropsWithChildren<InputNumberProps>> = observer(props => {
+export const TextNumberPicker: FC<PropsWithChildren<InputNumberProps>> = observer(props => {
   const prefixCls = usePrefixCls('form-text', props)
   const [wrapSSR, hashId] = useStyle(prefixCls)
   return wrapSSR(
@@ -65,7 +66,7 @@ const NumberPicker: React.FC<React.PropsWithChildren<InputNumberProps>> = observ
   )
 })
 
-const Select: React.FC<React.PropsWithChildren<SelectProps<any>>> = observer(props => {
+export const TextSelect: FC<PropsWithChildren<SelectProps<any>>> = observer(props => {
   const field = useField<Field>()
   const prefixCls = usePrefixCls('form-text', props)
   const [wrapSSR, hashId] = useStyle(prefixCls)
@@ -117,7 +118,7 @@ const Select: React.FC<React.PropsWithChildren<SelectProps<any>>> = observer(pro
   )
 })
 
-const TreeSelect: React.FC<React.PropsWithChildren<TreeSelectProps<any>>> = observer(props => {
+export const TextTreeSelect: FC<PropsWithChildren<TreeSelectProps<any>>> = observer(props => {
   const field = useField<Field>()
   const placeholder = usePlaceholder()
   const prefixCls = usePrefixCls('form-text', props)
@@ -140,14 +141,14 @@ const TreeSelect: React.FC<React.PropsWithChildren<TreeSelectProps<any>>> = obse
     }
   }
 
-  const findLabel = (value: any, dataSource: any[], treeNodeLabelProp?: string): React.ReactNode => {
+  const findLabel = (value: any, treeData: any[], treeNodeLabelProp?: string): ReactNode => {
     const valueKey = props.fieldNames?.value || 'value'
-    for (let i = 0; i < dataSource?.length; i++) {
-      const item = dataSource[i]
+    for (let i = 0; i < treeData?.length; i++) {
+      const item = treeData[i]
       if (item?.[valueKey] === value) {
         return item?.label ?? item[treeNodeLabelProp as string]
       } else {
-        const childLabel: React.ReactNode = findLabel(value, item?.children, treeNodeLabelProp)
+        const childLabel: ReactNode = findLabel(value, item?.children, treeNodeLabelProp)
         if (childLabel) return childLabel
       }
     }
@@ -168,7 +169,7 @@ const TreeSelect: React.FC<React.PropsWithChildren<TreeSelectProps<any>>> = obse
   )
 })
 
-const Cascader: React.FC<React.PropsWithChildren<CascaderProps<any>>> = observer(props => {
+export const TextCascader: FC<PropsWithChildren<CascaderProps<any>>> = observer(props => {
   const field = useField<Field>()
   const placeholder = usePlaceholder()
   const prefixCls = usePrefixCls('form-text', props)
@@ -217,7 +218,7 @@ const Cascader: React.FC<React.PropsWithChildren<CascaderProps<any>>> = observer
   )
 })
 
-const DatePicker: React.FC<React.PropsWithChildren<DatePickerProps>> = props => {
+export const TextDatePicker: FC<PropsWithChildren<DatePickerProps>> = props => {
   const placeholder = usePlaceholder()
   const prefixCls = usePrefixCls('form-text', props)
   const getLabels = () => {
@@ -227,7 +228,7 @@ const DatePicker: React.FC<React.PropsWithChildren<DatePickerProps>> = props => 
   return <div className={cls(prefixCls, props.className)}>{getLabels()}</div>
 }
 
-const DateRangePicker: React.FC<React.PropsWithChildren<DateRangePickerProps>> = props => {
+export const TextDateRangePicker: FC<PropsWithChildren<DateRangePickerProps>> = props => {
   const placeholder = usePlaceholder()
   const prefixCls = usePrefixCls('form-text', props)
   const getLabels = () => {
@@ -241,7 +242,7 @@ const DateRangePicker: React.FC<React.PropsWithChildren<DateRangePickerProps>> =
   )
 }
 
-const TimePicker: ReactFC<TimePickerProps> = props => {
+export const TextTimePicker: ReactFC<TimePickerProps> = props => {
   const placeholder = usePlaceholder()
   const prefixCls = usePrefixCls('form-text', props)
   const getLabels = () => {
@@ -255,7 +256,7 @@ const TimePicker: ReactFC<TimePickerProps> = props => {
   )
 }
 
-const TimeRangePicker: React.FC<React.PropsWithChildren<TimeRangePickerProps>> = props => {
+export const TextTimeRangePicker: FC<PropsWithChildren<TimeRangePickerProps>> = props => {
   const placeholder = usePlaceholder()
   const prefixCls = usePrefixCls('form-text', props)
   const getLabels = () => {
@@ -269,53 +270,19 @@ const TimeRangePicker: React.FC<React.PropsWithChildren<TimeRangePickerProps>> =
   )
 }
 
-export interface IPreviewTextProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ITextProps extends HTMLAttributes<HTMLDivElement> {
   prefixCls?: string
   value?: any
 }
 
-const InternalPreviewText: ReactFC<IPreviewTextProps> = observer(
-  (props: React.PropsWithChildren<IPreviewTextProps>) => {
-    const prefixCls = usePrefixCls('form-text', props)
+const InternalText: ReactFC<ITextProps> = observer((props: PropsWithChildren<ITextProps>) => {
+  const prefixCls = usePrefixCls('form-text', props)
 
-    return (
-      <div className={cls(prefixCls, props.className)} style={props.style}>
-        {usePlaceholder(props.value)}
-      </div>
-    )
-  }
-)
-
-/**
- * 显式复合类型：避免 Object.assign 推断结果展开 rc-* 内部类型，
- * 保证声明产物可移植（TS2883）。
- */
-type PreviewTextComponent = ReactFC<IPreviewTextProps> & {
-  Input: React.FC<React.PropsWithChildren<InputProps>>
-  Select: React.FC<React.PropsWithChildren<SelectProps<any>>>
-  TreeSelect: React.FC<React.PropsWithChildren<TreeSelectProps<any>>>
-  Cascader: React.FC<React.PropsWithChildren<CascaderProps<any>>>
-  DatePicker: React.FC<React.PropsWithChildren<DatePickerProps>>
-  DateRangePicker: React.FC<React.PropsWithChildren<DateRangePickerProps>>
-  TimePicker: ReactFC<TimePickerProps>
-  TimeRangePicker: React.FC<React.PropsWithChildren<TimeRangePickerProps>>
-  Placeholder: typeof Placeholder
-  usePlaceholder: typeof usePlaceholder
-  NumberPicker: React.FC<React.PropsWithChildren<InputNumberProps>>
-}
-
-export const PreviewText: PreviewTextComponent = Object.assign(InternalPreviewText, {
-  Input,
-  Select,
-  TreeSelect,
-  Cascader,
-  DatePicker,
-  DateRangePicker,
-  TimePicker,
-  TimeRangePicker,
-  Placeholder,
-  usePlaceholder,
-  NumberPicker,
+  return (
+    <div className={cls(prefixCls, props.className)} style={props.style}>
+      {usePlaceholder(props.value)}
+    </div>
+  )
 })
 
-export default PreviewText
+export const Text = InternalText

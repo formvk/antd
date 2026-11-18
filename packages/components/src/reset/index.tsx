@@ -4,15 +4,15 @@ import { useParentForm } from '@formvk/react'
 import { isFn } from '@formvk/shared'
 import { Button } from 'antd'
 import type { ButtonProps } from 'antd/es/button'
-import React from 'react'
+import type { FC, MouseEvent, PropsWithChildren } from 'react'
 
 export interface IResetProps extends IFieldResetOptions, ButtonProps {
-  onClick?: (e: React.MouseEvent<Element, MouseEvent>) => any
+  onClick?: (e: MouseEvent<Element>) => any
   onResetValidateSuccess?: (payload: any) => void
   onResetValidateFailed?: (feedbacks: IFormFeedback[]) => void
 }
 
-export const Reset: React.FC<React.PropsWithChildren<IResetProps>> = ({
+export const Reset: FC<PropsWithChildren<IResetProps>> = ({
   forceClear,
   validate,
   onResetValidateSuccess,
@@ -45,5 +45,3 @@ export const Reset: React.FC<React.PropsWithChildren<IResetProps>> = ({
     </Button>
   )
 }
-
-export default Reset

@@ -6,7 +6,8 @@ import type { Schema, SchemaKey } from '@formvk/schema'
 import { Steps } from 'antd'
 import type { StepsProps } from 'antd/es/steps'
 import cls from 'classnames'
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 import { isComponentOf, usePrefixCls } from '../__builtins__'
 
@@ -28,11 +29,6 @@ export interface IFormStepProps extends StepsProps {
 // antd v6 移除 Steps.Step 复合组件，StepProps 直接取 items 元素类型
 export type StepProps = NonNullable<StepsProps['items']>[number]
 
-type ComposedFormStep = React.FC<React.PropsWithChildren<IFormStepProps>> & {
-  StepPane: React.FC<React.PropsWithChildren<StepProps>>
-  createFormStep: (defaultCurrent?: number) => IFormStep
-}
-
 type SchemaStep = {
   name: SchemaKey
   props: any
@@ -41,19 +37,19 @@ type SchemaStep = {
 
 const parseSteps = (schema: Schema) => {
   const steps: SchemaStep[] = []
-  schema.mapProperties((schema, name) => {
-    if (isComponentOf(schema.component, 'StepPane')) {
+  schema.mapProperties((stepSchema, name) => {
+    if (isComponentOf(stepSchema.component, 'StepPane')) {
       steps.push({
         name,
-        props: schema.componentProps,
-        schema,
+        props: stepSchema.componentProps,
+        schema: stepSchema,
       })
     }
   })
   return steps
 }
 
-const createFormStep = (defaultCurrent = 0): IFormStep => {
+export const createFormStep = (defaultCurrent = 0): IFormStep => {
   // shallow：顶层 env 字段可响应，steps 元素及 Form/VoidField/Schema 等类实例保持原始引用
   const env = shallow({
     form: null as Form | null,
@@ -144,20 +140,15 @@ export const FormStep = connect(
             ...stepProps,
           }))}
         />
-        {steps.map(({ name, schema: stepSchema }, key) => {
-          if (key !== current) return
-          return <RecursionField key={key} name={name} schema={stepSchema} />
+        {steps.map(({ name, schema: stepSchema }, index) => {
+          if (index !== current) return
+          return <RecursionField key={name} name={name} schema={stepSchema} />
         })}
       </div>
     )
   })
-) as unknown as ComposedFormStep
+)
 
-const StepPane: React.FC<React.PropsWithChildren<StepProps>> = ({ children }) => {
+export const FormStepPane: FC<PropsWithChildren<StepProps>> = ({ children }) => {
   return <Fragment>{children}</Fragment>
 }
-
-FormStep.StepPane = StepPane
-FormStep.createFormStep = createFormStep
-
-export default FormStep

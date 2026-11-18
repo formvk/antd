@@ -1,6 +1,7 @@
 import { observable } from '@formvk/reactive'
 import { Observer, type ReactFC } from '@formvk/reactive-react'
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
+import type { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
 import { render as reactRender, unmount as reactUnmount } from './render'
@@ -9,7 +10,7 @@ export interface IPortalProps {
   id?: string | symbol
 }
 
-const PortalMap = observable(new Map<string | symbol, React.ReactNode>())
+const PortalMap = observable(new Map<string | symbol, ReactNode>())
 
 export const createPortalProvider = (id: string | symbol) => {
   const Portal: ReactFC<IPortalProps> = props => {
@@ -36,7 +37,7 @@ export const createPortalProvider = (id: string | symbol) => {
   return Portal
 }
 
-export function createPortalRoot<T extends React.ReactNode>(host: HTMLElement, id: string) {
+export function createPortalRoot<T extends ReactNode>(host: HTMLElement, id: string) {
   function render(renderer?: () => T) {
     if (PortalMap.has(id)) {
       PortalMap.set(id, renderer?.())

@@ -1,0 +1,49 @@
+import { Form, FormItem, NumberPicker } from '@formvk/antd'
+import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { useState } from 'react'
+
+const { SchemaField, fragment: f } = createSchemaField({
+  components: { NumberPicker },
+  voidComponents: { FormItem },
+  defaultDecorator: 'FormItem',
+})
+
+const schema = createSchema({
+  basic: f.NumberPicker({ title: '基础数字', componentProps: { min: 0, max: 100 } }),
+  step: f.NumberPicker({ title: '步长 5', componentProps: { step: 5 } }),
+  precision: f.NumberPicker({ title: '保留两位小数', componentProps: { precision: 2, step: 0.01 } }),
+  formatter: f.NumberPicker({
+    title: '格式化',
+    componentProps: {
+      style: { width: 220 },
+      formatter: value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+      parser: value => Number(value!.replace(/\$\s?|(,*)/g, '')),
+    },
+  }),
+})
+
+const createInitialValues = () => ({
+  basic: 10,
+  step: 10,
+  precision: 1.5,
+  formatter: 12345,
+})
+
+export default () => {
+  const [form] = useState(() => createForm({ values: createInitialValues() }))
+  const [readPrettyForm] = useState(() => createForm({ pattern: 'readPretty', values: createInitialValues() }))
+
+  return (
+    <div style={{ display: 'grid', gap: 16 }}>
+      <Form form={form} layout="vertical">
+        <SchemaField schema={schema} />
+      </Form>
+      <div>
+        <div style={{ marginBottom: 12, fontWeight: 600 }}>阅读态（readPretty）</div>
+        <Form form={readPrettyForm} layout="vertical" previewTextPlaceholder="—">
+          <SchemaField schema={schema} />
+        </Form>
+      </div>
+    </div>
+  )
+}

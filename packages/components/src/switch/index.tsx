@@ -15,5 +15,3 @@ export const Switch: typeof AntdSwitch = connect(
     }
   )
 )
-
-export default Switch

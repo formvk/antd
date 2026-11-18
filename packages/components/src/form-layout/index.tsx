@@ -1,5 +1,6 @@
 import cls from 'classnames'
-import React, { createContext, useContext } from 'react'
+import { createContext, useContext, useMemo } from 'react'
+import type { CSSProperties, FC, PropsWithChildren, ReactNode } from 'react'
 
 import { usePrefixCls } from '../__builtins__'
 import { useResponsiveFormLayout } from './useResponsiveFormLayout'
@@ -7,7 +8,7 @@ import { useResponsiveFormLayout } from './useResponsiveFormLayout'
 export interface IFormLayoutProps {
   prefixCls?: string
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
   colon?: boolean
   labelAlign?: 'right' | 'left' | ('right' | 'left')[]
   wrapperAlign?: 'right' | 'left' | ('right' | 'left')[]
@@ -24,7 +25,7 @@ export interface IFormLayoutProps {
   inset?: boolean
   shallow?: boolean
   tooltipLayout?: 'icon' | 'text'
-  tooltipIcon?: React.ReactNode
+  tooltipIcon?: ReactNode
   feedbackLayout?: 'loose' | 'terse' | 'popover' | 'none'
   bordered?: boolean
   breakpoints?: number[]
@@ -57,11 +58,14 @@ export const useFormLayout = () => ({
   ...useFormShallowLayout(),
 })
 
-export const FormLayout: React.FC<React.PropsWithChildren<IFormLayoutProps>> & {
-  useFormLayout: () => IFormLayoutContext
-  useFormDeepLayout: () => IFormLayoutContext
-  useFormShallowLayout: () => IFormLayoutContext
-} = ({ shallow = true, children, prefixCls, className, style, ...otherProps }) => {
+export const FormLayout: FC<PropsWithChildren<IFormLayoutProps>> = ({
+  shallow = true,
+  children,
+  prefixCls,
+  className,
+  style,
+  ...otherProps
+}) => {
   const { ref, props } = useResponsiveFormLayout(otherProps)
   const deepLayout = useFormDeepLayout()
   const formPrefixCls = usePrefixCls('form', { prefixCls })
@@ -75,20 +79,23 @@ export const FormLayout: React.FC<React.PropsWithChildren<IFormLayoutProps>> & {
     },
     className
   )
-  const renderChildren = () => {
-    const newDeepLayout = {
+  const newDeepLayout = useMemo(() => {
+    const layout: IFormLayoutContext = {
       ...deepLayout,
     }
     if (!shallow) {
-      Object.assign(newDeepLayout, props)
+      Object.assign(layout, props)
     } else {
       if (props.size) {
-        newDeepLayout.size = props.size
+        layout.size = props.size
       }
       if (props.colon) {
-        newDeepLayout.colon = props.colon
+        layout.colon = props.colon
       }
     }
+    return layout
+  }, [deepLayout, props, shallow])
+  const renderChildren = () => {
     return (
       <FormLayoutDeepContext.Provider value={newDeepLayout}>
         <FormLayoutShallowContext.Provider value={shallow ? props : undefined}>
@@ -103,9 +110,3 @@ export const FormLayout: React.FC<React.PropsWithChildren<IFormLayoutProps>> & {
     </div>
   )
 }
-
-FormLayout.useFormDeepLayout = useFormDeepLayout
-FormLayout.useFormShallowLayout = useFormShallowLayout
-FormLayout.useFormLayout = useFormLayout
-
-export default FormLayout

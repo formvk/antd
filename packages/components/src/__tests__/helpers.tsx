@@ -1,6 +1,18 @@
 import { createSchemaField } from '@formvk/react'
 
-import { ArrayItems, FormCollapse, FormGrid, FormItem, FormTab, Input, Select, SelectTable } from '../index'
+import {
+  ArrayItems,
+  FormCollapse,
+  FormCollapsePanel,
+  FormGrid,
+  FormItem,
+  FormTab,
+  FormTabPane,
+  Input,
+  Select,
+  SelectTable,
+  SelectTableColumn,
+} from '../index'
 
 export const { SchemaField, fragment: f } = createSchemaField({
   components: { Input, Select },
@@ -8,10 +20,10 @@ export const { SchemaField, fragment: f } = createSchemaField({
     FormItem,
     FormGrid,
     FormTab,
-    TabPane: FormTab.TabPane,
+    TabPane: FormTabPane,
     FormCollapse,
-    CollapsePanel: FormCollapse.CollapsePanel,
-    Column: SelectTable.Column,
+    CollapsePanel: FormCollapsePanel,
+    Column: SelectTableColumn,
   },
   arrayComponents: { ArrayItems, SelectTable },
   defaultDecorator: 'FormItem',

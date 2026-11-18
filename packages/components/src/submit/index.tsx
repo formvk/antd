@@ -3,16 +3,16 @@ import { useParentForm } from '@formvk/react'
 import { observer } from '@formvk/reactive-react'
 import { Button } from 'antd'
 import type { ButtonProps } from 'antd/es/button'
-import React from 'react'
+import type { FC, MouseEvent, PropsWithChildren } from 'react'
 
 export interface ISubmitProps extends ButtonProps {
-  onClick?: (e: React.MouseEvent<Element, MouseEvent>) => any
+  onClick?: (e: MouseEvent<Element>) => any
   onSubmit?: (values: any) => any
   onSubmitSuccess?: (payload: any) => void
   onSubmitFailed?: (feedbacks: IFormFeedback[]) => void
 }
 
-export const Submit: React.FC<React.PropsWithChildren<ISubmitProps>> = observer(
+export const Submit: FC<PropsWithChildren<ISubmitProps>> = observer(
   ({ onSubmit, onSubmitFailed, onSubmitSuccess, ...props }: ISubmitProps) => {
     const form = useParentForm()
     return (
@@ -38,5 +38,3 @@ export const Submit: React.FC<React.PropsWithChildren<ISubmitProps>> = observer(
     forwardRef: true,
   }
 )
-
-export default Submit

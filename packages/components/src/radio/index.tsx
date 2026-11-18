@@ -1,7 +1,7 @@
 import { connect, mapProps, mapReadPretty } from '@formvk/react'
 import { Radio as AntdRadio } from 'antd'
 
-import { PreviewText } from '../preview-text'
+import { TextSelect } from '../preview-text'
 
 export const InternalRadio: typeof AntdRadio = connect(
   AntdRadio,
@@ -16,12 +16,9 @@ const Group = connect(
   mapProps({
     dataSource: 'options',
   }),
-  mapReadPretty(PreviewText.Select)
+  mapReadPretty(TextSelect)
 )
 
-export const Radio = Object.assign(InternalRadio, {
-  __ANT_RADIO: true,
-  Group,
-})
+export const RadioGroup = Group
 
-export default Radio
+export const Radio = InternalRadio

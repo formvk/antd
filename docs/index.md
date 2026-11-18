@@ -24,13 +24,9 @@ features:
     details: 完整类型声明；Schema 支持 createSchema + fragment 构建，并自动推导组件与布局属性。
 ---
 
-## 安装
-
-```bash
-pnpm add @formvk/antd @formvk/core @formvk/react @formvk/schema antd react react-dom
-```
-
 ## 最小示例
+
+开始前请先完成[安装](/guide/install)。
 
 ```tsx
 import { Form, FormItem, Input, Submit } from '@formvk/antd'

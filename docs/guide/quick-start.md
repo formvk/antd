@@ -91,4 +91,13 @@ const schema = createSchema({
 })
 ```
 
-更多内容见 [数组组件](/guide/array)。
+## 下一步
+
+教程到此结束。带着具体问题继续阅读操作指南：
+
+- [字段联动](/guide/how-to/linkage)：根据其他字段的值控制显隐、选项与组件属性
+- [表单校验](/guide/how-to/validation)：必填、内置格式与自定义校验器
+- [数组字段操作](/guide/how-to/array)：增删、复制、排序与五种数组形态
+- [响应式布局](/guide/how-to/layout)：FormLayout 断点与 FormGrid 栅格
+- [阅读态与详情页](/guide/how-to/read-pretty)：一键切换只读展示
+- [接入自定义组件](/guide/how-to/custom-component)：把业务组件桥接到 Schema 体系

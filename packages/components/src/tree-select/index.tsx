@@ -2,7 +2,7 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { connect, mapProps, mapReadPretty } from '@formvk/react'
 import { TreeSelect as AntdTreeSelect } from 'antd'
 
-import { PreviewText } from '../preview-text'
+import { TextTreeSelect } from '../preview-text'
 
 export const TreeSelect: typeof AntdTreeSelect = connect(
   AntdTreeSelect,
@@ -17,7 +17,5 @@ export const TreeSelect: typeof AntdTreeSelect = connect(
       }
     }
   ),
-  mapReadPretty(PreviewText.TreeSelect)
+  mapReadPretty(TextTreeSelect)
 )
-
-export default TreeSelect

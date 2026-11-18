@@ -11,45 +11,45 @@ export function dayjsable(value: ConfigType | ConfigType[], format?: string): an
     return value.map(val => {
       const date = dayjs(val, format)
       if (date.isValid()) return date
-      const _date = dayjs(val)
-      return _date.isValid() ? _date : val
+      const parsedDate = dayjs(val)
+      return parsedDate.isValid() ? parsedDate : val
     })
   } else {
     const date = dayjs(value, format)
     if (date.isValid()) return date
-    const _date = dayjs(value)
-    return _date.isValid() ? _date : value
+    const parsedDate = dayjs(value)
+    return parsedDate.isValid() ? parsedDate : value
   }
 }
 
 export const formatDayjsValue = (value: any, format: any, placeholder?: string): string | string[] => {
-  const validFormatDate = (date: any, format: any) => {
+  const validFormatDate = (date: any, dateFormat: any) => {
     if (typeof date === 'number') {
-      return dayjs(date).format(format)
+      return dayjs(date).format(dateFormat)
     }
-    const _date = dayjs(date, format)
-    return _date.isValid() ? _date.format(format) : date
+    const parsedDate = dayjs(date, dateFormat)
+    return parsedDate.isValid() ? parsedDate.format(dateFormat) : date
   }
 
-  const formatDate = (date: any, format: any, i = 0) => {
+  const formatDate = (date: any, dateFormat: any, i = 0) => {
     if (!date) return placeholder
-    if (isArr(format)) {
-      const _format = format[i]
-      if (isFn(_format)) {
-        return _format(date)
+    if (isArr(dateFormat)) {
+      const formatItem = dateFormat[i]
+      if (isFn(formatItem)) {
+        return formatItem(date)
       }
-      if (isEmpty(_format)) {
+      if (isEmpty(formatItem)) {
         return date
       }
-      return validFormatDate(date, _format)
+      return validFormatDate(date, formatItem)
     } else {
-      if (isFn(format)) {
-        return format(date)
+      if (isFn(dateFormat)) {
+        return dateFormat(date)
       }
-      if (isEmpty(format)) {
+      if (isEmpty(dateFormat)) {
         return date
       }
-      return validFormatDate(date, format)
+      return validFormatDate(date, dateFormat)
     }
   }
   if (isArr(value)) {

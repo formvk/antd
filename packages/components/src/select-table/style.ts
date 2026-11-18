@@ -1,6 +1,6 @@
 import { genStyleHook } from './../__builtins__'
 
-export default genStyleHook('select-table', token => {
+export const useStyle = genStyleHook('select-table', token => {
   const { componentCls } = token
   return {
     [componentCls]: {

@@ -1,16 +1,21 @@
-import { Form, FormItem, SelectTable } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, FormItem, SelectTable, SelectTableColumn } from '@formvk/antd'
+import { FormConsumer, createForm, createSchema, createSchemaField } from '@formvk/react'
 import { useState } from 'react'
 
 const { SchemaField, fragment: f } = createSchemaField({
-  voidComponents: {
-    FormItem,
-    Column: SelectTable.Column,
-  },
+  voidComponents: { FormItem, Column: SelectTableColumn },
   arrayComponents: { SelectTable },
   defaultDecorator: 'FormItem',
 })
 
+const dataSource = [
+  { key: 1, name: 'Alice', age: 24 },
+  { key: 2, name: 'Bob', age: 28 },
+  { key: 3, name: 'Carol', age: 31 },
+  { key: 4, name: 'Dave', age: 35 },
+]
+
+// schema 静态定义，dataSource 与过滤函数都放在模块作用域
 const schema = createSchema({
   users: f.SelectTable(
     f.Object({
@@ -22,31 +27,51 @@ const schema = createSchema({
       }),
     }),
     {
-      title: '成员',
+      title: '成员（多选）',
       componentProps: {
+        dataSource,
         showSearch: true,
-        dataSource: [
-          { key: 1, name: 'Alice', age: 24 },
-          { key: 2, name: 'Bob', age: 28 },
-          { key: 3, name: 'Carol', age: 31 },
-        ],
+        searchProps: { placeholder: '搜索姓名' },
+        // 自定义过滤：按姓名包含关键词
+        filterOption: (option: any, keyword: string) => option.name.includes(keyword),
+        // 按照年龄倒序
+        filterSort: (a: any, b: any) => b.age - a.age,
+        // 选中项以整行数据作为值
+        optionAsValue: true,
+      },
+    }
+  ),
+  single: f.SelectTable(
+    f.Object({
+      name: f.Column({
+        componentProps: { key: 'name', dataIndex: 'name', title: '姓名' },
+      }),
+    }),
+    {
+      title: '负责人（单选）',
+      componentProps: {
+        mode: 'single',
+        dataSource,
+        // valueType 控制输出值的形态：all / parent / child / path
+        valueType: 'all',
       },
     }
   ),
 })
 
 export default () => {
-  const [form] = useState(() =>
-    createForm({
-      values: {
-        users: [1],
-      },
-    })
-  )
+  const [form] = useState(() => createForm({ values: { users: [1], single: 2 } }))
 
   return (
     <Form form={form}>
       <SchemaField schema={schema} />
+      <FormConsumer>
+        {({ form: consumerForm }) => (
+          <pre style={{ margin: 0, padding: 12, background: '#f6f8fa', borderRadius: 8 }}>
+            {JSON.stringify(consumerForm.values, null, 2)}
+          </pre>
+        )}
+      </FormConsumer>
     </Form>
   )
 }

@@ -4,11 +4,11 @@ import { observer } from '@formvk/reactive-react'
 import type { ReactFC } from '@formvk/reactive-react'
 import type { ISchema } from '@formvk/schema'
 import cls from 'classnames'
-import React from 'react'
+import type { HTMLAttributes } from 'react'
 
 import { ArrayItemField, isComponentOf, SortableContainer, SortableElement, usePrefixCls } from '../__builtins__'
-import { ArrayBase } from '../array-base'
-import useStyle from './style'
+import { ArrayBase, ArrayBaseItem } from '../array-base'
+import { useStyle } from './style'
 
 const SortableItem = SortableElement(props => {
   const prefixCls = usePrefixCls('formvk-array-items')
@@ -37,15 +37,15 @@ const isAdditionComponent = (schema: ISchema) => {
 
 const useAddition = () => {
   const schema = useFieldSchema()
-  return schema?.reduceProperties((addition, schema, key) => {
-    if (isAdditionComponent(schema)) {
-      return <RecursionField schema={schema} name={key} />
+  return schema?.reduceProperties((addition, propertySchema, key) => {
+    if (isAdditionComponent(propertySchema)) {
+      return <RecursionField schema={propertySchema} name={key} />
     }
     return addition
   }, null)
 }
 
-const InternalArrayItems: ReactFC<React.HTMLAttributes<HTMLDivElement>> = observer(props => {
+const InternalArrayItems: ReactFC<HTMLAttributes<HTMLDivElement>> = observer(props => {
   const field = useField<ArrayField>()
   const prefixCls = usePrefixCls('formvk-array-items')
   const [wrapSSR, hashId] = useStyle(prefixCls)
@@ -68,13 +68,15 @@ const InternalArrayItems: ReactFC<React.HTMLAttributes<HTMLDivElement>> = observ
           {dataSource?.map((_, index) => {
             const items = Array.isArray(schema.items) ? schema.items[index] || schema.items[0] : schema.items
             return (
-              <ArrayBase.Item key={index} index={index} record={() => field.value?.[index]}>
-                <SortableItem key={`item-${index}`} lockAxis="y" index={index}>
+              // 数组项没有稳定业务 id，渲染位置与索引绑定，只能使用索引作为 key
+              // oxlint-disable-next-line react/no-array-index-key
+              <ArrayBaseItem key={index} index={index} record={() => field.value?.[index]}>
+                <SortableItem lockAxis="y" index={index}>
                   <div className={`${prefixCls}-item-inner`}>
                     {items ? <ArrayItemField schema={items} index={index} /> : null}
                   </div>
                 </SortableItem>
-              </ArrayBase.Item>
+              </ArrayBaseItem>
             )
           })}
         </SortableList>
@@ -84,8 +86,8 @@ const InternalArrayItems: ReactFC<React.HTMLAttributes<HTMLDivElement>> = observ
   )
 })
 
-const Item: ReactFC<
-  React.HTMLAttributes<HTMLDivElement> & {
+export const ArrayItemsItem: ReactFC<
+  HTMLAttributes<HTMLDivElement> & {
     type?: 'card' | 'divide'
   }
 > = props => {
@@ -102,10 +104,4 @@ const Item: ReactFC<
   )
 }
 
-export const ArrayItems = Object.assign(ArrayBase.mixin(InternalArrayItems), {
-  Item,
-})
-
-ArrayItems.displayName = 'ArrayItems'
-
-export default ArrayItems
+export const ArrayItems = InternalArrayItems

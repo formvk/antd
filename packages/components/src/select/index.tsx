@@ -4,7 +4,7 @@ import type { ReactFC } from '@formvk/reactive-react'
 import { Select as AntdSelect } from 'antd'
 import type { SelectProps } from 'antd/es/select'
 
-import { PreviewText } from '../preview-text'
+import { TextSelect } from '../preview-text'
 
 export const Select: ReactFC<SelectProps<any, any>> = connect(
   AntdSelect,
@@ -20,7 +20,5 @@ export const Select: ReactFC<SelectProps<any, any>> = connect(
       }
     }
   ),
-  mapReadPretty(PreviewText.Select)
+  mapReadPretty(TextSelect)
 )
-
-export default Select

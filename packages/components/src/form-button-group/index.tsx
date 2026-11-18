@@ -8,25 +8,26 @@ import type { ReactFC } from '@formvk/reactive-react'
 import { Space } from 'antd'
 import type { SpaceProps } from 'antd/es/space'
 import cls from 'classnames'
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import type { ComponentProps, CSSProperties, PropsWithChildren } from 'react'
 import StickyBox from 'react-sticky-box'
 
 import { usePrefixCls } from '../__builtins__'
 import { BaseItem } from '../form-item'
 import type { IFormItemProps } from '../form-item'
-import useStyle from './style'
+import { useStyle } from './style'
 
-interface IStickyProps extends React.ComponentProps<typeof StickyBox> {
-  align?: React.CSSProperties['textAlign']
+interface IStickyProps extends ComponentProps<typeof StickyBox> {
+  align?: CSSProperties['textAlign']
 }
 
 type IFormButtonGroupProps = Omit<SpaceProps, 'align' | 'size'> & {
-  align?: React.CSSProperties['textAlign']
+  align?: CSSProperties['textAlign']
   gutter?: number
 }
 
 type ComposedButtonGroup = ReactFC<IFormButtonGroupProps> & {
-  Sticky: ReactFC<React.PropsWithChildren<IStickyProps>>
+  Sticky: ReactFC<PropsWithChildren<IStickyProps>>
   FormItem: ReactFC<
     IFormItemProps & {
       gutter?: number
@@ -137,5 +138,3 @@ FormButtonGroup.Sticky = ({ align = 'left', ...props }) => {
     </StickyBox>
   )
 }
-
-export default FormButtonGroup

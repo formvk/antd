@@ -7,11 +7,12 @@ import { toArr } from '@formvk/shared'
 import { Badge, Card, Collapse, Empty } from 'antd'
 import type { CollapsePanelProps, CollapseProps } from 'antd/es/collapse'
 import cls from 'classnames'
-import React, { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 import { ArrayItemField, isComponentOf, usePrefixCls } from '../__builtins__'
-import { ArrayBase } from '../array-base'
-import useStyle from './style'
+import { ArrayBase, ArrayBaseItem } from '../array-base'
+import { useStyle } from './style'
 
 export interface IArrayCollapseProps extends CollapseProps {
   defaultOpenPanelCount?: number
@@ -78,9 +79,9 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
   if (!schema) throw new Error('can not found schema object')
 
   const renderAddition = () => {
-    return schema.reduceProperties((addition, schema, key) => {
-      if (isAdditionComponent(schema)) {
-        return <RecursionField schema={schema} name={key} />
+    return schema.reduceProperties((addition, propertySchema, key) => {
+      if (isAdditionComponent(propertySchema)) {
+        return <RecursionField schema={propertySchema} name={key} />
       }
       return addition
     }, null)
@@ -119,12 +120,12 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
               address: `${path}.**`,
             })
             return (
-              <ArrayBase.Item index={index} record={() => field.value?.[index]}>
+              <ArrayBaseItem index={index} record={() => field.value?.[index]}>
                 <RecursionField
                   schema={items}
                   name={index}
-                  filterProperties={schema => {
-                    if (!isIndexComponent(schema)) return false
+                  filterProperties={propertySchema => {
+                    if (!isIndexComponent(propertySchema)) return false
                     return true
                   }}
                   onlyRenderProperties
@@ -136,48 +137,50 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
                 ) : (
                   headerText
                 )}
-              </ArrayBase.Item>
+              </ArrayBaseItem>
             )
           }
 
           const extra = (
-            <ArrayBase.Item index={index} record={item}>
+            <ArrayBaseItem index={index} record={item}>
               {panelProps?.extra}
               <RecursionField
                 schema={items}
                 name={index}
-                filterProperties={schema => {
-                  if (!isOperationComponent(schema)) return false
+                filterProperties={propertySchema => {
+                  if (!isOperationComponent(propertySchema)) return false
                   return true
                 }}
                 onlyRenderProperties
               />
-            </ArrayBase.Item>
+            </ArrayBaseItem>
           )
 
           const content = (
             <ArrayItemField
               schema={items}
               index={index}
-              filterProperties={schema => {
-                if (isIndexComponent(schema)) return false
-                if (isOperationComponent(schema)) return false
+              filterProperties={propertySchema => {
+                if (isIndexComponent(propertySchema)) return false
+                if (isOperationComponent(propertySchema)) return false
                 return true
               }}
             />
           )
           return (
+            // activeKeys 以数字索引记录展开项，Panel 的 key 必须与索引保持一致
             <Collapse.Panel
               {...panelSchemaProps}
               {...panelProps}
               forceRender
+              // oxlint-disable-next-line react/no-array-index-key
               key={index}
               header={header()}
               extra={extra}
             >
-              <ArrayBase.Item index={index} key={index} record={item}>
+              <ArrayBaseItem index={index} record={item}>
                 {content}
-              </ArrayBase.Item>
+              </ArrayBaseItem>
             </Collapse.Panel>
           )
         })}
@@ -197,15 +200,8 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
   )
 })
 
-const CollapsePanel: React.FC<React.PropsWithChildren<CollapsePanelProps>> = ({ children }) => {
+export const ArrayCollapsePanel: FC<PropsWithChildren<CollapsePanelProps>> = ({ children }) => {
   return <Fragment>{children}</Fragment>
 }
 
-CollapsePanel.displayName = 'CollapsePanel'
-
-export const ArrayCollapse = Object.assign(ArrayBase.mixin(InternalArrayCollapse), {
-  CollapsePanel,
-})
-ArrayCollapse.displayName = 'ArrayCollapse'
-
-export default ArrayCollapse
+export const ArrayCollapse = InternalArrayCollapse

@@ -1,6 +1,6 @@
 import { genStyleHook } from './../__builtins__'
 
-export default genStyleHook('form-button-group', token => {
+export const useStyle = genStyleHook('form-button-group', token => {
   const { componentCls, antCls, colorBorder } = token
   return {
     [componentCls]: {

@@ -26,8 +26,8 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@formvk/core": "~1.1.1",
-    "@formvk/react": "~1.1.1",
+    "@formvk/core": "catalog:",
+    "@formvk/react": "catalog:",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

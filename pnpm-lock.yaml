@@ -171,16 +171,37 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@formvk/core':
+      specifier: ~1.2.0-beta.0
+      version: 1.2.0-beta.0
+    '@formvk/react':
+      specifier: ~1.2.0-beta.0
+      version: 1.2.0-beta.0
+    '@formvk/reactive':
+      specifier: ~1.2.0-beta.0
+      version: 1.2.0-beta.0
+    '@formvk/reactive-react':
+      specifier: ~1.2.0-beta.0
+      version: 1.2.0-beta.0
+    '@formvk/schema':
+      specifier: ~1.2.0-beta.0
+      version: 1.2.0-beta.0
+    '@formvk/shared':
+      specifier: ~1.2.0-beta.0
+      version: 1.2.0-beta.0
+
 importers:
 
   .:
     devDependencies:
       '@formvk/core':
-        specifier: ~1.1.1
-        version: 1.1.1
+        specifier: 'catalog:'
+        version: 1.2.0-beta.0
       '@formvk/react':
-        specifier: ~1.1.1
-        version: 1.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 'catalog:'
+        version: 1.2.0-beta.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@types/node':
         specifier: ^24.19.2
         version: 24.19.2
@@ -248,23 +269,23 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
       '@formvk/core':
-        specifier: ~1.1.1
-        version: 1.1.1
+        specifier: 'catalog:'
+        version: 1.2.0-beta.0
       '@formvk/react':
-        specifier: ~1.1.1
-        version: 1.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 'catalog:'
+        version: 1.2.0-beta.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@formvk/reactive':
-        specifier: ~1.1.1
-        version: 1.1.1
+        specifier: 'catalog:'
+        version: 1.2.0-beta.0
       '@formvk/reactive-react':
-        specifier: ~1.1.1
-        version: 1.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 'catalog:'
+        version: 1.2.0-beta.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@formvk/schema':
-        specifier: ~1.1.1
-        version: 1.1.1
+        specifier: 'catalog:'
+        version: 1.2.0-beta.0
       '@formvk/shared':
-        specifier: ~1.1.1
-        version: 1.1.1
+        specifier: 'catalog:'
+        version: 1.2.0-beta.0
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -679,35 +700,35 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@formvk/core@1.1.1':
-    resolution: {integrity: sha512-+mYJ8UoPfW9sP3J4uEC4yJeXGcFGQZsH8pPq/GOTr4GJX8AwzEkCAZfrsMVrtNLYxGG4984zlggyzjYpVdBHUg==}
+  '@formvk/core@1.2.0-beta.0':
+    resolution: {integrity: sha512-FLUkPMcs+AZpikoYBoRuG44ESM45EqKG7TrFgZPvCbPipVIoxmgZO/iWUBL+Ok5nCBs2ZGcFd8NZ7PbU0MV4BA==}
 
-  '@formvk/path@1.1.1':
-    resolution: {integrity: sha512-xVMyCHfAteMOdS4QgzNHf2OzTC2hK92HOitsJJyoVwaqZuXhXhEjAUQCGZKr9fOyJAQwk7SbBOhuxnAtZDWdZg==}
+  '@formvk/path@1.2.0-beta.0':
+    resolution: {integrity: sha512-OGX9du+tyt7J9jEsrN8F3Huta0KTBpmKXRASmbnyjaSyVOSNKZc2nqWPR3D8eY5nkH0YVv0sQkK/Zp2bJxPVnQ==}
 
-  '@formvk/react@1.1.1':
-    resolution: {integrity: sha512-LH1rWFVezdIfYYPuQrDGOckrcX8lkgJEdVAznxji/zSm1hjCC9qPS9HnGfleTzx3CvQdKRMzyh8bnB9qG80cDw==}
+  '@formvk/react@1.2.0-beta.0':
+    resolution: {integrity: sha512-T6gt+DLoAxQ2JopySCjuFfEl9qxgp279JU9+j2K59tHJeSmdTKyTXiDkhD7Ch7bw9k/rAnKFYF6c+3DZm06M0w==}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
 
-  '@formvk/reactive-react@1.1.1':
-    resolution: {integrity: sha512-JAHQCO7eLKfnYk5+zFWyBDAkanCO5d0e14mGgBWVbLAWpvk2bofKDd+j/zUha1tMIzoLK1qjF3Cihj0yu0ZVTQ==}
+  '@formvk/reactive-react@1.2.0-beta.0':
+    resolution: {integrity: sha512-nHdk4Ft8d7kq7tnyW9cbE5UvxyuKpElvyDxl8r0sIrG54ot8Ydvh8FRvhC9/tXUSziOnq8fAKYU1tXbvC4CTuQ==}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
 
-  '@formvk/reactive@1.1.1':
-    resolution: {integrity: sha512-zDJLCoQJGW3DIQRkQ82XyiHsG/8+mN0UxV9BvSzZ7gbsA5ZOC/X8AxsBDQxb+43sO9Sk6GatiSa3m7rmRxrKcA==}
+  '@formvk/reactive@1.2.0-beta.0':
+    resolution: {integrity: sha512-a0/pG9fNb5aZsjXGvfx0mOvk7BSIgzyGsaBKySc5WOyAdjv83e5ftB6YNeKyAmBNAXly0+DdauzIURJ+IUO2OA==}
 
-  '@formvk/schema@1.1.1':
-    resolution: {integrity: sha512-pA/qWNJY/MlGyCCjLiNr1niWhyknFMUNguVethRB1FIx/nQ4wnFQpQZ41bEF+2q5HDlkNiIkCU5XO00E0ZypPg==}
+  '@formvk/schema@1.2.0-beta.0':
+    resolution: {integrity: sha512-PpCYtuZdQnzD8H5mpmZZXiomzAWWEd5U4XLCM8vXh5PC92g2C4Az6v/2+HaueXQUO3cSlX9n6y7MfQJlfs/cMg==}
 
-  '@formvk/shared@1.1.1':
-    resolution: {integrity: sha512-+/gEbPXloftb4mrpY3ed3l1rFjQeG3p4M3bBBSXMDheJ+K760Wd7IVNBWF7d6uMka5TomDxtiJCNRPgnVS0qZw==}
+  '@formvk/shared@1.2.0-beta.0':
+    resolution: {integrity: sha512-sY0LyJVO9KltOKT9m8+nBAK4iEgoJu3V0LH1zKGcb98mXGzhFd3aQnORfZOOpm0xgQkM5BhvHcuumq06e0ep3w==}
 
-  '@formvk/validator@1.1.1':
-    resolution: {integrity: sha512-RuYaT25tKguLBeyYmgGGWT2Etec0QmfMAvQVMKPM50LWX7lZ0Y4oXTlIfYVFhZDWzX6RaouPdrb8USHN6MjmmA==}
+  '@formvk/validator@1.2.0-beta.0':
+    resolution: {integrity: sha512-UGnu9ySbSk0ZOE+zeF1A7cwoJmAm4NbBw0GV6gZSHD09U8tb2LJZOd2feeV2H+yC41fuYXuvLw9U0gEi42Zdag==}
 
   '@gar/promise-retry@1.0.3':
     resolution: {integrity: sha512-GmzA9ckNokPypTg10pgpeHNQe7ph+iIKKmhKu3Ob9ANkswreCx7R3cKmY781K8QK3AqVL3xVh9A42JvIAbkkSA==}
@@ -4498,50 +4519,50 @@ snapshots:
   '@esbuild/win32-x64@0.21.5':
     optional: true
 
-  '@formvk/core@1.1.1':
+  '@formvk/core@1.2.0-beta.0':
     dependencies:
-      '@formvk/reactive': 1.1.1
-      '@formvk/shared': 1.1.1
-      '@formvk/validator': 1.1.1
+      '@formvk/reactive': 1.2.0-beta.0
+      '@formvk/shared': 1.2.0-beta.0
+      '@formvk/validator': 1.2.0-beta.0
       '@swc/helpers': 0.5.24
 
-  '@formvk/path@1.1.1': {}
+  '@formvk/path@1.2.0-beta.0': {}
 
-  '@formvk/react@1.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@formvk/react@1.2.0-beta.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@formvk/core': 1.1.1
-      '@formvk/reactive': 1.1.1
-      '@formvk/reactive-react': 1.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@formvk/schema': 1.1.1
-      '@formvk/shared': 1.1.1
+      '@formvk/core': 1.2.0-beta.0
+      '@formvk/reactive': 1.2.0-beta.0
+      '@formvk/reactive-react': 1.2.0-beta.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@formvk/schema': 1.2.0-beta.0
+      '@formvk/shared': 1.2.0-beta.0
       hoist-non-react-statics: 3.3.2
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
 
-  '@formvk/reactive-react@1.1.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@formvk/reactive-react@1.2.0-beta.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@formvk/reactive': 1.1.1
+      '@formvk/reactive': 1.2.0-beta.0
       hoist-non-react-statics: 3.3.2
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
 
-  '@formvk/reactive@1.1.1':
+  '@formvk/reactive@1.2.0-beta.0':
     dependencies:
       '@vue/reactivity': 3.6.0-rc.15
 
-  '@formvk/schema@1.1.1':
+  '@formvk/schema@1.2.0-beta.0':
     dependencies:
-      '@formvk/core': 1.1.1
-      '@formvk/reactive': 1.1.1
-      '@formvk/shared': 1.1.1
+      '@formvk/core': 1.2.0-beta.0
+      '@formvk/reactive': 1.2.0-beta.0
+      '@formvk/shared': 1.2.0-beta.0
 
-  '@formvk/shared@1.1.1':
+  '@formvk/shared@1.2.0-beta.0':
     dependencies:
-      '@formvk/path': 1.1.1
+      '@formvk/path': 1.2.0-beta.0
 
-  '@formvk/validator@1.1.1':
+  '@formvk/validator@1.2.0-beta.0':
     dependencies:
-      '@formvk/shared': 1.1.1
+      '@formvk/shared': 1.2.0-beta.0
 
   '@gar/promise-retry@1.0.3': {}
 

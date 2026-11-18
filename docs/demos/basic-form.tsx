@@ -50,7 +50,7 @@ export default () => {
             margin: 0,
             padding: 12,
             borderRadius: 8,
-            background: 'var(--vp-code-block-bg)',
+            background: '#f6f8fa',
             fontSize: 13,
             overflow: 'auto',
           }}

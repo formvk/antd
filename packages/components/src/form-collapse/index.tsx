@@ -7,7 +7,8 @@ import { toArr } from '@formvk/shared'
 import { Badge, Collapse } from 'antd'
 import type { CollapsePanelProps, CollapseProps } from 'antd/es/collapse'
 import cls from 'classnames'
-import React, { Fragment, useState } from 'react'
+import { Fragment, useState } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 import { isComponentOf, usePrefixCls } from '../__builtins__'
 
@@ -30,29 +31,27 @@ export interface IFormCollapseProps extends CollapseProps {
 const usePanels = () => {
   const collapseField = useField()
   const schema = useFieldSchema()
-  const panels: { name: SchemaKey; props: any; schema: Schema }[] = []
+  const panels: { name: SchemaKey; key: SchemaKey; props: any; schema: Schema }[] = []
   if (!collapseField || !schema) return panels
-  schema.mapProperties((schema, name) => {
+  schema.mapProperties((panelSchema, name) => {
     const field = collapseField.query(collapseField.address.concat(name)).take()
     if (field?.display === 'none' || field?.display === 'hidden') return
-    if (isComponentOf(schema.component, 'CollapsePanel')) {
-      const key = field?.componentProps?.key || schema?.componentProps?.key || name
-      panels.push({
-        name,
-        props: {
-          ...schema?.componentProps,
-          ...field?.componentProps,
-          key,
-        },
-        schema,
-      })
+    if (isComponentOf(panelSchema.component, 'CollapsePanel')) {
+      const props = {
+        ...panelSchema?.componentProps,
+        ...field?.componentProps,
+      }
+      const key = props.key || name
+      // key 需要作为 JSX 属性单独传入，留在 props 中会被 spread 进组件触发 React 告警
+      delete props.key
+      panels.push({ name, key, props, schema: panelSchema })
     }
   })
   return panels
 }
 
 // formvk reactive 无 model/markRaw：observable 承载状态，方法闭包自引用
-const createFormCollapse = (defaultActiveKeys?: ActiveKeys): IFormCollapse => {
+export const createFormCollapse = (defaultActiveKeys?: ActiveKeys): IFormCollapse => {
   const formCollapse = observable({
     activeKeys: defaultActiveKeys as ActiveKeys,
     setActiveKeys(keys: ActiveKeys) {
@@ -101,8 +100,8 @@ const InternalFormCollapse: ReactFC<IFormCollapseProps> = observer(({ formCollap
   const takeActiveKeys = () => {
     if (props.activeKey) return props.activeKey
     if (mergedFormCollapse?.activeKeys) return mergedFormCollapse?.activeKeys
-    if (props.accordion) return panels[0]?.name
-    return panels.map(item => item.name)
+    if (props.accordion) return panels[0]?.key
+    return panels.map(item => item.key)
   }
 
   const badgedHeader = (key: SchemaKey, panelProps: any) => {
@@ -130,8 +129,8 @@ const InternalFormCollapse: ReactFC<IFormCollapseProps> = observer(({ formCollap
         mergedFormCollapse?.setActiveKeys?.(key)
       }}
     >
-      {panels.map(({ props: panelProps, schema, name }, index) => (
-        <Collapse.Panel key={index} {...panelProps} header={badgedHeader(name, panelProps)} forceRender>
+      {panels.map(({ props: panelProps, schema, name, key }) => (
+        <Collapse.Panel key={key} {...panelProps} header={badgedHeader(name, panelProps)} forceRender>
           <RecursionField schema={schema} name={name} />
         </Collapse.Panel>
       ))}
@@ -139,13 +138,8 @@ const InternalFormCollapse: ReactFC<IFormCollapseProps> = observer(({ formCollap
   )
 })
 
-const CollapsePanel: React.FC<React.PropsWithChildren<CollapsePanelProps>> = ({ children }) => {
+export const FormCollapsePanel: FC<PropsWithChildren<CollapsePanelProps>> = ({ children }) => {
   return <Fragment>{children}</Fragment>
 }
 
-export const FormCollapse = Object.assign(InternalFormCollapse, {
-  CollapsePanel,
-  createFormCollapse,
-})
-
-export default FormCollapse
+export const FormCollapse = InternalFormCollapse

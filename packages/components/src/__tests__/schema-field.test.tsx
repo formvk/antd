@@ -36,7 +36,7 @@ describe('SchemaField 基础渲染', () => {
     expect(html).not.toContain('slots=')
   })
 
-  it('readPretty 通过 PreviewText 渲染纯文本，不渲染 input', () => {
+  it('readPretty 通过 Text 阅读态组件渲染纯文本，不渲染 input', () => {
     const form = createForm({ values: { name: 'bob' }, readPretty: true })
     const schema = createSchema({
       name: f.Input({ title: '名称' }),

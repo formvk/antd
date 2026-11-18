@@ -2,9 +2,9 @@ import { connect, mapReadPretty } from '@formvk/react'
 import type { ReactFC } from '@formvk/reactive-react'
 import { Input } from 'antd'
 import type { PasswordProps } from 'antd/es/input'
-import React from 'react'
+import type { CSSProperties } from 'react'
 
-import { PreviewText } from '../preview-text'
+import { TextInput } from '../preview-text'
 import { PasswordStrength } from './PasswordStrength'
 
 export interface IPasswordProps extends PasswordProps {
@@ -13,7 +13,7 @@ export interface IPasswordProps extends PasswordProps {
 
 export const Password: ReactFC<IPasswordProps> = connect((props: IPasswordProps) => {
   const { value, className, checkStrength, ...others } = props
-  const blockStyle: React.CSSProperties = {
+  const blockStyle: CSSProperties = {
     position: 'absolute',
     zIndex: 1,
     height: 8,
@@ -58,6 +58,4 @@ export const Password: ReactFC<IPasswordProps> = connect((props: IPasswordProps)
       )}
     </span>
   )
-}, mapReadPretty(PreviewText.Input))
-
-export default Password
+}, mapReadPretty(TextInput))

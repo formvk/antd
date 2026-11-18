@@ -1,8 +1,9 @@
 import type { ReactFC } from '@formvk/reactive-react'
 import { isFn } from '@formvk/shared'
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
-type ReactRenderPropsChildren<T = any> = React.ReactNode | ((props: T) => React.ReactElement)
+type ReactRenderPropsChildren<T = any> = ReactNode | ((props: T) => ReactElement)
 
 interface IPasswordStrengthProps {
   value?: string | number

@@ -4,20 +4,17 @@ import { connect, mapProps } from '@formvk/react'
 import type { ReactFC } from '@formvk/reactive-react'
 import { Popover, Tooltip } from 'antd'
 import cls from 'classnames'
-import React, { useState } from 'react'
+import { useState } from 'react'
+import type { CSSProperties, FC, PropsWithChildren, ReactNode } from 'react'
 
 import { pickDataProps, usePrefixCls } from '../__builtins__'
 import { FormLayoutShallowContext } from '../form-layout'
 import { useFormItemLayout, useOverflow } from './hooks'
-import useStyle from './style'
+import { useStyle } from './style'
 import type { IFormItemProps } from './types'
 
 export * from './hooks'
 export * from './types'
-
-type ComposeFormItem = ReactFC<IFormItemProps> & {
-  BaseItem: ReactFC<IFormItemProps>
-}
 
 const ICON_MAP = {
   error: <CloseCircleOutlined />,
@@ -25,7 +22,10 @@ const ICON_MAP = {
   warning: <ExclamationCircleOutlined />,
 } as const
 
-export const BaseItem: React.FC<React.PropsWithChildren<IFormItemProps>> = ({ children, ...props }) => {
+// 空布局对象保持模块级引用稳定，避免每次渲染构造新的 context value
+const EMPTY_LAYOUT = {}
+
+export const BaseItem: FC<PropsWithChildren<IFormItemProps>> = ({ children, ...props }) => {
   const [active, setActive] = useState(false)
   const formLayout = useFormItemLayout(props)
   const { containerRef, contentRef, overflow } = useOverflow<HTMLDivElement, HTMLSpanElement>()
@@ -95,7 +95,7 @@ export const BaseItem: React.FC<React.PropsWithChildren<IFormItemProps>> = ({ ch
               [`${prefixCls}-help`]: true,
             })}
           >
-            {feedbackStatus ? (ICON_MAP as Record<string, React.ReactNode>)[feedbackStatus] : null} {feedbackText}
+            {feedbackStatus ? (ICON_MAP as Record<string, ReactNode>)[feedbackStatus] : null} {feedbackText}
           </div>
         }
         open={!!feedbackText}
@@ -107,7 +107,7 @@ export const BaseItem: React.FC<React.PropsWithChildren<IFormItemProps>> = ({ ch
       children
     )
 
-  const gridStyles: React.CSSProperties = {}
+  const gridStyles: CSSProperties = {}
 
   const getOverflowTooltip = () => {
     if (overflow) {
@@ -227,7 +227,7 @@ export const BaseItem: React.FC<React.PropsWithChildren<IFormItemProps>> = ({ ch
               [`${prefixCls}-control-content-component-has-feedback-icon`]: !!feedbackIcon,
             })}
           >
-            <FormLayoutShallowContext.Provider value={{}}>{formatChildren}</FormLayoutShallowContext.Provider>
+            <FormLayoutShallowContext.Provider value={EMPTY_LAYOUT}>{formatChildren}</FormLayoutShallowContext.Provider>
             {feedbackIcon && <div className={cls(`${prefixCls}-feedback-icon`)}>{feedbackIcon}</div>}
           </div>
           {addonAfter && <div className={cls(`${prefixCls}-addon-after`)}>{addonAfter}</div>}
@@ -251,55 +251,48 @@ export const BaseItem: React.FC<React.PropsWithChildren<IFormItemProps>> = ({ ch
 }
 
 // 适配
-export const FormItem: ComposeFormItem = Object.assign(
-  connect(
-    BaseItem,
-    mapProps((props, field) => {
-      if (isVoidField(field))
-        return {
-          label: field.title || props.label,
-          asterisk: props.asterisk,
-          extra: props.extra || field.description,
-        }
-      if (!field) return props
-      const takeFeedbackStatus = () => {
-        if (field.validating) return 'pending'
-        return field.decoratorProps.feedbackStatus || field.validateStatus
-      }
-      const takeMessage = () => {
-        const split = (messages: any[]) => {
-          return messages.reduce((buf, text, index) => {
-            if (!text) return buf
-            return index < messages.length - 1 ? buf.concat([text, ', ']) : buf.concat([text])
-          }, [])
-        }
-        if (field.validating) return
-        if (props.feedbackText) return props.feedbackText
-        if (field.selfErrors.length) return split(field.selfErrors)
-        if (field.selfWarnings.length) return split(field.selfWarnings)
-        if (field.selfSuccesses.length) return split(field.selfSuccesses)
-      }
-      const takeAsterisk = () => {
-        if ('asterisk' in props) {
-          return props.asterisk
-        }
-        if (field.required && field.pattern !== 'readPretty') {
-          return true
-        }
-        return false
-      }
+export const FormItem: ReactFC<IFormItemProps> = connect(
+  BaseItem,
+  mapProps((props, field) => {
+    if (isVoidField(field))
       return {
-        label: props.label || field.title,
-        feedbackStatus: takeFeedbackStatus(),
-        feedbackText: takeMessage(),
-        asterisk: takeAsterisk(),
+        label: field.title || props.label,
+        asterisk: props.asterisk,
         extra: props.extra || field.description,
       }
-    })
-  ),
-  {
-    BaseItem,
-  }
+    if (!field) return props
+    const takeFeedbackStatus = () => {
+      if (field.validating) return 'pending'
+      return field.decoratorProps.feedbackStatus || field.validateStatus
+    }
+    const takeMessage = () => {
+      const split = (messages: any[]) => {
+        return messages.reduce((buf, text, index) => {
+          if (!text) return buf
+          return index < messages.length - 1 ? buf.concat([text, ', ']) : buf.concat([text])
+        }, [])
+      }
+      if (field.validating) return
+      if (props.feedbackText) return props.feedbackText
+      if (field.selfErrors.length) return split(field.selfErrors)
+      if (field.selfWarnings.length) return split(field.selfWarnings)
+      if (field.selfSuccesses.length) return split(field.selfSuccesses)
+    }
+    const takeAsterisk = () => {
+      if ('asterisk' in props) {
+        return props.asterisk
+      }
+      if (field.required && field.pattern !== 'readPretty') {
+        return true
+      }
+      return false
+    }
+    return {
+      label: props.label || field.title,
+      feedbackStatus: takeFeedbackStatus(),
+      feedbackText: takeMessage(),
+      asterisk: takeAsterisk(),
+      extra: props.extra || field.description,
+    }
+  })
 )
-
-export default FormItem

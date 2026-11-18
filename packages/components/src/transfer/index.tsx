@@ -27,5 +27,3 @@ export const Transfer: typeof AntdTransfer = connect(
     }
   )
 )
-
-export default Transfer

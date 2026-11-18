@@ -28,30 +28,31 @@ export class ChildListMutationObserver {
   }
 
   addObserver(element: HTMLElement) {
-    const child = this.childList.find(t => t.element === element)
-    if (!child) {
-      const childIndex = this.childList.length
-      const child: ChildNode = {
-        element,
-        observer: new MutationObserver(this.callback),
-        dispose: () => {
-          if (child.observer) {
-            child.observer.disconnect()
-            delete child.observer
-            this.childList.splice(childIndex, 1)
-          }
-        },
-      }
-      child.observer!.observe(child.element!, {
-        ...this.init,
-        subtree: false,
-        childList: false,
-        characterData: false,
-        characterDataOldValue: false,
-        attributeOldValue: false,
-      })
-      this.childList.push(child)
+    const target = this.childList.find(t => t.element === element)
+    if (target) {
+      return
     }
+    const childIndex = this.childList.length
+    const child: ChildNode = {
+      element,
+      observer: new MutationObserver(this.callback),
+      dispose: () => {
+        if (child.observer) {
+          child.observer.disconnect()
+          delete child.observer
+          this.childList.splice(childIndex, 1)
+        }
+      },
+    }
+    child.observer!.observe(child.element!, {
+      ...this.init,
+      subtree: false,
+      childList: false,
+      characterData: false,
+      characterDataOldValue: false,
+      attributeOldValue: false,
+    })
+    this.childList.push(child)
   }
 
   removeObserver(element: HTMLElement) {

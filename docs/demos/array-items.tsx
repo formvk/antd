@@ -1,4 +1,4 @@
-import { ArrayItems, Form, FormItem, Input } from '@formvk/antd'
+import { Addition, ArrayItems, Form, FormItem, Input, Remove } from '@formvk/antd'
 import { createForm, createSchema, createSchemaField } from '@formvk/react'
 import { useState } from 'react'
 
@@ -6,8 +6,8 @@ const { SchemaField, fragment: f } = createSchemaField({
   components: { Input },
   voidComponents: {
     FormItem,
-    Addition: ArrayItems.Addition,
-    Remove: ArrayItems.Remove,
+    Addition,
+    Remove,
   },
   arrayComponents: { ArrayItems },
   defaultDecorator: 'FormItem',

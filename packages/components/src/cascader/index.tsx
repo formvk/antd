@@ -2,7 +2,7 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { connect, mapProps, mapReadPretty } from '@formvk/react'
 import { Cascader as AntdCascader } from 'antd'
 
-import { PreviewText } from '../preview-text'
+import { TextCascader } from '../preview-text'
 
 export const Cascader: typeof AntdCascader = connect(
   AntdCascader,
@@ -17,7 +17,5 @@ export const Cascader: typeof AntdCascader = connect(
       }
     }
   ),
-  mapReadPretty(PreviewText.Cascader)
+  mapReadPretty(TextCascader)
 )
-
-export default Cascader

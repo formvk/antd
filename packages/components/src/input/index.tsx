@@ -4,7 +4,7 @@ import type { ReactFC } from '@formvk/reactive-react'
 import { Input as AntdInput } from 'antd'
 import type { InputProps } from 'antd/es/input'
 
-import { PreviewText } from '../preview-text'
+import { TextInput } from '../preview-text'
 
 const InternalInput: ReactFC<InputProps> = connect(
   AntdInput,
@@ -14,12 +14,8 @@ const InternalInput: ReactFC<InputProps> = connect(
       suffix: <span>{(field as any)?.loading || (field as any)?.validating ? <LoadingOutlined /> : props.suffix}</span>,
     }
   }),
-  mapReadPretty(PreviewText.Input)
+  mapReadPretty(TextInput)
 )
-const TextArea = connect(AntdInput.TextArea, mapReadPretty(PreviewText.Input))
+export const TextArea = connect(AntdInput.TextArea, mapReadPretty(TextInput))
 
-export const Input = Object.assign(InternalInput, {
-  TextArea,
-})
-
-export default Input
+export const Input = InternalInput

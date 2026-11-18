@@ -39,7 +39,7 @@ import { isVoidField } from '@formvk/core'
 import { connect, mapProps, mapReadPretty } from '@formvk/react'
 import { Select as AntSelect } from 'antd'
 
-import { PreviewText } from '../components/PreviewText'
+import { Text } from '../components/Text'
 
 export const Select = connect(
   AntSelect,
@@ -48,7 +48,7 @@ export const Select = connect(
       if (!isVoidField(field)) field.setValue(value)
     },
   })),
-  mapReadPretty(PreviewText)
+  mapReadPretty(Text)
 )
 ```
 
@@ -57,7 +57,7 @@ Ant Design Select 正好用 `options`，所以 `dataSource: 'options'` 把 schem
 输入框这类原生事件控件可以直接依赖注入的 `onChange`：
 
 ```tsx
-export const Input = connect(AntInput, mapProps({ value: true, disabled: 'disabled' }), mapReadPretty(PreviewText))
+export const Input = connect(AntInput, mapProps({ value: true, disabled: 'disabled' }), mapReadPretty(Text))
 ```
 
 - React 的 `mapProps` / `mapReadPretty` 自带 `observer`；`connect(target)` 不套 mapper 时要自己补。
@@ -141,5 +141,5 @@ expect(form.values.name).toBe('bob')
 
 - `fireEvent.change` 必须带 `{ target: { value } }`，否则 React 合成事件不触发。
 - 异步更新用 `await act(async () => ...)` 包住。
-- 只读模式检查是否渲染 `PreviewText`，而不是只检查 `disabled`。
+- 只读模式检查是否渲染 `Text`，而不是只检查 `disabled`。
 - 数组用例覆盖 `push` / `remove` 后项是否重新渲染。

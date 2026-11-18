@@ -7,12 +7,13 @@ import type { ReactFC } from '@formvk/reactive-react'
 import { Popover as AntdPopover } from 'antd'
 import type { PopoverProps } from 'antd/es/popover'
 import cls from 'classnames'
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import type { MouseEvent } from 'react'
 
 import { useClickAway, usePrefixCls } from '../__builtins__'
 import { BaseItem } from '../form-item'
 import type { IFormItemProps } from '../form-item'
-import useStyle from './style'
+import { useStyle } from './style'
 
 const useParentPattern = () => {
   const field = useField<Field>()
@@ -95,7 +96,7 @@ const InternalEditable: ReactFC<IFormItemProps> = observer(props => {
     recover()
   }, innerRef)
 
-  const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onClick = (e: MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement
     const close = innerRef.current?.querySelector(`.${prefixCls}-close-btn`) || null
     if (target?.contains(close) || close?.contains(target)) {
@@ -178,6 +179,6 @@ const Popover = observer((props: PopoverProps) => {
     </AntdPopover>
   )
 })
-export const Editable = Object.assign(InternalEditable, { Popover })
+export const EditablePopover = Popover
 
-export default Editable
+export const Editable = InternalEditable

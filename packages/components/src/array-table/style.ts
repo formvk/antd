@@ -1,6 +1,6 @@
 import { genStyleHook } from '../__builtins__'
 
-export default genStyleHook('array-table', token => {
+export const useStyle = genStyleHook('array-table', token => {
   const { componentCls, antCls, colorErrorBorder, fontSizeSM, colorBgBase, colorBorder, colorBgContainer } = token
   const itemCls = `${antCls}-formvk-item`
 

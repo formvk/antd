@@ -14,7 +14,8 @@ const getTreeKeys = (tree: any[], primaryKey = ''): any[] =>
         if (current?.disabled) {
           return prev
         }
-        return [...prev, current[primaryKey], ...getTreeKeys(current?.children, primaryKey)]
+        prev.push(current[primaryKey], ...getTreeKeys(current?.children, primaryKey))
+        return prev
       }, [])
     : []
 

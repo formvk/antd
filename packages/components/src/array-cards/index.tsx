@@ -8,8 +8,8 @@ import type { CardProps } from 'antd/es/card'
 import cls from 'classnames'
 
 import { ArrayItemField, isComponentOf, usePrefixCls } from '../__builtins__'
-import { ArrayBase } from '../array-base'
-import useStyle from './style'
+import { ArrayBase, ArrayBaseItem } from '../array-base'
+import { useStyle } from './style'
 
 const isAdditionComponent = (schema: ISchema) => {
   return isComponentOf(schema.component, 'Addition')
@@ -64,8 +64,8 @@ export const InternalArrayCards: ReactFC<CardProps> = observer(props => {
             <RecursionField
               schema={items}
               name={index}
-              filterProperties={schema => {
-                if (!isIndexComponent(schema)) return false
+              filterProperties={propertySchema => {
+                if (!isIndexComponent(propertySchema)) return false
                 return true
               }}
               onlyRenderProperties
@@ -80,8 +80,8 @@ export const InternalArrayCards: ReactFC<CardProps> = observer(props => {
             <RecursionField
               schema={items}
               name={index}
-              filterProperties={schema => {
-                if (!isOperationComponent(schema)) return false
+              filterProperties={propertySchema => {
+                if (!isOperationComponent(propertySchema)) return false
                 return true
               }}
               onlyRenderProperties
@@ -94,15 +94,17 @@ export const InternalArrayCards: ReactFC<CardProps> = observer(props => {
         <ArrayItemField
           schema={items}
           index={index}
-          filterProperties={schema => {
-            if (isIndexComponent(schema)) return false
-            if (isOperationComponent(schema)) return false
+          filterProperties={propertySchema => {
+            if (isIndexComponent(propertySchema)) return false
+            if (isOperationComponent(propertySchema)) return false
             return true
           }}
         />
       ) : null
       return (
-        <ArrayBase.Item key={index} index={index} record={() => field.value?.[index]}>
+        // 数组项没有稳定业务 id，渲染位置与索引绑定，只能使用索引作为 key
+        // oxlint-disable-next-line react/no-array-index-key
+        <ArrayBaseItem key={index} index={index} record={() => field.value?.[index]}>
           <Card
             {...props}
             onChange={() => {}}
@@ -112,15 +114,15 @@ export const InternalArrayCards: ReactFC<CardProps> = observer(props => {
           >
             {content}
           </Card>
-        </ArrayBase.Item>
+        </ArrayBaseItem>
       )
     })
   }
 
   const renderAddition = () => {
-    return schema.reduceProperties((addition, schema, key) => {
-      if (isAdditionComponent(schema)) {
-        return <RecursionField schema={schema} name={key} />
+    return schema.reduceProperties((addition, propertySchema, key) => {
+      if (isAdditionComponent(propertySchema)) {
+        return <RecursionField schema={propertySchema} name={key} />
       }
       return addition
     }, null)
@@ -149,8 +151,4 @@ export const InternalArrayCards: ReactFC<CardProps> = observer(props => {
   )
 })
 
-export const ArrayCards = ArrayBase.mixin(InternalArrayCards)
-
-ArrayCards.displayName = 'ArrayCards'
-
-export default ArrayCards
+export const ArrayCards = InternalArrayCards

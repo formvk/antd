@@ -1,4 +1,4 @@
-import { Form, FormItem, FormTab, Input, Password } from '@formvk/antd'
+import { Form, FormItem, FormTab, FormTabPane, Input, Password } from '@formvk/antd'
 import { createForm, createSchema, createSchemaField } from '@formvk/react'
 import { useState } from 'react'
 
@@ -7,7 +7,7 @@ const { SchemaField, fragment: f } = createSchemaField({
   voidComponents: {
     FormItem,
     FormTab,
-    TabPane: FormTab.TabPane,
+    TabPane: FormTabPane,
   },
   defaultDecorator: 'FormItem',
 })

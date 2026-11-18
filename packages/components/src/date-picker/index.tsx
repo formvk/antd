@@ -1,10 +1,14 @@
 import { connect, mapProps, mapReadPretty } from '@formvk/react'
 import { DatePicker as AntdDatePicker } from 'antd'
-import type { DatePickerProps as AntdDatePickerProps } from 'antd/es/date-picker'
+import type {
+  DatePickerProps as AntdDatePickerProps,
+  RangePickerProps as AntdRangePickerProps,
+} from 'antd/es/date-picker'
 import type dayjs from 'dayjs'
+import type { FC, PropsWithChildren } from 'react'
 
 import { dayjsable, formatDayjsValue } from '../__builtins__'
-import { PreviewText } from '../preview-text'
+import { TextDatePicker, TextDateRangePicker } from '../preview-text'
 
 type DatePickerProps<PickerProps> = Exclude<PickerProps, 'value' | 'onChange'> & {
   value: string
@@ -43,15 +47,14 @@ const mapDateFormat = function () {
 const InternalDatePicker: typeof AntdDatePicker = connect(
   AntdDatePicker,
   mapProps(mapDateFormat()),
-  mapReadPretty(PreviewText.DatePicker)
+  mapReadPretty(TextDatePicker)
 )
-const RangePicker = connect(
+const InternalRangePicker: typeof AntdDatePicker.RangePicker = connect(
   AntdDatePicker.RangePicker,
   mapProps(mapDateFormat()),
-  mapReadPretty(PreviewText.DateRangePicker)
+  mapReadPretty(TextDateRangePicker)
 )
-export const DatePicker: typeof AntdDatePicker = Object.assign(InternalDatePicker, {
-  RangePicker,
-})
 
-export default DatePicker
+export const DatePicker = InternalDatePicker
+
+export const DateRangePicker: FC<PropsWithChildren<AntdRangePickerProps>> = InternalRangePicker

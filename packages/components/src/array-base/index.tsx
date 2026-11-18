@@ -2,17 +2,19 @@ import { CopyOutlined, DeleteOutlined, DownOutlined, MenuOutlined, PlusOutlined,
 import type { ArrayField } from '@formvk/core'
 import { useField, useFieldSchema } from '@formvk/react'
 import type { Schema } from '@formvk/react'
+import { observer } from '@formvk/reactive-react'
 import type { ReactFC } from '@formvk/reactive-react'
 import { clone, isUndef, isValid } from '@formvk/shared'
 import { Button } from 'antd'
 import type { ButtonProps } from 'antd/es/button'
 import cls from 'classnames'
-import React, { createContext, forwardRef, useContext } from 'react'
+import { createContext, useContext, useMemo } from 'react'
+import type { FC, HTMLAttributes, Ref } from 'react'
 
-import { RecordScope, RecordsScope, SortableHandle, usePrefixCls } from '../__builtins__'
-import useStyle from './style'
+import { SortableHandle, usePrefixCls } from '../__builtins__'
+import { useStyle } from './style'
 
-export interface IArrayBaseAdditionProps extends ButtonProps {
+export interface IAdditionProps extends ButtonProps {
   title?: string
   method?: 'push' | 'unshift'
   defaultValue?: any
@@ -33,19 +35,6 @@ type CommonProps = ButtonProps & {
   index?: number
 }
 
-export type ArrayBaseMixins = {
-  Addition: ReactFC<IArrayBaseAdditionProps>
-  Copy: ReactFC<CommonProps>
-  Remove: ReactFC<CommonProps>
-  MoveUp: ReactFC<CommonProps>
-  MoveDown: React.FC<React.PropsWithChildren<CommonProps>>
-  SortHandle: ReactFC<CommonProps>
-  Index: React.FC
-  useArray: () => IArrayBaseContext | null
-  useIndex: (index?: number) => number
-  useRecord: (record?: number) => any
-}
-
 export interface IArrayBaseProps {
   disabled?: boolean
   onAdd?: (index: number) => void
@@ -61,16 +50,16 @@ const ItemContext = createContext<IArrayBaseItemProps | null>(null)
 
 const takeRecord = (val: any, index?: number) => (typeof val === 'function' ? val(index) : val)
 
-const useArray = () => {
+export const useArray = () => {
   return useContext(ArrayBaseContext)
 }
 
-const useIndex = (index?: number) => {
+export const useIndex = (index?: number) => {
   const ctx = useContext(ItemContext)
   return (ctx ? ctx.index : index) || 0
 }
 
-const useRecord = (record?: number) => {
+export const useRecord = (record?: number) => {
   const ctx = useContext(ItemContext)
   return takeRecord(ctx ? ctx.record : record, ctx?.index)
 }
@@ -95,22 +84,16 @@ const getDefaultValue = (defaultValue: any, schema: Schema) => {
 const InternalArrayBase: ReactFC<IArrayBaseProps> = props => {
   const field = useField<ArrayField>()
   const schema = useFieldSchema()
-  if (!field || !schema) return null
-  return (
-    <RecordsScope getRecords={() => field.value ?? []}>
-      <ArrayBaseContext.Provider value={{ field, schema, props }}>{props.children}</ArrayBaseContext.Provider>
-    </RecordsScope>
+  const contextValue = useMemo(
+    () => ({ field: field as ArrayField, schema: schema as Schema, props }),
+    [field, schema, props]
   )
+  if (!field || !schema) return null
+  return <ArrayBaseContext.Provider value={contextValue}>{props.children}</ArrayBaseContext.Provider>
 }
 
-const Item: ReactFC<IArrayBaseItemProps> = ({ children, ...props }) => {
-  return (
-    <ItemContext.Provider value={props}>
-      <RecordScope getIndex={() => props.index} getRecord={() => takeRecord(props.record, props.index)}>
-        {children}
-      </RecordScope>
-    </ItemContext.Provider>
-  )
+export const ArrayBaseItem: ReactFC<IArrayBaseItemProps> = ({ children, ...props }) => {
+  return <ItemContext.Provider value={props}>{children}</ItemContext.Provider>
 }
 
 const InternalSortHandle = SortableHandle(props => {
@@ -125,14 +108,14 @@ const InternalSortHandle = SortableHandle(props => {
   )
 })
 
-const SortHandle: ReactFC<CommonProps> = props => {
+export const SortHandle = observer<CommonProps>(props => {
   const array = useArray()
   if (!array) return null
   if (array.field?.pattern !== 'editable') return null
   return <InternalSortHandle {...props} />
-}
+})
 
-const Index: React.FC<React.HTMLAttributes<HTMLSpanElement>> = props => {
+export const Index: FC<HTMLAttributes<HTMLSpanElement>> = props => {
   const index = useIndex()
   const prefixCls = usePrefixCls('formvk-array-base')
   const [wrapSSR, hashId] = useStyle(prefixCls)
@@ -143,7 +126,7 @@ const Index: React.FC<React.HTMLAttributes<HTMLSpanElement>> = props => {
   )
 }
 
-const Addition: ReactFC<IArrayBaseAdditionProps> = props => {
+export const Addition = observer<IAdditionProps>(props => {
   const self = useField()
   const array = useArray()
   const prefixCls = usePrefixCls('formvk-array-base')
@@ -176,198 +159,185 @@ const Addition: ReactFC<IArrayBaseAdditionProps> = props => {
       {props.title || self?.title}
     </Button>
   )
-}
-const Copy = forwardRef<HTMLButtonElement, CommonProps>((props, ref) => {
-  const self = useField()
-  const array = useArray()
-  const index = useIndex(props.index) || 0
-  const prefixCls = usePrefixCls('formvk-array-base')
-  const [wrapSSR, hashId] = useStyle(prefixCls)
-  if (!array) return null
-  if (array.field?.pattern !== 'editable') return null
-  return wrapSSR(
-    <Button
-      type="text"
-      {...props}
-      style={{
-        padding: '0 0 0 6px',
-        width: 'auto',
-        height: 'auto',
-        ...props.style,
-      }}
-      disabled={self?.disabled}
-      className={cls(`${prefixCls}-copy`, hashId, self?.disabled ? `${prefixCls}-copy-disabled` : '', props.className)}
-      ref={ref}
-      onClick={e => {
-        if (self?.disabled) return
-        e.stopPropagation()
-        if (array.props?.disabled) return
-        if (props.onClick) {
-          props.onClick(e)
-          if (e.defaultPrevented) return
-        }
-        const value = clone(array?.field?.value?.[index])
-        const distIndex = index + 1
-        array.field?.insert?.(distIndex, value)
-        array.props?.onCopy?.(distIndex)
-      }}
-      icon={isUndef(props.icon) ? <CopyOutlined /> : props.icon}
-    >
-      {props.title || self?.title}
-    </Button>
-  )
 })
+export const Copy = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+  ({ ref, ...props }) => {
+    const self = useField()
+    const array = useArray()
+    const index = useIndex(props.index) || 0
+    const prefixCls = usePrefixCls('formvk-array-base')
+    const [wrapSSR, hashId] = useStyle(prefixCls)
+    if (!array) return null
+    if (array.field?.pattern !== 'editable') return null
+    return wrapSSR(
+      <Button
+        type="text"
+        {...props}
+        style={{
+          padding: '0 0 0 6px',
+          width: 'auto',
+          height: 'auto',
+          ...props.style,
+        }}
+        disabled={self?.disabled}
+        className={cls(
+          `${prefixCls}-copy`,
+          hashId,
+          self?.disabled ? `${prefixCls}-copy-disabled` : '',
+          props.className
+        )}
+        ref={ref}
+        onClick={e => {
+          if (self?.disabled) return
+          e.stopPropagation()
+          if (array.props?.disabled) return
+          if (props.onClick) {
+            props.onClick(e)
+            if (e.defaultPrevented) return
+          }
+          const value = clone(array?.field?.value?.[index])
+          const distIndex = index + 1
+          array.field?.insert?.(distIndex, value)
+          array.props?.onCopy?.(distIndex)
+        }}
+        icon={isUndef(props.icon) ? <CopyOutlined /> : props.icon}
+      >
+        {props.title || self?.title}
+      </Button>
+    )
+  },
+  { forwardRef: true }
+)
 
-const Remove = forwardRef<HTMLButtonElement, CommonProps>((props, ref) => {
-  const index = useIndex(props.index)
-  const self = useField()
-  const array = useArray()
-  const prefixCls = usePrefixCls('formvk-array-base')
-  const [wrapSSR, hashId] = useStyle(prefixCls)
+export const Remove = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+  ({ ref, ...props }) => {
+    const index = useIndex(props.index)
+    const self = useField()
+    const array = useArray()
+    const prefixCls = usePrefixCls('formvk-array-base')
+    const [wrapSSR, hashId] = useStyle(prefixCls)
 
-  if (!array) return null
-  if (array.field?.pattern !== 'editable') return null
-  return wrapSSR(
-    <Button
-      type="text"
-      {...props}
-      style={{
-        padding: '0 0 0 6px',
-        width: 'auto',
-        height: 'auto',
-        ...props.style,
-      }}
-      disabled={self?.disabled}
-      className={cls(
-        `${prefixCls}-remove`,
-        hashId,
-        self?.disabled ? `${prefixCls}-remove-disabled` : '',
-        props.className
-      )}
-      ref={ref}
-      onClick={e => {
-        if (self?.disabled) return
-        e.stopPropagation()
-        if (props.onClick) {
-          props.onClick(e)
-          if (e.defaultPrevented) return
-        }
-        array.field?.remove?.(index)
-        array.props?.onRemove?.(index)
-      }}
-      icon={isUndef(props.icon) ? <DeleteOutlined /> : props.icon}
-    >
-      {props.title || self?.title}
-    </Button>
-  )
-})
+    if (!array) return null
+    if (array.field?.pattern !== 'editable') return null
+    return wrapSSR(
+      <Button
+        type="text"
+        {...props}
+        style={{
+          padding: '0 0 0 6px',
+          width: 'auto',
+          height: 'auto',
+          ...props.style,
+        }}
+        disabled={self?.disabled}
+        className={cls(
+          `${prefixCls}-remove`,
+          hashId,
+          self?.disabled ? `${prefixCls}-remove-disabled` : '',
+          props.className
+        )}
+        ref={ref}
+        onClick={e => {
+          if (self?.disabled) return
+          e.stopPropagation()
+          if (props.onClick) {
+            props.onClick(e)
+            if (e.defaultPrevented) return
+          }
+          array.field?.remove?.(index)
+          array.props?.onRemove?.(index)
+        }}
+        icon={isUndef(props.icon) ? <DeleteOutlined /> : props.icon}
+      >
+        {props.title || self?.title}
+      </Button>
+    )
+  },
+  { forwardRef: true }
+)
 
-const MoveDown = forwardRef<HTMLButtonElement, CommonProps>((props, ref) => {
-  const index = useIndex(props.index)
-  const self = useField()
-  const array = useArray()
-  const prefixCls = usePrefixCls('formvk-array-base')
-  if (!array) return null
-  if (array.field?.pattern !== 'editable') return null
-  return (
-    <Button
-      type="text"
-      {...props}
-      style={{
-        padding: '0 0 0 6px',
-        width: 'auto',
-        height: 'auto',
-        ...props.style,
-      }}
-      disabled={self?.disabled}
-      className={cls(
-        `${prefixCls}-move-down`,
-        self?.disabled ? `${prefixCls}-move-down-disabled` : '',
-        props.className
-      )}
-      ref={ref}
-      onClick={e => {
-        if (self?.disabled) return
-        e.stopPropagation()
-        if (props.onClick) {
-          props.onClick(e)
-          if (e.defaultPrevented) return
-        }
-        array.field?.moveDown?.(index)
-        array.props?.onMoveDown?.(index)
-      }}
-      icon={isUndef(props.icon) ? <DownOutlined /> : props.icon}
-    >
-      {props.title || self?.title}
-    </Button>
-  )
-})
+export const MoveDown = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+  ({ ref, ...props }) => {
+    const index = useIndex(props.index)
+    const self = useField()
+    const array = useArray()
+    const prefixCls = usePrefixCls('formvk-array-base')
+    if (!array) return null
+    if (array.field?.pattern !== 'editable') return null
+    return (
+      <Button
+        type="text"
+        {...props}
+        style={{
+          padding: '0 0 0 6px',
+          width: 'auto',
+          height: 'auto',
+          ...props.style,
+        }}
+        disabled={self?.disabled}
+        className={cls(
+          `${prefixCls}-move-down`,
+          self?.disabled ? `${prefixCls}-move-down-disabled` : '',
+          props.className
+        )}
+        ref={ref}
+        onClick={e => {
+          if (self?.disabled) return
+          e.stopPropagation()
+          if (props.onClick) {
+            props.onClick(e)
+            if (e.defaultPrevented) return
+          }
+          array.field?.moveDown?.(index)
+          array.props?.onMoveDown?.(index)
+        }}
+        icon={isUndef(props.icon) ? <DownOutlined /> : props.icon}
+      >
+        {props.title || self?.title}
+      </Button>
+    )
+  },
+  { forwardRef: true }
+)
 
-const MoveUp = forwardRef<HTMLButtonElement, CommonProps>((props, ref) => {
-  const index = useIndex(props.index)
-  const self = useField()
-  const array = useArray()
-  const prefixCls = usePrefixCls('formvk-array-base')
-  if (!array) return null
-  if (array.field?.pattern !== 'editable') return null
-  return (
-    <Button
-      type="text"
-      {...props}
-      style={{
-        padding: '0 0 0 6px',
-        width: 'auto',
-        height: 'auto',
-        ...props.style,
-      }}
-      disabled={self?.disabled}
-      className={cls(`${prefixCls}-move-up`, self?.disabled ? `${prefixCls}-move-up-disabled` : '', props.className)}
-      ref={ref}
-      onClick={e => {
-        if (self?.disabled) return
-        e.stopPropagation()
-        if (props.onClick) {
-          props.onClick(e)
-          if (e.defaultPrevented) return
-        }
-        array?.field?.moveUp(index)
-        array?.props?.onMoveUp?.(index)
-      }}
-      icon={isUndef(props.icon) ? <UpOutlined /> : props.icon}
-    >
-      {props.title || self?.title}
-    </Button>
-  )
-})
+export const MoveUp = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+  ({ ref, ...props }) => {
+    const index = useIndex(props.index)
+    const self = useField()
+    const array = useArray()
+    const prefixCls = usePrefixCls('formvk-array-base')
+    if (!array) return null
+    if (array.field?.pattern !== 'editable') return null
+    return (
+      <Button
+        type="text"
+        {...props}
+        style={{
+          padding: '0 0 0 6px',
+          width: 'auto',
+          height: 'auto',
+          ...props.style,
+        }}
+        disabled={self?.disabled}
+        className={cls(`${prefixCls}-move-up`, self?.disabled ? `${prefixCls}-move-up-disabled` : '', props.className)}
+        ref={ref}
+        onClick={e => {
+          if (self?.disabled) return
+          e.stopPropagation()
+          if (props.onClick) {
+            props.onClick(e)
+            if (e.defaultPrevented) return
+          }
+          array?.field?.moveUp(index)
+          array?.props?.onMoveUp?.(index)
+        }}
+        icon={isUndef(props.icon) ? <UpOutlined /> : props.icon}
+      >
+        {props.title || self?.title}
+      </Button>
+    )
+  },
+  { forwardRef: true }
+)
 
-function mixin<T extends object = object>(target: T): T & ArrayBaseMixins {
-  return Object.assign(target, {
-    Index,
-    SortHandle,
-    Addition,
-    Copy,
-    Remove,
-    MoveDown,
-    MoveUp,
-    useArray,
-    useIndex,
-    useRecord,
-  })
-}
-
-export const ArrayBase = Object.assign(InternalArrayBase, {
-  Item,
-  Index,
-  SortHandle,
-  Addition,
-  Copy,
-  Remove,
-  MoveDown,
-  MoveUp,
-  useArray,
-  useIndex,
-  useRecord,
-  mixin,
-})
-
-export default ArrayBase
+export const ArrayBase = InternalArrayBase

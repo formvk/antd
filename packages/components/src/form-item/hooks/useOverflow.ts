@@ -21,6 +21,8 @@ export function useOverflow<Container extends HTMLElement, Content extends HTMLE
         }
       }
     })
+    // labelCol 只作为布局变化的重测触发器，测量本身在 DOM 上完成
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies
   }, [labelCol])
 
   return {

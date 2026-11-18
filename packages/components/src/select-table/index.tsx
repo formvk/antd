@@ -8,11 +8,12 @@ import { Input, Table } from 'antd'
 import type { SearchProps } from 'antd/es/input'
 import type { ColumnProps, ColumnsType, TableProps } from 'antd/es/table'
 import cls from 'classnames'
-import React, { useMemo, useState } from 'react'
+import { cloneElement, createElement, useMemo, useState } from 'react'
+import type { FC, PropsWithChildren, ReactElement } from 'react'
 
 import { isComponentOf, usePrefixCls } from '../__builtins__'
 import { checkSlackly, flattenOptions, getIndeterminate, getSize, getTitleAddon, useFilterOptions } from './hooks'
-import useStyle from './style'
+import { useStyle } from './style'
 import { getOutputData, getUISelected } from './utils'
 
 const { Search } = Input
@@ -55,39 +56,42 @@ const isColumnComponent = (schema: Schema) => {
 const useSources = () => {
   const arrayField = useField()
   const schema = useFieldSchema()
-  const parseSources = (schema: Schema): ObservableColumnSource[] => {
-    if (isColumnComponent(schema)) {
-      if (!schema.componentProps?.['dataIndex'] && !schema['name']) return []
-      const name = schema.componentProps?.['dataIndex'] || schema['name']
+  const parseSources = (columnSchema: Schema): ObservableColumnSource[] => {
+    if (isColumnComponent(columnSchema)) {
+      if (!columnSchema.componentProps?.['dataIndex'] && !columnSchema['name']) return []
+      const name = columnSchema.componentProps?.['dataIndex'] || columnSchema['name']
       const field = arrayField?.query(arrayField.address.concat(name)).take()
-      const columnProps = (field?.component as any[] | undefined)?.[1] || schema.componentProps || {}
-      const display = field?.display || schema.display
+      const columnProps = (field?.component as any[] | undefined)?.[1] || columnSchema.componentProps || {}
+      const display = field?.display || columnSchema.display
       return [
         {
           name,
           display,
           field,
-          schema,
+          schema: columnSchema,
           columnProps: {
             title: field?.title || columnProps.title,
             ...columnProps,
           },
         },
       ]
-    } else if (schema.properties) {
-      return schema.reduceProperties<ObservableColumnSource[], ObservableColumnSource[]>((buf, schema) => {
-        return buf.concat(parseSources(schema))
-      }, [])
+    } else if (columnSchema.properties) {
+      return columnSchema.reduceProperties<ObservableColumnSource[], ObservableColumnSource[]>(
+        (buf, propertySchema) => {
+          return buf.concat(parseSources(propertySchema))
+        },
+        []
+      )
     }
     return []
   }
 
-  const parseArrayItems = (schema: Schema['items']) => {
-    if (!schema) return []
+  const parseArrayItems = (schemaItems: Schema['items']) => {
+    if (!schemaItems) return []
     const sources: ObservableColumnSource[] = []
-    const items = isArr(schema) ? schema : [schema]
-    return items.reduce((columns, schema) => {
-      const item = parseSources(schema)
+    const items = isArr(schemaItems) ? schemaItems : [schemaItems]
+    return items.reduce((columns, itemSchema) => {
+      const item = parseSources(itemSchema)
       if (item) {
         return columns.concat(item)
       }
@@ -320,13 +324,8 @@ const InternalSelectTable: ReactFC<ISelectTableProps> = observer(props => {
                 ...(rowSelection?.checkStrictly !== false
                   ? {}
                   : {
-                      renderCell: (
-                        _checked: boolean,
-                        record: any,
-                        _index: number,
-                        originNode: React.ReactElement<any>
-                      ) => {
-                        return React.cloneElement(originNode, {
+                      renderCell: (_checked: boolean, record: any, _index: number, originNode: ReactElement<any>) => {
+                        return cloneElement(originNode, {
                           indeterminate: getIndeterminate(record, flatDataSource, selected, primaryKey),
                         })
                       },
@@ -357,7 +356,7 @@ const InternalSelectTable: ReactFC<ISelectTableProps> = observer(props => {
       {sources.map((column, key) => {
         //专门用来承接对Column的状态管理
         if (!isColumnComponent(column.schema)) return
-        return React.createElement(RecursionField, {
+        return createElement(RecursionField, {
           name: column.name,
           schema: column.schema,
           onlyRenderSelf: true,
@@ -368,10 +367,6 @@ const InternalSelectTable: ReactFC<ISelectTableProps> = observer(props => {
   )
 })
 
-const TableColumn: React.FC<React.PropsWithChildren<ISelectTableColumnProps>> = () => <></>
+export const SelectTableColumn: FC<PropsWithChildren<ISelectTableColumnProps>> = () => <></>
 
-export const SelectTable = Object.assign(InternalSelectTable, {
-  Column: TableColumn,
-})
-
-export default SelectTable
+export const SelectTable = InternalSelectTable

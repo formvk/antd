@@ -1,14 +1,17 @@
 # 安装
 
+本页帮助你从零搭建 `@formvk/antd` 的运行环境，并完成第一个表单的前置准备。
+
 ## 环境要求
 
-| 依赖        | 版本       |
-| ----------- | ---------- |
-| React       | >= 18      |
-| React DOM   | >= 18      |
-| antd        | ^ 6.0.0    |
-| @formvk/\*  | ~ 1.1.1    |
-| TypeScript  | >= 5.0（可选） |
+| 依赖 | 版本要求 | 仓库实际使用 |
+| --- | --- | --- |
+| React / React DOM | `>=18`（peerDependencies） | `19.3.1` |
+| antd | `^6.0.0`（peerDependencies） | `6.6.8` |
+| `@formvk/*` 内核包 | `~1.2.0-beta.0` | `~1.2.0-beta.0` |
+| `@formvk/antd` | — | `1.0.1-beta.0` |
+| TypeScript | 可选，建议 `>=5.0` | `~6.0.3` |
+| Node.js（工程环境） | `>=22.18.0` | `>=22.18.0` |
 
 ## 安装依赖
 
@@ -23,16 +26,12 @@ npm install @formvk/antd @formvk/core @formvk/react @formvk/schema antd react re
 yarn add @formvk/antd @formvk/core @formvk/react @formvk/schema antd react react-dom
 ```
 
-`@formvk/antd` 只提供组件桥接层，表单实例、SchemaField 工厂等内核能力需要从 `@formvk/react` 导入，因此建议显式安装 `@formvk/core`、`@formvk/react`、`@formvk/schema`。
+`@formvk/antd` 只提供组件桥接层：表单实例、`SchemaField` 工厂等内核能力需要从 `@formvk/react` 导入，因此建议显式安装 `@formvk/core`、`@formvk/react` 与 `@formvk/schema`。
 
-## 与 formily-antd 的差异
+样式通过 `@ant-design/cssinjs` 在运行时注入，不需要额外引入 CSS 文件，也不需要配置 less。
 
-- 包名替换为 `@formvk/*` 体系，`createForm`、`createSchemaField`、`createSchema` 等从 `@formvk/react` 导入。
-- Schema 字段不再带 `x-` 前缀，使用 `component`、`decorator`、`componentProps`、`reactions` 等字段。
-- 不提供 `FormDialog` 与 `FormDrawer`。
-- 样式通过 `@ant-design/cssinjs` 注入，不需要额外引入 CSS 文件。
-- `schema.component` / `schema.decorator` 既可以是注册名字符串，也可以直接传组件引用。
+## 下一步
 
-## 开始使用
+继续阅读[快速开始](/guide/quick-start)，用十分钟完成第一个 Schema 驱动表单。
 
-继续阅读 [快速开始](/guide/quick-start)。
+想了解本包与 formily-antd 的完整差异，见[与 formily-antd 的差异](/guide/explanation/formily-diff)。

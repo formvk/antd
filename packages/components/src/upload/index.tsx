@@ -10,25 +10,22 @@ import type {
   UploadProps as AntdUploadProps,
 } from 'antd/es/upload'
 import type { UploadFile } from 'antd/es/upload/interface'
-import React, { useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
+import type { FC, PropsWithChildren, ReactNode } from 'react'
 
 import { usePrefixCls } from '../__builtins__'
 import { UPLOAD_PLACEHOLDER } from './placeholder'
 
 export type IUploadProps = Omit<AntdUploadProps, 'onChange'> & {
-  textContent?: React.ReactNode
+  textContent?: ReactNode
   onChange?: (fileList: UploadFile[]) => void
   serviceErrorMessage?: string
 }
 
 export type IDraggerUploadProps = Omit<AntdDraggerProps, 'onChange'> & {
-  textContent?: React.ReactNode
+  textContent?: ReactNode
   onChange?: (fileList: UploadFile[]) => void
   serviceErrorMessage?: string
-}
-
-type ComposedUpload = React.FC<React.PropsWithChildren<IUploadProps>> & {
-  Dragger?: React.FC<React.PropsWithChildren<IDraggerUploadProps>>
 }
 
 type IExtendsUploadProps = {
@@ -160,8 +157,8 @@ const getPlaceholder = (props: IUploadProps) => {
   return null
 }
 
-export const Upload: ComposedUpload = connect(
-  (props: React.PropsWithChildren<IUploadProps>) => {
+export const Upload: FC<PropsWithChildren<IUploadProps>> = connect(
+  (props: PropsWithChildren<IUploadProps>) => {
     return <AntdUpload {...useUploadProps(props)}>{props.children || getPlaceholder(props)}</AntdUpload>
   },
   mapProps({
@@ -170,17 +167,17 @@ export const Upload: ComposedUpload = connect(
 )
 
 const Dragger = connect(
-  (props: React.PropsWithChildren<IDraggerUploadProps>) => {
+  (props: PropsWithChildren<IDraggerUploadProps>) => {
     return (
       <div className={usePrefixCls('upload-dragger')}>
         <AntdUpload.Dragger {...useUploadProps(props)}>
           {props.children || (
-            <React.Fragment>
+            <Fragment>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
               {props.textContent && <p className="ant-upload-text">{props.textContent}</p>}
-            </React.Fragment>
+            </Fragment>
           )}
         </AntdUpload.Dragger>
       </div>
@@ -191,6 +188,4 @@ const Dragger = connect(
   })
 )
 
-Upload.Dragger = Dragger
-
-export default Upload
+export const UploadDragger = Dragger

@@ -435,6 +435,6 @@ const genFormItemStyle: GenerateStyle = token => {
   }
 }
 
-export default genStyleHook('Form', token => {
+export const useStyle = genStyleHook('Form', token => {
   return [genFormItemStyle(token), getAnimationStyle(token), genOtherStyle(token), getGridStyle(token)]
 })

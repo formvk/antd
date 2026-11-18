@@ -1,5 +1,5 @@
 import { genStyleHook } from './../__builtins__'
-export default genStyleHook('', token => {
+export const useStyle = genStyleHook('array-collapse', token => {
   const { componentCls } = token
   return {
     [componentCls]: {

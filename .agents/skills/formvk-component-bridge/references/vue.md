@@ -37,7 +37,7 @@ import { isVoidField } from '@formvk/core'
 import { connect, mapProps, mapReadPretty } from '@formvk/vue'
 import { ElInput } from 'element-plus'
 
-import { PreviewText } from '../components/PreviewText'
+import { Text } from '../components/Text'
 
 export const Input = connect(
   ElInput,
@@ -46,7 +46,7 @@ export const Input = connect(
       if (!isVoidField(field)) field.setValue(value)
     },
   })),
-  mapReadPretty(PreviewText)
+  mapReadPretty(Text)
 )
 ```
 
@@ -128,5 +128,5 @@ expect(form.values.name).toBe('bob')
 ```
 
 - 控件事件后必须 `await nextTick()` 再断言。
-- 只读模式检查是否渲染 `PreviewText`，而不是只检查 `disabled`。
+- 只读模式检查是否渲染 `Text`，而不是只检查 `disabled`。
 - 数组用例覆盖 `push` / `remove` 后项是否重新渲染。

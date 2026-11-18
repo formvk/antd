@@ -10,7 +10,7 @@ function includes(test: ReactNode, search: string) {
 
 function includesOption(option: any, search: string) {
   const searched = new Set()
-  const _includesOption = (target: any): boolean => {
+  const searchOption = (target: any): boolean => {
     const keys = Object.keys(target || {})
     return keys.some(key => {
       if (key === '__level') {
@@ -21,14 +21,14 @@ function includesOption(option: any, search: string) {
       if (key !== 'children' && !searched.has(value)) {
         if (typeof value === 'object') {
           searched.add(value)
-          return _includesOption(value)
+          return searchOption(value)
         }
         return includes(value, search)
       }
       return false
     })
   }
-  return _includesOption(option)
+  return searchOption(option)
 }
 
 function toArray<T>(value: T | T[]): T[] {

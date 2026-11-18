@@ -1,0 +1,80 @@
+# FormItem
+
+字段装饰器，负责 label、必填标记、tooltip 与校验反馈的展示，并把表单级布局配置应用到单个字段。通常作为 `createSchemaField` 的默认装饰器使用：
+
+```tsx
+const { SchemaField, fragment: f } = createSchemaField({
+  components: { Input },
+  voidComponents: { FormItem },
+  defaultDecorator: 'FormItem',
+})
+```
+
+## 何时使用
+
+- 几乎所有需要 label、校验信息或统一对齐的字段，都应通过默认装饰器包裹 `FormItem`。
+- 需要在纯 JSX 中组合自定义字段、又希望复用统一的 label / 反馈布局时，直接使用 `BaseItem`。
+
+## label / tooltip / extra
+
+<demo react="../demos/form-item-basic.tsx" title="label、colon、tooltip、extra、asterisk" description="覆盖 label 展示、冒号、提示与必填星号" />
+
+## addonBefore / addonAfter 与 label 宽度
+
+<demo react="../demos/form-item-addon.tsx" title="addon 与 labelAlign / labelWidth / labelWrap" description="label 前后插槽、对齐方式、固定宽度与换行" />
+
+## wrapper 相关属性
+
+<demo react="../demos/form-item-width.tsx" title="wrapperAlign / wrapperWidth / wrapperWrap / fullness / inset / bordered" description="控制控件区域的对齐、宽度、换行、撑满与边框" />
+
+## 校验反馈
+
+<demo react="../demos/form-item-feedback.tsx" title="feedbackStatus / feedbackText / feedbackLayout / feedbackIcon" description="通过下拉框切换 feedbackLayout，表达式会实时同步到所有字段" />
+
+## gridSpan
+
+<demo react="../demos/form-item-grid-span.tsx" title="gridSpan" description="在 FormGrid 中让表单项占据多列" />
+
+## 其他布局属性
+
+<demo react="../demos/form-item-advanced.tsx" title="layout / size / tooltipLayout / tooltipIcon / labelCol / labelStyle / getPopupContainer" description="单项级别的布局与样式覆盖" />
+
+## 属性
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `label` | `ReactNode` | 标签内容，传 `' '` 可隐藏标签但保留占位 |
+| `colon` | `boolean` | 是否显示冒号 |
+| `tooltip` | `ReactNode` | 标签后的提示内容 |
+| `tooltipIcon` | `ReactNode` | 提示图标，默认问号图标 |
+| `tooltipLayout` | `'icon' \| 'text'` | 提示展示方式 |
+| `layout` | `'vertical' \| 'horizontal' \| 'inline'` | 单项布局，覆盖 FormLayout 配置 |
+| `labelAlign` | `'left' \| 'right'` | label 对齐方式 |
+| `labelWrap` | `boolean` | label 是否允许换行 |
+| `labelWidth` | `number \| string` | label 宽度，`'auto'` 为自适应 |
+| `labelCol` | `number` | label 栅格宽度 |
+| `labelStyle` | `CSSProperties` | label 自定义样式 |
+| `wrapperAlign` | `'left' \| 'right'` | 控件对齐方式 |
+| `wrapperWidth` | `number \| string` | 控件宽度，`'auto'` 为自适应 |
+| `wrapperWrap` | `boolean` | 控件是否允许换行 |
+| `wrapperCol` | `number` | 控件栅格宽度 |
+| `wrapperStyle` | `CSSProperties` | 控件自定义样式 |
+| `fullness` | `boolean` | 控件是否撑满整行 |
+| `inset` | `boolean` | 隐藏两侧留白与边框，呈现内联编辑样式 |
+| `bordered` | `boolean` | 是否显示边框，默认 `true` |
+| `size` | `'small' \| 'default' \| 'large'` | 控件尺寸 |
+| `addonBefore` | `ReactNode` | label 前置内容 |
+| `addonAfter` | `ReactNode` | label 后置内容 |
+| `extra` | `ReactNode` | 控件下方的补充说明；Schema 中取字段 `description` |
+| `feedbackText` | `ReactNode` | 自定义校验信息，缺省取字段的 errors / warnings / successes |
+| `feedbackStatus` | `'error' \| 'warning' \| 'success' \| 'pending'` | 反馈状态，校验中自动为 `pending` |
+| `feedbackLayout` | `'loose' \| 'terse' \| 'popover' \| 'none'` | 反馈信息布局 |
+| `feedbackIcon` | `ReactNode` | 自定义反馈图标 |
+| `getPopupContainer` | `(node: HTMLElement) => HTMLElement` | popover 反馈的挂载节点 |
+| `asterisk` | `boolean` | 是否显示必填星号，缺省跟随字段 `required` |
+| `gridSpan` | `number` | 在 `FormGrid` 中占据的列数 |
+| `className` / `style` | `string` / `CSSProperties` | 自定义类名与样式 |
+
+### BaseItem
+
+`BaseItem` 是不带 Formvk 字段连接的纯展示版本，属性与 `FormItem` 相同，可用于自定义装饰器或 [Editable](/components/editable) 等内部组合场景。

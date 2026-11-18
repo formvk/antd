@@ -1,4 +1,5 @@
 import { isArr, isValid } from '@formvk/shared'
+import type { RefObject } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
 interface IProps {
@@ -21,7 +22,7 @@ interface ICalculateProps {
 
 interface IUseResponsiveFormLayout {
   (props: IProps): {
-    ref: React.RefObject<HTMLDivElement | null>
+    ref: RefObject<HTMLDivElement | null>
     props: any
   }
 }
@@ -65,12 +66,10 @@ const calculateProps: ICalculateProps = (target, props) => {
 export const useResponsiveFormLayout: IUseResponsiveFormLayout = props => {
   const ref = useRef<HTMLDivElement>(null)
   const { breakpoints } = props
-  if (!isArr(breakpoints)) {
-    return { ref, props }
-  }
   const [layoutProps, setLayout] = useState<any>(props)
 
   useEffect(() => {
+    if (!isArr(breakpoints)) return
     const updateUI = () => {
       if (ref.current) {
         setLayout(calculateProps(ref.current, props))
@@ -86,7 +85,11 @@ export const useResponsiveFormLayout: IUseResponsiveFormLayout = props => {
     return () => {
       resizeObserver.disconnect()
     }
-  }, [props])
+  }, [props, breakpoints])
+
+  if (!isArr(breakpoints)) {
+    return { ref, props }
+  }
 
   return {
     ref,

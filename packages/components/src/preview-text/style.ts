@@ -1,6 +1,6 @@
 import { genStyleHook } from './../__builtins__'
 
-export default genStyleHook('preview-text', token => {
+export const useStyle = genStyleHook('preview-text', token => {
   const { componentCls, antCls, fontSize, fontWeightStrong } = token
   return [
     {

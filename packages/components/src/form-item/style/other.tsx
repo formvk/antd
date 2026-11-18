@@ -26,6 +26,7 @@ export const genOtherStyle: GenerateStyle = token => {
     colorWarningOutline,
     colorTextSecondary,
     paddingXS,
+    borderRadius,
   } = token
 
   const hover = (color = colorPrimaryBorderHover): CSSProperties => ({
@@ -287,7 +288,7 @@ export const genOtherStyle: GenerateStyle = token => {
       },
 
       '&-inset': {
-        borderRadius: 2,
+        borderRadius,
         border: `1px solid ${colorBorder}`,
         paddingInlineStart: 12,
         transition: '0.3s all',
@@ -446,7 +447,7 @@ export const genOtherStyle: GenerateStyle = token => {
       },
 
       [`${componentCls}-control-content-component-has-feedback-icon`]: {
-        borderRadius: 2,
+        borderRadius,
         border: `1px solid ${colorBorder}`,
         paddingInlineEnd: 8,
         transition: 'all 0.3s',

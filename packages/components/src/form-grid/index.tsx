@@ -1,25 +1,26 @@
 import { observer } from '@formvk/reactive-react'
 import cls from 'classnames'
-import React, { useContext, useLayoutEffect, useRef, useState } from 'react'
+import { createContext, useContext, useLayoutEffect, useRef, useState } from 'react'
+import type { CSSProperties, FC, PropsWithChildren } from 'react'
 
 import { pickDataProps, usePrefixCls } from '../__builtins__'
 import { useFormLayout } from '../form-layout'
 import { Grid } from './grid'
 import type { IGridOptions } from './grid'
-import useStyle from './style'
+import { useStyle } from './style'
 
-const FormGridContext = React.createContext<Grid<HTMLElement>>(null as any)
+const FormGridContext = createContext<Grid<HTMLElement>>(null as any)
 
 export interface IFormGridProps extends IGridOptions {
   grid?: Grid<HTMLElement>
   prefixCls?: string
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 export interface IGridColumnProps {
   gridSpan?: number
-  style?: React.CSSProperties
+  style?: CSSProperties
   className?: string
 }
 
@@ -30,7 +31,7 @@ export const createFormGrid = (props: IFormGridProps) => {
 export const useFormGrid = () => useContext(FormGridContext)
 
 const InternalFormGrid = observer(
-  ({ children, className, style, ...props }: React.PropsWithChildren<IFormGridProps>) => {
+  ({ children, className, style, ...props }: PropsWithChildren<IFormGridProps>) => {
     const layout = useFormLayout()
     const options = {
       columnGap: layout?.gridColumnGap ?? 8,
@@ -85,20 +86,12 @@ const InternalFormGrid = observer(
   }
 )
 
-export const GridColumn: React.FC<React.PropsWithChildren<IGridColumnProps>> = observer(
-  ({ gridSpan = 1, children, ...props }) => {
-    return (
-      <div {...props} style={props.style} data-grid-span={gridSpan}>
-        {children}
-      </div>
-    )
-  }
-)
-
-export const FormGrid = Object.assign(InternalFormGrid, {
-  createFormGrid,
-  useFormGrid,
-  GridColumn,
+export const GridColumn: FC<PropsWithChildren<IGridColumnProps>> = observer(({ gridSpan = 1, children, ...props }) => {
+  return (
+    <div {...props} style={props.style} data-grid-span={gridSpan}>
+      {children}
+    </div>
+  )
 })
 
-export default FormGrid
+export const FormGrid = InternalFormGrid
