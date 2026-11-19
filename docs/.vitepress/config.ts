@@ -107,6 +107,18 @@ export default defineConfig({
       },
       dedupe: ['react', 'react-dom'],
     },
+    build: {
+      rollupOptions: {
+        // antd / @ant-design/icons 等依赖顶部的 "use client" 指令只对 RSC 构建有意义，
+        // 普通 SPA 打包会逐条告警，这里过滤掉这类兼容性噪音
+        onwarn(warning, warn) {
+          if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && /"(use client|use server)"/.test(warning.message)) {
+            return
+          }
+          warn(warning)
+        },
+      },
+    },
   },
   themeConfig: {
     nav: [
