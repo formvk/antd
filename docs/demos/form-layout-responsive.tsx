@@ -3,6 +3,8 @@ import { createForm, createSchema, createSchemaOptions, SchemaField } from '@for
 import { Segmented, Slider } from 'antd'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,
   voidComponents,
@@ -23,7 +25,7 @@ const schema = createSchema({
   remark: f.Input({ title: '备注' }),
 })
 
-export default () => {
+const Demo = () => {
   const [form] = useState(() => createForm())
   const [width, setWidth] = useState(520)
   const [direction, setDirection] = useState<'ltr' | 'rtl'>('ltr')
@@ -64,3 +66,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

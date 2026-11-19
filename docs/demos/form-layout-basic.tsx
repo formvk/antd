@@ -3,6 +3,8 @@ import { createForm, createSchema, createSchemaOptions, SchemaField } from '@for
 import { Segmented } from 'antd'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,
   voidComponents,
@@ -28,7 +30,7 @@ const layouts = [
   { label: 'inline', value: 'inline' },
 ]
 
-export default () => {
+const Demo = () => {
   const [form] = useState(() => createForm())
   const [layout, setLayout] = useState<'horizontal' | 'vertical' | 'inline'>('horizontal')
 
@@ -46,3 +48,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

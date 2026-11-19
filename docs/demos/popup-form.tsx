@@ -4,6 +4,8 @@ import { createSchema, createSchemaOptions } from '@formvk/react'
 import { Button, Segmented, Space } from 'antd'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,
   voidComponents,
@@ -18,7 +20,7 @@ const schema = createSchema({
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-export default () => {
+const Demo = () => {
   const [type, setType] = useState<'modal' | 'drawer'>('modal')
   const [result, setResult] = useState('')
   const [popup] = useState(
@@ -56,3 +58,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

@@ -5,8 +5,6 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import { vitepressDemoPlugin } from 'vitepress-demo-plugin/markdown'
 
-import { demoThemePlugin } from './plugins/demo-theme'
-
 const rootDir = fileURLToPath(new URL('../..', import.meta.url))
 
 const readJson = <T>(file: string) => JSON.parse(readFileSync(path.join(rootDir, file), 'utf8')) as T
@@ -73,6 +71,7 @@ const reactSandboxFiles = {
     vite: true,
   }),
   'vite.config.js': reactViteConfig,
+  'DemoTheme.tsx': readFileSync(path.join(rootDir, 'docs/demos/DemoTheme.tsx'), 'utf8'),
 }
 
 export default defineConfig({
@@ -100,10 +99,6 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [demoThemePlugin()],
-    esbuild: {
-      jsx: 'automatic',
-    },
     resolve: {
       alias: {
         '@formvk/antd': path.resolve(rootDir, 'packages/components/src/index.ts'),
@@ -259,7 +254,9 @@ export default defineConfig({
       prev: '上一页',
       next: '下一页',
     },
-    lastUpdatedText: '最后更新',
+    lastUpdated: {
+      text: '最后更新',
+    },
     darkModeSwitchLabel: '主题',
     sidebarMenuLabel: '目录',
     returnToTopLabel: '回到顶部',

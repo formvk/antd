@@ -4,6 +4,8 @@ import { createSchema, createSchemaOptions } from '@formvk/react'
 import { Button, Popconfirm, Space } from 'antd'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 interface ITask {
   id: number
   name: string
@@ -68,7 +70,7 @@ let tasks: ITask[] = [
   },
 ]
 
-export default () => {
+const Demo = () => {
   const [table] = useState(
     () =>
       new TableModel<ITask>({
@@ -127,3 +129,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

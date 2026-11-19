@@ -2,6 +2,8 @@ import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/
 import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,
   voidComponents,
@@ -15,7 +17,7 @@ const schema = createSchema({
   error: f.Input({ title: '校验反馈', decoratorProps: { feedbackStatus: 'error', feedbackText: '出错了' } }),
 })
 
-export default () => {
+const Demo = () => {
   const [form] = useState(() => createForm())
 
   return (
@@ -35,3 +37,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

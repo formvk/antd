@@ -9,7 +9,9 @@ const useIsDark = () => {
 
   useEffect(() => {
     const root = document.documentElement
-    const sync = () => setIsDark(root.classList.contains('dark'))
+    const sync = () => {
+      setIsDark(root.classList.contains('dark'))
+    }
     sync()
     const observer = new MutationObserver(sync)
     observer.observe(root, { attributes: true, attributeFilter: ['class'] })
@@ -19,7 +21,8 @@ const useIsDark = () => {
   return isDark
 }
 
-const DemoTheme: FC<{ children?: ReactNode }> = ({ children }) => {
+/** 让 demo 跟随 VitePress 明暗模式，在沙箱中回退为 antd 默认亮色主题 */
+export const DemoTheme: FC<{ children?: ReactNode }> = ({ children }) => {
   const isDark = useIsDark()
 
   return (
@@ -34,7 +37,7 @@ const DemoTheme: FC<{ children?: ReactNode }> = ({ children }) => {
   )
 }
 
-/** 为文档 demo 注入 antd 主题，使其跟随 VitePress 明暗模式切换 */
+/** 为 demo 默认导出注入主题容器 */
 export const withDemoTheme = <Props extends object>(Demo: ComponentType<Props>) => {
   const ThemedDemo: FC<Props> = props => (
     <DemoTheme>

@@ -2,6 +2,8 @@ import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/
 import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,
   voidComponents,
@@ -18,7 +20,7 @@ const schema = createSchema({
   disabled: f.Switch({ title: '禁用', componentProps: { disabled: true } }),
 })
 
-export default () => {
+const Demo = () => {
   const [form] = useState(() => createForm({ values: { basic: true, text: true, disabled: false } }))
 
   return (
@@ -29,3 +31,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

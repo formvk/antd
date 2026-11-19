@@ -2,6 +2,8 @@ import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/
 import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,
   voidComponents,
@@ -48,7 +50,7 @@ const createInitialValues = () => ({
   search: 'be',
 })
 
-export default () => {
+const Demo = () => {
   const [form] = useState(() => createForm({ values: createInitialValues() }))
   const [readPrettyForm] = useState(() => createForm({ pattern: 'readPretty', values: createInitialValues() }))
 
@@ -68,3 +70,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

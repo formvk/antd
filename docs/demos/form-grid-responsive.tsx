@@ -3,6 +3,8 @@ import { createForm, createSchema, createSchemaOptions, SchemaField } from '@for
 import { Slider } from 'antd'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,
   voidComponents,
@@ -30,7 +32,7 @@ const schema = createSchema({
   }),
 })
 
-export default () => {
+const Demo = () => {
   const [form] = useState(() => createForm())
   const [width, setWidth] = useState(620)
 
@@ -48,3 +50,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

@@ -4,6 +4,8 @@ import { createSchema, createSchemaOptions } from '@formvk/react'
 import { Button, Popconfirm, Space } from 'antd'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 interface IUser {
   id: number
   username: string
@@ -34,7 +36,7 @@ const formSchema = createSchema({
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
-export default () => {
+const Demo = () => {
   const [table] = useState(
     () =>
       new TableModel<IUser>({
@@ -106,3 +108,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

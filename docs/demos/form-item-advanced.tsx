@@ -2,6 +2,8 @@ import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/
 import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 // 自定义 tooltipIcon，任意 ReactNode 均可
 const QuestionCircleFilled = () => (
   <span
@@ -74,7 +76,7 @@ const schema = createSchema({
   }),
 })
 
-export default () => {
+const Demo = () => {
   const [form] = useState(() => createForm())
 
   return (
@@ -85,3 +87,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

@@ -2,6 +2,8 @@ import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/
 import { createExpression, createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 type FeedbackLayout = 'loose' | 'terse' | 'popover' | 'none'
 
 // feedbackIcon 接受任意 ReactNode，这里用文本模拟图标
@@ -82,7 +84,7 @@ const schema = createSchema({
   }),
 })
 
-export default () => {
+const Demo = () => {
   const [form] = useState(() => createForm({ values: { feedbackLayout: 'loose' } }))
 
   return (
@@ -93,3 +95,5 @@ export default () => {
     </OptionsProvider>
   )
 }
+
+export default withDemoTheme(Demo)

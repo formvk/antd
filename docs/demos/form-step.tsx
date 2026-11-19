@@ -3,6 +3,8 @@ import { createForm, createSchema, createSchemaOptions, observer, SchemaField } 
 import { Button } from 'antd'
 import { useState } from 'react'
 
+import { withDemoTheme } from './DemoTheme'
+
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,
   voidComponents,
@@ -43,7 +45,7 @@ const schema = createSchema({
   }),
 })
 
-export default observer(() => {
+const Demo = observer(() => {
   const [form] = useState(() => createForm())
   const [result, setResult] = useState('')
 
@@ -71,3 +73,5 @@ export default observer(() => {
     </OptionsProvider>
   )
 })
+
+export default withDemoTheme(Demo)
