@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-beta.1](https://github.com/formvk/antd/compare/v1.1.0-beta.0...v1.1.0-beta.1) (2026-11-19)
+
+### Features
+
+- **components:** 新增 InputNumber 组件的类型定义和 ref 导出 ([6f0d700](https://github.com/formvk/antd/commit/6f0d70082c4d05aa4950e35085ffd932f13c8e2a))
+
 # [1.1.0-beta.0](https://github.com/formvk/antd/compare/v1.0.1-beta.0...v1.1.0-beta.0) (2026-11-19)
 
 ### Features
