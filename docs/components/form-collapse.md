@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `CollapseProps`，并扩展：
+继承 antd [`CollapseProps`](https://ant.design/components/collapse-cn#api)，并扩展：
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
@@ -24,7 +24,7 @@
 
 | 子组件 | 说明 |
 | --- | --- |
-| `CollapsePanel` | 面板，`componentProps` 同 antd `CollapsePanelProps`（`key`、`header` 等） |
+| `CollapsePanel` | 面板，`componentProps` 同 antd [`CollapsePanelProps`](https://ant.design/components/collapse-cn#collapsepanel)（`key`、`header` 等） |
 
 ### 受控实例
 

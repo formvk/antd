@@ -12,7 +12,7 @@
 
 ## 属性
 
-继承 antd `InputProps`，未列出的属性与 antd `Input` 一致并原样透传。
+继承 antd [`InputProps`](https://ant.design/components/input-cn#api)，未列出的属性与 antd `Input` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

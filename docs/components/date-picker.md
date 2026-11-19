@@ -12,7 +12,7 @@
 
 ## 属性
 
-继承 antd `DatePickerProps`，未列出的属性与 antd `DatePicker` 一致并原样透传。
+继承 antd [`DatePickerProps`](https://ant.design/components/date-picker-cn#api)，未列出的属性与 antd `DatePicker` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

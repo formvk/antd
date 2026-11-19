@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `CollapseProps`，并扩展：
+继承 antd [`CollapseProps`](https://ant.design/components/collapse-cn#api)，并扩展：
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |

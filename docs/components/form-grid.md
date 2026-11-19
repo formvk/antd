@@ -26,6 +26,8 @@
 
 ## 属性
 
+antd 参考：[Grid](https://ant.design/components/grid-cn)。
+
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `grid` | `Grid<HTMLElement>` | — | 自定义栅格实例，由 `createFormGrid` 创建 |

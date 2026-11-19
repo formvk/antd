@@ -16,7 +16,7 @@
 | --- | --- | --- |
 | `Text` | 通用 | 直接渲染值 |
 | `TextInput` | Input / TextArea / Password | 纯文本，保留前后缀 |
-| `TextNumberPicker` | NumberPicker | 纯数字，保留 `formatter` 格式化 |
+| `TextInputNumber` | InputNumber | 纯数字，保留 `formatter` 格式化 |
 | `TextSelect` | Select / RadioGroup / CheckboxGroup | 回显选项 `label`，多值以 Tag 展示 |
 | `TextTreeSelect` | TreeSelect | 递归查找节点并展示 `title` |
 | `TextCascader` | Cascader | 级联路径以 `/` 连接 |
@@ -26,6 +26,8 @@
 | `TextTimeRangePicker` | TimeRangePicker | 时间区间，以 `~` 连接 |
 
 ## 属性
+
+antd 参考：[Typography.Text](https://ant.design/components/typography-cn#api)。
 
 ### Text
 

@@ -28,6 +28,8 @@
 
 ## 数组属性
 
+antd 参考：[Form.List](https://ant.design/components/form-cn#formlist)。
+
 通过数组容器的 `componentProps` 传入，对所有数组组件通用：
 
 | 属性 | 类型 | 说明 |

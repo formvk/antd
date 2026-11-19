@@ -9,7 +9,7 @@ export { Editable, EditablePopover } from './editable'
 
 export { Input, TextArea } from './input'
 
-export { NumberPicker } from './number-picker'
+export { InputNumber } from './input-number'
 
 export { Password } from './password'
 export type { IPasswordProps } from './password'
@@ -20,7 +20,7 @@ export {
   TextDatePicker,
   TextDateRangePicker,
   TextInput,
-  TextNumberPicker,
+  TextInputNumber,
   TextSelect,
   TextTimePicker,
   TextTimeRangePicker,

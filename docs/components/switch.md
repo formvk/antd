@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `SwitchProps`，未列出的属性与 antd `Switch` 一致并原样透传。
+继承 antd [`SwitchProps`](https://ant.design/components/switch-cn#api)，未列出的属性与 antd `Switch` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

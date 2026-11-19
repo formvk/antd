@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `TabsProps`，并扩展：
+继承 antd [`TabsProps`](https://ant.design/components/tabs-cn#api)，并扩展：
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
@@ -23,7 +23,7 @@
 
 | 子组件 | 说明 |
 | --- | --- |
-| `TabPane` | 标签页面板，`componentProps` 同 antd `TabPaneProps`（`key`、`tab`、`disabled` 等） |
+| `TabPane` | 标签页面板，`componentProps` 同 antd [`TabPaneProps`](https://ant.design/components/tabs-cn#tabs-tabpane)（`key`、`tab`、`disabled` 等） |
 
 ### 受控实例
 

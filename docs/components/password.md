@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `PasswordProps`，本包额外扩展以下属性，其余属性与 antd `Input.Password` 一致并原样透传。
+继承 antd [`PasswordProps`](https://ant.design/components/input-cn#inputpassword)，本包额外扩展以下属性，其余属性与 antd `Input.Password` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

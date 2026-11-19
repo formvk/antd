@@ -21,7 +21,7 @@
 | ----------------------------------- | --------------------------------------- |
 | [Input](/components/input)          | 单行输入，多行使用独立的 `TextArea`     |
 | [Password](/components/password)    | 密码输入，可显示强度提示                |
-| [NumberPicker](/components/number-picker) | 数字输入                          |
+| [InputNumber](/components/input-number) | 数字输入 |
 | [Select](/components/select)        | 下拉选择                                |
 | [Radio](/components/radio)          | 单选框，分组使用 `RadioGroup`           |
 | [Checkbox](/components/checkbox)    | 复选框，分组使用 `CheckboxGroup`        |

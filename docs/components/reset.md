@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `ButtonProps` 与内核的 `IFieldResetOptions`，本包扩展以下属性：
+继承 antd [`ButtonProps`](https://ant.design/components/button-cn#api) 与内核的 `IFieldResetOptions`，本包扩展以下属性：
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

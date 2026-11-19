@@ -10,10 +10,10 @@ const { OptionsProvider, fragment: f } = createSchemaOptions({
 })
 
 const schema = createSchema({
-  basic: f.NumberPicker({ title: '基础数字', componentProps: { min: 0, max: 100 } }),
-  step: f.NumberPicker({ title: '步长 5', componentProps: { step: 5 } }),
-  precision: f.NumberPicker({ title: '保留两位小数', componentProps: { precision: 2, step: 0.01 } }),
-  formatter: f.NumberPicker({
+  basic: f.InputNumber({ title: '基础数字', componentProps: { min: 0, max: 100 } }),
+  step: f.InputNumber({ title: '步长 5', componentProps: { step: 5 } }),
+  precision: f.InputNumber({ title: '保留两位小数', componentProps: { precision: 2, step: 0.01 } }),
+  formatter: f.InputNumber({
     title: '格式化',
     componentProps: {
       style: { width: 220 },

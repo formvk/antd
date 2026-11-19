@@ -29,6 +29,8 @@
 
 ## 属性
 
+antd 参考：[Form](https://ant.design/components/form-cn#api) 的布局相关属性。
+
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `layout` | `'vertical' \| 'horizontal' \| 'inline'` 及数组 | `'horizontal'` | 布局方向 |

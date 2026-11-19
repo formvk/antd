@@ -16,7 +16,7 @@
 | --- | --- | --- | --- |
 | `align` | `'left' \| 'right' \| 'center'` | `'left'` | 对齐方式 |
 | `gutter` | `number` | `8` | 按钮间距 |
-| 其他 | `SpaceProps` | — | 透传给 antd `Space`（不支持 `align` / `size`，由上面两个属性接管） |
+| 其他 | [`SpaceProps`](https://ant.design/components/space-cn#api) | — | 透传给 antd `Space`（不支持 `align` / `size`，由上面两个属性接管） |
 
 ### 子组件
 

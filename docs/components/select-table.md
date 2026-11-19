@@ -12,7 +12,7 @@
 
 ## 属性
 
-继承 antd `TableProps`，并扩展：
+继承 antd [`TableProps`](https://ant.design/components/table-cn#api)，并扩展：
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |

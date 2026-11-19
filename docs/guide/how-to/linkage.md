@@ -78,8 +78,8 @@ reactions: [
 
 ```tsx
 const schema = createSchema({
-  count: f.NumberPicker({ title: '数量' }),
-  total: f.NumberPicker({
+  count: f.InputNumber({ title: '数量' }),
+  total: f.InputNumber({
     title: '总价',
     componentProps: {
       placeholder: '{{$values.count ? "单价 × " + $values.count : "请先填写数量"}}',

@@ -12,7 +12,7 @@
 
 ## 属性
 
-继承 antd `SelectProps`，未列出的属性与 antd `Select` 一致并原样透传。
+继承 antd [`SelectProps`](https://ant.design/components/select-cn#api)，未列出的属性与 antd `Select` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

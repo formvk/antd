@@ -14,6 +14,8 @@
 
 ## 属性
 
+antd 参考：[Form](https://ant.design/components/form-cn#api)。
+
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `form` | `Form` | — | 由 `createForm` 创建的表单实例；不传时从父级上下文获取 |

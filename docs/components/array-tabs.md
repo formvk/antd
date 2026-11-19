@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `TabsProps`，常用属性：
+继承 antd [`TabsProps`](https://ant.design/components/tabs-cn#api)，常用属性：
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

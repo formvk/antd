@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `TreeSelectProps`，未列出的属性与 antd `TreeSelect` 一致并原样透传。
+继承 antd [`TreeSelectProps`](https://ant.design/components/tree-select-cn#api)，未列出的属性与 antd `TreeSelect` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

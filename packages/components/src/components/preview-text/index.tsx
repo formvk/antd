@@ -38,7 +38,7 @@ export const TextInput: FC<PropsWithChildren<InputProps>> = observer(props => {
   )
 })
 
-export const TextNumberPicker: FC<PropsWithChildren<InputNumberProps>> = observer(props => {
+export const TextInputNumber: FC<PropsWithChildren<InputNumberProps>> = observer(props => {
   const prefixCls = usePrefixCls('form-text', props)
   const [wrapSSR, hashId] = useStyle(prefixCls)
   return wrapSSR(

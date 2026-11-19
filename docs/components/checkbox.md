@@ -13,7 +13,7 @@
 
 ### Checkbox
 
-继承 antd `CheckboxProps`，本包将 `value` 映射为 `checked`、`onInput` 映射为 `onChange`。
+继承 antd [`CheckboxProps`](https://ant.design/components/checkbox-cn#api)，本包将 `value` 映射为 `checked`、`onInput` 映射为 `onChange`。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
@@ -23,7 +23,7 @@
 
 ### CheckboxGroup
 
-继承 antd `CheckboxGroupProps`，未列出的属性与 antd `Checkbox.Group` 一致并原样透传。
+继承 antd [`CheckboxGroupProps`](https://ant.design/components/checkbox-cn#checkboxgroup)，未列出的属性与 antd `Checkbox.Group` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

@@ -12,7 +12,7 @@
 
 ## 属性
 
-继承 antd `TimePickerProps`，未列出的属性与 antd `TimePicker` 一致并原样透传。
+继承 antd [`TimePickerProps`](https://ant.design/components/time-picker-cn#api)，未列出的属性与 antd `TimePicker` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

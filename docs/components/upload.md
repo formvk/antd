@@ -12,7 +12,7 @@
 
 ## 属性
 
-在 antd `UploadProps` 基础上调整了 `onChange` 的签名并扩展了两个属性，其余属性与 antd `Upload` 一致并原样透传。
+在 antd [`UploadProps`](https://ant.design/components/upload-cn#api) 基础上调整了 `onChange` 的签名并扩展了两个属性，其余属性与 antd `Upload` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

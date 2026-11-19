@@ -180,7 +180,7 @@ export default defineConfig({
               items: [
                 { text: 'Input', link: '/components/input' },
                 { text: 'Password', link: '/components/password' },
-                { text: 'NumberPicker', link: '/components/number-picker' },
+                { text: 'InputNumber', link: '/components/input-number' },
                 { text: 'Select', link: '/components/select' },
                 { text: 'Radio', link: '/components/radio' },
                 { text: 'Checkbox', link: '/components/checkbox' },

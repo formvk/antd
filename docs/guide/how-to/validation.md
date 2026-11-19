@@ -35,7 +35,7 @@ const schema = createSchema({
 ```tsx
 const schema = createSchema({
   email: f.Input({ title: '邮箱', format: 'email' }),
-  age: f.NumberPicker({ title: '年龄', minimum: 18, maximum: 99 }),
+  age: f.InputNumber({ title: '年龄', minimum: 18, maximum: 99 }),
   website: f.Input({ title: '网站', pattern: '^https?://.+' }),
 })
 ```

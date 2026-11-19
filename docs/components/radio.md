@@ -13,7 +13,7 @@
 
 ### Radio
 
-继承 antd `RadioProps`，本包将 `value` 映射为 `checked`、`onInput` 映射为 `onChange`。
+继承 antd [`RadioProps`](https://ant.design/components/radio-cn#api)，本包将 `value` 映射为 `checked`、`onInput` 映射为 `onChange`。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
@@ -23,7 +23,7 @@
 
 ### RadioGroup
 
-继承 antd `RadioGroupProps`，未列出的属性与 antd `Radio.Group` 一致并原样透传。
+继承 antd [`RadioGroupProps`](https://ant.design/components/radio-cn#radiogroup)，未列出的属性与 antd `Radio.Group` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

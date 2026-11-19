@@ -12,7 +12,7 @@
 
 ## 属性
 
-继承 antd `TransferProps`，未列出的属性与 antd `Transfer` 一致并原样透传。
+继承 antd [`TransferProps`](https://ant.design/components/transfer-cn#api)，未列出的属性与 antd `Transfer` 一致并原样透传。
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

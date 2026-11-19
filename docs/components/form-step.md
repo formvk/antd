@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `StepsProps`，并扩展：
+继承 antd [`StepsProps`](https://ant.design/components/steps-cn#api)，并扩展：
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
@@ -23,7 +23,7 @@
 
 | 子组件 | 说明 |
 | --- | --- |
-| `StepPane` | 步骤面板，`componentProps` 同 antd `StepProps`（`title`、`description`、`icon` 等） |
+| `StepPane` | 步骤面板，`componentProps` 同 antd [`StepProps`](https://ant.design/components/steps-cn#step)（`title`、`description`、`icon` 等） |
 
 ### 受控实例
 

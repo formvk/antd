@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `ButtonProps`，本包扩展以下属性：
+继承 antd [`ButtonProps`](https://ant.design/components/button-cn#api)，本包扩展以下属性：
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |

@@ -41,6 +41,8 @@ const { OptionsProvider, fragment: f } = createSchemaOptions({
 
 ## 属性
 
+antd 参考：[Form.Item](https://ant.design/components/form-cn#formitem)。
+
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
 | `label` | `ReactNode` | 标签内容，传 `' '` 可隐藏标签但保留占位 |

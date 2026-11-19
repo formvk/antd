@@ -24,7 +24,7 @@ form.pattern = 'editable'
 | 字段组件 | 阅读态组件 | 展示行为 |
 | --- | --- | --- |
 | `Input` / `TextArea` / `Password` | `TextInput` | 纯文本 |
-| `NumberPicker` | `TextNumberPicker` | 数字，保留 `formatter` |
+| `InputNumber` | `TextInputNumber` | 数字，保留 `formatter` |
 | `Select` / `RadioGroup` / `CheckboxGroup` | `TextSelect` | 选项 label，多值以 Tag 展示 |
 | `TreeSelect` | `TextTreeSelect` | 节点 title |
 | `Cascader` | `TextCascader` | 路径以 `/` 连接 |

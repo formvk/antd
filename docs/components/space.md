@@ -11,7 +11,7 @@
 
 ## 属性
 
-继承 antd `SpaceProps`，仅 `size` 的默认值被调整：
+继承 antd [`SpaceProps`](https://ant.design/components/space-cn#api)，仅 `size` 的默认值被调整：
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |

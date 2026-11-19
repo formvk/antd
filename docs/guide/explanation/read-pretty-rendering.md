@@ -28,7 +28,7 @@ export const Select = connect(
 | 阅读态组件 | 回显策略 |
 | --- | --- |
 | `TextInput` | 直接展示值，保留 `prefix` / `suffix` / `addon` |
-| `TextNumberPicker` | 配置了 `formatter` 时先格式化再展示 |
+| `TextInputNumber` | 配置了 `formatter` 时先格式化再展示 |
 | `TextSelect` | 用值在 `field.dataSource` / `options` 中查 `label`；多值渲染为 Tag 列表；兼容 `labelInValue` |
 | `TextTreeSelect` | 在 `treeData` 中递归查找节点 `title`，多值渲染 Tag |
 | `TextCascader` | 按值路径逐级查 `options`，标签以 `/` 连接，多路径以空格分隔 |

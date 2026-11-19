@@ -40,6 +40,8 @@ const schema = createSchema({
 
 ## 属性
 
+antd 参考：[Form.List](https://ant.design/components/form-cn#formlist)。
+
 本组件无独立扩展属性，通用数组属性（`disabled` / `onAdd` / `onCopy` / `onRemove` / `onMoveUp` / `onMoveDown`）见 [ArrayBase](/components/array-base#数组属性)；数组项 key 由数组 Schema 的 `recordKey` 控制，见 [ArrayBase](/components/array-base#数组项稳定键-recordkey)。
 
 配合 `SortHandle` 可实现拖拽排序，`Index` 展示序号；操作组件在非 `editable` 模式下自动隐藏。
