@@ -42,3 +42,5 @@ export { TreeSelect } from './tree-select'
 
 export { Upload, UploadDragger } from './upload'
 export type { IDraggerUploadProps, IUploadProps } from './upload'
+
+export type { InputNumberRef } from './input-number'
