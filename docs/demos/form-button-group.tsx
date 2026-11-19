@@ -51,7 +51,7 @@ export default () => {
             style={{
               height: 180,
               overflow: 'auto',
-              border: '1px solid #d9d9d9',
+              border: '1px solid var(--vp-c-border, #d9d9d9)',
               borderRadius: 8,
               padding: 12,
             }}

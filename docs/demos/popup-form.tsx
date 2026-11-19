@@ -51,7 +51,7 @@ export default () => {
         ) : (
           <PopupForm type="drawer" popup={popup} title="新增用户" schema={schema} />
         )}
-        {result ? <div style={{ color: '#389e0d' }}>{result}</div> : null}
+        {result ? <div style={{ color: 'var(--vp-c-green-1, #389e0d)' }}>{result}</div> : null}
       </div>
     </OptionsProvider>
   )

@@ -66,7 +66,7 @@ export default observer(() => {
             </Button>
           )}
         </div>
-        {result && <div style={{ marginTop: 12, color: '#389e0d' }}>提交成功：{result}</div>}
+        {result && <div style={{ marginTop: 12, color: 'var(--vp-c-green-1, #389e0d)' }}>提交成功：{result}</div>}
       </Form>
     </OptionsProvider>
   )

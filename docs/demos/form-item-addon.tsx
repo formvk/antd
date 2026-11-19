@@ -13,8 +13,8 @@ const schema = createSchema({
   default: f.Input({
     title: '默认 label',
     decoratorProps: {
-      addonBefore: <span style={{ color: '#1677ff' }}>[前]</span>,
-      addonAfter: <span style={{ color: '#1677ff' }}>[后]</span>,
+      addonBefore: <span style={{ color: 'var(--vp-c-brand-1, #1677ff)' }}>[前]</span>,
+      addonAfter: <span style={{ color: 'var(--vp-c-brand-1, #1677ff)' }}>[后]</span>,
     },
   }),
   left: f.Input({

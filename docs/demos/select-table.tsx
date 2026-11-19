@@ -69,7 +69,14 @@ export default () => {
         <SchemaField schema={schema} />
         <FormConsumer>
           {({ form: consumerForm }) => (
-            <pre style={{ margin: 0, padding: 12, background: '#f6f8fa', borderRadius: 8 }}>
+            <pre
+              style={{
+                margin: 0,
+                padding: 12,
+                background: 'var(--vp-c-bg-soft, #f6f8fa)',
+                borderRadius: 8,
+              }}
+            >
               {JSON.stringify(consumerForm.values, null, 2)}
             </pre>
           )}

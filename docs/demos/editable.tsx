@@ -36,7 +36,7 @@ export default () => {
   return (
     <OptionsProvider>
       <div style={{ display: 'grid', gap: 12 }}>
-        <div style={{ color: '#666' }}>点击字段进入编辑态，失焦后恢复为阅读态。</div>
+        <div style={{ color: 'var(--vp-c-text-2, #666)' }}>点击字段进入编辑态，失焦后恢复为阅读态。</div>
         <Form form={form} layout="vertical">
           <SchemaField schema={schema} />
         </Form>

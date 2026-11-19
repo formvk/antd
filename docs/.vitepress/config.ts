@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import { vitepressDemoPlugin } from 'vitepress-demo-plugin/markdown'
 
+import { demoThemePlugin } from './plugins/demo-theme'
+
 const rootDir = fileURLToPath(new URL('../..', import.meta.url))
 
 const readJson = <T>(file: string) => JSON.parse(readFileSync(path.join(rootDir, file), 'utf8')) as T
@@ -98,6 +100,7 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: [demoThemePlugin()],
     esbuild: {
       jsx: 'automatic',
     },

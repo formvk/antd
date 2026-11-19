@@ -41,7 +41,7 @@ const schema = createSchema({
 
 // grid 实例是响应式的，直接读取布局结果即可
 const GridDigest = observer(() => (
-  <div style={{ marginBottom: 8, color: '#666' }}>
+  <div style={{ marginBottom: 8, color: 'var(--vp-c-text-2, #666)' }}>
     {grid.ready ? `列数：${grid.columns}，行数：${grid.rows}` : '等待布局完成'}
   </div>
 ))

@@ -39,7 +39,15 @@ export default () => {
           <SchemaField schema={schema} />
           <Submit>提交</Submit>
         </Form>
-        {result && <div style={{ color: result.startsWith('提交成功') ? '#389e0d' : '#cf1322' }}>{result}</div>}
+        {result && (
+          <div
+            style={{
+              color: result.startsWith('提交成功') ? 'var(--vp-c-green-1, #389e0d)' : 'var(--vp-c-red-1, #cf1322)',
+            }}
+          >
+            {result}
+          </div>
+        )}
       </div>
     </OptionsProvider>
   )

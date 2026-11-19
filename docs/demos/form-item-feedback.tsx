@@ -5,8 +5,8 @@ import { useState } from 'react'
 type FeedbackLayout = 'loose' | 'terse' | 'popover' | 'none'
 
 // feedbackIcon 接受任意 ReactNode，这里用文本模拟图标
-const CheckIcon = () => <span style={{ color: '#52c41a' }}>✓</span>
-const CloseIcon = () => <span style={{ color: '#ff4d4f' }}>✕</span>
+const CheckIcon = () => <span style={{ color: 'var(--vp-c-green-1, #52c41a)' }}>✓</span>
+const CloseIcon = () => <span style={{ color: 'var(--vp-c-red-1, #ff4d4f)' }}>✕</span>
 
 const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: fieldComponents,

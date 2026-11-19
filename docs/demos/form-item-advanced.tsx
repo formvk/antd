@@ -55,8 +55,12 @@ const schema = createSchema({
   style: f.Input({
     title: 'labelStyle / wrapperStyle',
     decoratorProps: {
-      labelStyle: { color: '#1677ff' },
-      wrapperStyle: { background: 'rgba(22, 119, 255, 0.06)', padding: 4, borderRadius: 4 },
+      labelStyle: { color: 'var(--vp-c-brand-1, #1677ff)' },
+      wrapperStyle: {
+        background: 'var(--vp-c-brand-soft, rgba(22, 119, 255, 0.06))',
+        padding: 4,
+        borderRadius: 4,
+      },
     },
   }),
   popover: f.Input({

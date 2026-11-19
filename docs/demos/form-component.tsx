@@ -32,7 +32,7 @@ export default observer(() => {
           component="div"
           layout="vertical"
           previewTextPlaceholder="暂无数据"
-          style={{ padding: 12, border: '1px solid #d9d9d9', borderRadius: 8 }}
+          style={{ padding: 12, border: '1px solid var(--vp-c-border, #d9d9d9)', borderRadius: 8 }}
         >
           <SchemaField schema={schema} />
         </Form>

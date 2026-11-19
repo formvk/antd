@@ -52,7 +52,7 @@ export default () => {
               margin: 0,
               padding: 12,
               borderRadius: 8,
-              background: '#f6f8fa',
+              background: 'var(--vp-c-bg-soft, #f6f8fa)',
               fontSize: 13,
               overflow: 'auto',
             }}
