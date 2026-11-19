@@ -45,7 +45,7 @@ const isOperationComponent = (schema: ISchema) => {
   )
 }
 
-export const InternalArrayCards: ReactFC<CardProps> = observer(props => {
+export const ArrayCards: ReactFC<CardProps> = observer(props => {
   const field = useField<ArrayField>()
   const schema = useFieldSchema()
   if (!field) return null
@@ -102,9 +102,8 @@ export const InternalArrayCards: ReactFC<CardProps> = observer(props => {
         />
       ) : null
       return (
-        // 数组项没有稳定业务 id，渲染位置与索引绑定，只能使用索引作为 key
-        // oxlint-disable-next-line react/no-array-index-key
-        <ArrayBaseItem key={index} index={index} record={() => field.value?.[index]}>
+        // 数组项 key 由字段的 recordKey 解析，未配置时回退到索引
+        <ArrayBaseItem key={field.getRecordKey(index)} index={index} record={() => field.value?.[index]}>
           <Card
             {...props}
             onChange={() => {}}
@@ -150,5 +149,3 @@ export const InternalArrayCards: ReactFC<CardProps> = observer(props => {
     </ArrayBase>
   )
 })
-
-export const ArrayCards = InternalArrayCards

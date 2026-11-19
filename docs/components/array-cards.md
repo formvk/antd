@@ -20,6 +20,8 @@
 | `bordered` | `boolean` | 是否带边框 |
 | `size` | `'default' \| 'small'` | 卡片尺寸 |
 
+数组项 key 由数组 Schema 的 `recordKey` 控制，见 [ArrayBase](/components/array-base#数组项稳定键-recordkey)。
+
 通用数组属性（`disabled` / `onAdd` / `onCopy` / `onRemove` / `onMoveUp` / `onMoveDown`）见 [ArrayBase](/components/array-base#数组属性)。
 
 ## 用法

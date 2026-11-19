@@ -68,9 +68,8 @@ const InternalArrayItems: ReactFC<HTMLAttributes<HTMLDivElement>> = observer(pro
           {dataSource?.map((_, index) => {
             const items = Array.isArray(schema.items) ? schema.items[index] || schema.items[0] : schema.items
             return (
-              // 数组项没有稳定业务 id，渲染位置与索引绑定，只能使用索引作为 key
-              // oxlint-disable-next-line react/no-array-index-key
-              <ArrayBaseItem key={index} index={index} record={() => field.value?.[index]}>
+              // 数组项 key 由字段的 recordKey 解析，未配置时回退到索引
+              <ArrayBaseItem key={field.getRecordKey(index)} index={index} record={() => field.value?.[index]}>
                 <SortableItem lockAxis="y" index={index}>
                   <div className={`${prefixCls}-item-inner`}>
                     {items ? <ArrayItemField schema={items} index={index} /> : null}

@@ -35,6 +35,8 @@ export const ArrayTabs: FC<PropsWithChildren<TabsProps>> = observer(props => {
   if (!field) return null
   const value = Array.isArray(field.value) ? field.value : []
   const dataSource = value?.length ? value : [{}]
+  const getKey = (index: number) => String(field.getRecordKey(index))
+  const tabKeys = dataSource.map((_, index) => getKey(index))
   const onEdit = (targetKey: any, type: 'add' | 'remove') => {
     if (type == 'add') {
       const id = dataSource.length
@@ -43,11 +45,12 @@ export const ArrayTabs: FC<PropsWithChildren<TabsProps>> = observer(props => {
       } else {
         field.push(null, null)
       }
-      setActiveKey(`tab-${id}`)
+      setActiveKey(getKey(id))
     } else if (type == 'remove') {
-      const index = Number(targetKey.match(/-(\d+)/)?.[1])
+      const index = dataSource.findIndex((_, i) => getKey(i) === String(targetKey))
+      if (index < 0) return
       if (index - 1 > -1) {
-        setActiveKey(`tab-${index - 1}`)
+        setActiveKey(getKey(index - 1))
       }
       field.remove(index)
     }
@@ -56,7 +59,7 @@ export const ArrayTabs: FC<PropsWithChildren<TabsProps>> = observer(props => {
   return (
     <Tabs
       {...props}
-      activeKey={activeKey}
+      activeKey={tabKeys.includes(activeKey) ? activeKey : tabKeys[0]}
       onChange={key => {
         setActiveKey(key)
       }}
@@ -64,7 +67,7 @@ export const ArrayTabs: FC<PropsWithChildren<TabsProps>> = observer(props => {
       onEdit={onEdit}
       items={dataSource?.map((_, index) => {
         const items = Array.isArray(schema?.items) ? schema.items[index] : schema?.items
-        const key = `tab-${index}`
+        const key = getKey(index)
         return {
           key,
           label: <FeedbackBadge index={index} />,

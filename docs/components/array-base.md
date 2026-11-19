@@ -17,7 +17,7 @@
 | `ArrayBaseItem` | 列表项上下文容器，向下提供 `index` 与 `record` |
 | `Addition` | 新增按钮 |
 | `Remove` | 删除按钮 |
-| `Copy` | 复制按钮，在当前项后插入一份克隆 |
+| `Copy` | 复制按钮，在当前项后插入一份副本；默认移除副本的 `recordKey` 字段 |
 | `MoveUp` | 上移按钮 |
 | `MoveDown` | 下移按钮 |
 | `Index` | 当前项序号，渲染为 `#1.` 形式 |
@@ -38,6 +38,46 @@
 | `onRemove` | `(index: number) => void` | 删除后触发 |
 | `onMoveUp` | `(index: number) => void` | 上移后触发 |
 | `onMoveDown` | `(index: number) => void` | 下移后触发 |
+
+### ArrayBaseItem 额外属性
+
+除 `index`、`record` 外，`ArrayBaseItem` 的 `key` 建议使用字段的 `getRecordKey(index)` 生成，保证增删、排序后列表项身份稳定。
+
+### 数组项稳定键 recordKey
+
+`recordKey` 是数组 Schema 节点的字段属性（不是 `componentProps`），用于为数组项生成稳定 key：
+
+```tsx
+f.ArrayCards(f.Object({ id: f.Input(), name: f.Input() }), {
+  recordKey: 'id', // 或 (record, index) => record.id ?? index
+})
+```
+
+| 形式 | 说明 |
+| --- | --- |
+| `string` | 取数组项上的同名字段；取不到字符串或数字时回退索引 |
+| `(record, index) => string \| number` | 自定义取值函数 |
+
+配置后可通过字段方法 `field.getRecordKey(index)` 读取；未配置时返回索引。
+
+### Copy 与 recordKey
+
+`Copy` 默认会克隆整条记录，其中包含 `recordKey` 对应的字段。为保证副本的 key 唯一，组件在未提供 `copyRecord` 且 `recordKey` 为字符串时，会删除副本上的该字段，副本回退到索引 key；需要在复制后立即获得稳定 key 时，使用 `copyRecord` 生成新记录。
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `copyRecord` | `(record, index) => any` | 自定义副本数据，返回要插入的记录；提供后不再自动处理 key |
+
+```tsx
+f.Copy({
+  title: '复制',
+  componentProps: {
+    copyRecord: record => ({ ...record, id: createId() }),
+  },
+})
+```
+
+`recordKey` 为函数时无法推断对应字段，需要自行通过 `copyRecord` 生成新 key。
 
 ### Addition 额外属性
 
@@ -60,7 +100,7 @@ const MyArray = props => {
   return (
     <ArrayBase>
       {array?.field?.value?.map((_, index) => (
-        <ArrayBaseItem key={index} index={index} record={array.field.value[index]}>
+        <ArrayBaseItem key={array.field.getRecordKey(index)} index={index} record={array.field.value[index]}>
           ...
         </ArrayBaseItem>
       ))}

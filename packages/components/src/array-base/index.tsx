@@ -4,7 +4,7 @@ import { useField, useFieldSchema } from '@formvk/react'
 import type { Schema } from '@formvk/react'
 import { observer } from '@formvk/reactive-react'
 import type { ReactFC } from '@formvk/reactive-react'
-import { clone, isUndef, isValid } from '@formvk/shared'
+import { clone, isStr, isUndef, isValid } from '@formvk/shared'
 import { Button } from 'antd'
 import type { ButtonProps } from 'antd/es/button'
 import cls from 'classnames'
@@ -33,6 +33,14 @@ export interface IArrayBaseItemProps {
 
 type CommonProps = ButtonProps & {
   index?: number
+}
+
+type CopyProps = CommonProps & {
+  /**
+   * 自定义副本数据，返回要插入到数组中的记录。
+   * 提供后不再自动处理 recordKey，需要由返回值保证 key 唯一。
+   */
+  copyRecord?: (record: any, index: number) => any
 }
 
 export interface IArrayBaseProps {
@@ -160,8 +168,8 @@ export const Addition = observer<IAdditionProps>(props => {
     </Button>
   )
 })
-export const Copy = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
-  ({ ref, ...props }) => {
+export const Copy = observer<CopyProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+  ({ ref, copyRecord, ...props }) => {
     const self = useField()
     const array = useArray()
     const index = useIndex(props.index) || 0
@@ -195,7 +203,13 @@ export const Copy = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { f
             props.onClick(e)
             if (e.defaultPrevented) return
           }
-          const value = clone(array?.field?.value?.[index])
+          const source = array?.field?.value?.[index]
+          const value = copyRecord ? copyRecord(source, index) : clone(source)
+          const recordKey = array?.field?.recordKey
+          // 默认克隆会带上原记录的 key，移除字符串形式的 recordKey 字段避免副本重复
+          if (!copyRecord && isStr(recordKey) && value && typeof value === 'object') {
+            delete value[recordKey]
+          }
           const distIndex = index + 1
           array.field?.insert?.(distIndex, value)
           array.props?.onCopy?.(distIndex)

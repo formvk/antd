@@ -44,19 +44,18 @@ const isOperationComponent = (schema: ISchema) => {
   )
 }
 
-const range = (count: number) => Array.from({ length: count }).map((_, i) => i)
-
-const takeDefaultActiveKeys = (dataSourceLength: number, defaultOpenPanelCount: number) => {
-  if (dataSourceLength < defaultOpenPanelCount) return range(dataSourceLength)
-  return range(defaultOpenPanelCount)
+const takeDefaultActiveKeys = (field: ArrayField, defaultOpenPanelCount: number) => {
+  const dataSource = Array.isArray(field.value) ? field.value : []
+  return dataSource.slice(0, defaultOpenPanelCount).map((_, index) => String(field.getRecordKey(index)))
 }
 
-const insertActiveKeys = (activeKeys: number[], index: number) => {
-  if (activeKeys.length <= index) return activeKeys.concat(index)
-  return activeKeys.reduce<number[]>((buf, key) => {
-    if (key < index) return buf.concat(key)
-    if (key === index) return buf.concat([key, key + 1])
-    return buf.concat(key + 1)
+const insertActiveKeys = (activeKeys: string[], index: number) => {
+  if (activeKeys.length <= index) return activeKeys.concat(String(index))
+  return activeKeys.reduce<string[]>((buf, key) => {
+    const keyIndex = Number(key)
+    if (keyIndex < index) return buf.concat(key)
+    if (keyIndex === index) return buf.concat([key, String(keyIndex + 1)])
+    return buf.concat(String(keyIndex + 1))
   }, [])
 }
 
@@ -64,8 +63,8 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
   const field = useField<ArrayField>()
   if (!field) return null
   const dataSource = Array.isArray(field.value) ? field.value : []
-  const [activeKeys, setActiveKeys] = useState<number[]>(
-    takeDefaultActiveKeys(dataSource.length, props.defaultOpenPanelCount ?? 5)
+  const [activeKeys, setActiveKeys] = useState<string[]>(() =>
+    takeDefaultActiveKeys(field, props.defaultOpenPanelCount ?? 5)
   )
   const schema = useFieldSchema()
   const prefixCls = usePrefixCls('formvk-array-collapse', props)
@@ -73,7 +72,7 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
 
   useEffect(() => {
     if (!field.modified && dataSource.length) {
-      setActiveKeys(takeDefaultActiveKeys(dataSource.length, props.defaultOpenPanelCount ?? 5))
+      setActiveKeys(takeDefaultActiveKeys(field, props.defaultOpenPanelCount ?? 5))
     }
   }, [dataSource.length, field, props.defaultOpenPanelCount])
   if (!schema) throw new Error('can not found schema object')
@@ -101,7 +100,7 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
         {...props}
         activeKey={activeKeys}
         onChange={(keys: string[]) => {
-          setActiveKeys(toArr(keys).map(Number))
+          setActiveKeys(toArr(keys))
         }}
         className={cls(`${prefixCls}-item`, hashId, props.className)}
       >
@@ -168,13 +167,12 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
             />
           )
           return (
-            // activeKeys 以数字索引记录展开项，Panel 的 key 必须与索引保持一致
+            // 数组项 key 由字段的 recordKey 解析，未配置时回退到索引
             <Collapse.Panel
               {...panelSchemaProps}
               {...panelProps}
               forceRender
-              // oxlint-disable-next-line react/no-array-index-key
-              key={index}
+              key={String(field.getRecordKey(index))}
               header={header()}
               extra={extra}
             >
@@ -190,7 +188,12 @@ const InternalArrayCollapse: ReactFC<IArrayCollapseProps> = observer((props: IAr
   return wrapSSR(
     <ArrayBase
       onAdd={index => {
-        setActiveKeys(insertActiveKeys(activeKeys, index))
+        if (field.recordKey) {
+          const key = String(field.getRecordKey(index))
+          setActiveKeys(keys => (keys.includes(key) ? keys : keys.concat(key)))
+          return
+        }
+        setActiveKeys(keys => insertActiveKeys(keys, index))
       }}
     >
       {renderEmpty()}

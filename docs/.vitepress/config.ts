@@ -125,6 +125,7 @@ export default defineConfig({
             { text: '字段联动', link: '/guide/how-to/linkage' },
             { text: '表单校验', link: '/guide/how-to/validation' },
             { text: '数组字段操作', link: '/guide/how-to/array' },
+            { text: '大数组场景', link: '/guide/how-to/large-array' },
             { text: '响应式布局', link: '/guide/how-to/layout' },
             { text: '阅读态与详情页', link: '/guide/how-to/read-pretty' },
             { text: '接入自定义组件', link: '/guide/how-to/custom-component' },
