@@ -26,14 +26,15 @@ npm install @formvk/antd @formvk/core @formvk/react @formvk/schema antd react re
 ## 快速开始
 
 ```tsx
-import { Form, FormItem, Input, Submit } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, Submit, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { SchemaField, createForm, createSchema, createSchemaOptions } from '@formvk/react'
 
 const form = createForm()
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: { FormItem },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -41,36 +42,24 @@ const schema = createSchema({
   username: f.Input({ title: '用户名' }),
 })
 
+// OptionsProvider 只需在应用最外层注入一次，内部所有表单自动继承
 export default () => (
-  <Form form={form}>
-    <SchemaField schema={schema} />
-    <Submit onSubmit={values => console.log(values)}>提交</Submit>
-  </Form>
+  <OptionsProvider>
+    <Form form={form}>
+      <SchemaField schema={schema} />
+      <Submit onSubmit={values => console.log(values)}>提交</Submit>
+    </Form>
+  </OptionsProvider>
 )
 ```
 
-数组字段需要注册到 `arrayComponents`：
-
-```tsx
-import { ArrayItems, FormItem, Input } from '@formvk/antd'
-
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: { FormItem },
-  arrayComponents: { ArrayItems },
-  defaultDecorator: 'FormItem',
-})
-
-const schema = createSchema({
-  users: f.ArrayItems(f.Object({ name: f.Input({ title: '姓名' }) })),
-})
-```
+数组字段直接使用 `f.ArrayItems`，`arrayComponents` 已在顶层注册，无需重复配置。
 
 更多用法见文档：[快速开始](https://formvk.github.io/antd/guide/quick-start)、[Schema 写法](https://formvk.github.io/antd/guide/schema)、[组件总览](https://formvk.github.io/antd/components/)。
 
 ## 与 formily-antd 的差异
 
-- 包名替换为 `@formvk/*` 体系，`createForm`、`createSchemaField`、`createSchema` 等从 `@formvk/react` 导入
+- 包名替换为 `@formvk/*` 体系，`createForm`、`createSchemaOptions`、`createSchema` 等从 `@formvk/react` 导入
 - Schema 字段不再带 `x-` 前缀，使用 `component`、`decorator`、`componentProps`、`reactions` 等字段
 - 不提供 `FormDialog` 与 `FormDrawer`
 - 样式通过 `@ant-design/cssinjs` 注入，无需额外引入 CSS 文件

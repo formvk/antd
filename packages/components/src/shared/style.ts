@@ -1,0 +1,105 @@
+import type { CSSInterpolation, CSSObject } from '@ant-design/cssinjs'
+import { useStyleRegister } from '@ant-design/cssinjs'
+import { merge } from '@formvk/shared'
+import type { ComponentTokenMap, GlobalToken } from 'antd/es/theme/interface'
+import type { ReactElement, ReactNode } from 'react'
+
+import { useConfig, useToken } from '../hooks'
+
+export type OverrideComponent = keyof ComponentTokenMap | (string & {})
+
+export interface StyleInfo {
+  hashId: string
+  prefixCls: string
+  rootPrefixCls: string
+  iconPrefixCls: string
+}
+
+export type TokenWithCommonCls<T> = T & {
+  /** Wrap component class with `.` prefix */
+  componentCls: string
+  /** Origin prefix which do not have `.` prefix */
+  prefixCls: string
+  /** Wrap icon class with `.` prefix */
+  iconCls: string
+  /** Wrap ant prefixCls class with `.` prefix */
+  antCls: string
+}
+
+export type GenerateStyle<
+  ComponentToken extends object = TokenWithCommonCls<GlobalToken>,
+  ReturnType = CSSInterpolation,
+> = (token: ComponentToken, options?: any) => ReturnType
+
+export const genCommonStyle = (token: any, componentPrefixCls: string): CSSObject => {
+  const { fontFamily, fontSize } = token
+
+  const rootPrefixSelector = `[class^="${componentPrefixCls}"], [class*=" ${componentPrefixCls}"]`
+
+  return {
+    [rootPrefixSelector]: {
+      fontFamily,
+      fontSize,
+      boxSizing: 'border-box',
+
+      '&::before, &::after': {
+        boxSizing: 'border-box',
+      },
+
+      [rootPrefixSelector]: {
+        boxSizing: 'border-box',
+
+        '&::before, &::after': {
+          boxSizing: 'border-box',
+        },
+      },
+    },
+  }
+}
+
+export type UseComponentStyleResult = [(node: ReactNode) => ReactElement, string]
+
+/**
+ * cssinjs v2 的 useStyleRegister 不再返回 wrapSSR（样式在 hook 内部自动注入，
+ * SSR 场景由 extractStyle 统一抽取），这里以恒等函数保持参考实现的二元组返回形态。
+ */
+const identityWrapSSR = (node: ReactNode): ReactElement => node as ReactElement
+
+export const genStyleHook = <ComponentName extends OverrideComponent>(
+  component: ComponentName,
+  styleFn: (token: TokenWithCommonCls<GlobalToken>, info: StyleInfo) => CSSInterpolation
+) => {
+  return (prefixCls: string): UseComponentStyleResult => {
+    const { theme, token, hashId } = useToken()
+    const { getPrefixCls, iconPrefixCls, csp } = useConfig()
+    const rootPrefixCls = getPrefixCls()
+    useStyleRegister(
+      {
+        nonce: csp?.nonce,
+        theme,
+        token,
+        hashId,
+        path: ['formvk-antd', component, prefixCls, iconPrefixCls],
+      },
+      () => {
+        const componentCls = `.${prefixCls}`
+        const mergedToken: TokenWithCommonCls<GlobalToken> = merge(token, {
+          ...(token as any)['Form'], // Merge the antd form token
+          componentCls,
+          prefixCls,
+          iconCls: `.${iconPrefixCls}`,
+          antCls: `.${rootPrefixCls}`,
+        })
+
+        const styleInterpolation = styleFn(mergedToken, {
+          hashId,
+          prefixCls,
+          rootPrefixCls,
+          iconPrefixCls,
+        })
+        return [genCommonStyle(token, prefixCls), styleInterpolation]
+      }
+    )
+    return [identityWrapSSR, hashId]
+  }
+}

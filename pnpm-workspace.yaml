@@ -1,21 +1,23 @@
 packages:
   - 'packages/*'
 catalog:
-  '@formvk/core': ~1.2.0-beta.1
-  '@formvk/react': ~1.2.0-beta.1
-  '@formvk/reactive': ~1.2.0-beta.1
-  '@formvk/reactive-react': ~1.2.0-beta.1
-  '@formvk/schema': ~1.2.0-beta.1
-  '@formvk/shared': ~1.2.0-beta.1
+  '@formvk/core': ~1.2.0-beta.2
+  '@formvk/models': ~1.2.0-beta.2
+  '@formvk/react': ~1.2.0-beta.2
+  '@formvk/reactive': ~1.2.0-beta.2
+  '@formvk/reactive-react': ~1.2.0-beta.2
+  '@formvk/schema': ~1.2.0-beta.2
+  '@formvk/shared': ~1.2.0-beta.2
 allowBuilds:
   esbuild: true
   nx: true
 minimumReleaseAgeExclude:
-  - '@formvk/core@1.0.0 || 1.1.1 || 1.2.0-beta.1'
-  - '@formvk/path@1.0.0 || 1.1.1 || 1.2.0-beta.1'
-  - '@formvk/react@1.0.0 || 1.1.1 || 1.2.0-beta.1'
-  - '@formvk/reactive-react@1.0.0 || 1.1.1 || 1.2.0-beta.1'
-  - '@formvk/reactive@1.0.0 || 1.1.1 || 1.2.0-beta.1'
-  - '@formvk/schema@1.0.0 || 1.1.1 || 1.2.0-beta.1'
-  - '@formvk/shared@1.0.0 || 1.1.1 || 1.2.0-beta.1'
-  - '@formvk/validator@1.0.0 || 1.1.1 || 1.2.0-beta.1'
+  - '@formvk/core@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'
+  - '@formvk/models@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'
+  - '@formvk/path@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'
+  - '@formvk/react@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'
+  - '@formvk/reactive-react@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'
+  - '@formvk/reactive@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'
+  - '@formvk/schema@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'
+  - '@formvk/shared@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'
+  - '@formvk/validator@1.0.0 || 1.1.1 || 1.2.0-beta.1 || 1.2.0-beta.2'

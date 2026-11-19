@@ -1,15 +1,12 @@
-import { Form, FormItem, FormStep, FormStepPane, Input, createFormStep } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField, observer } from '@formvk/react'
+import { Form, arrayComponents, createFormStep, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, observer, SchemaField } from '@formvk/react'
 import { Button } from 'antd'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: {
-    FormItem,
-    FormStep,
-    StepPane: FormStepPane,
-  },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -51,24 +48,26 @@ export default observer(() => {
   const [result, setResult] = useState('')
 
   return (
-    <Form form={form} layout="vertical">
-      <SchemaField schema={schema} />
-      <div style={{ display: 'flex', gap: 8 }}>
-        {/* next/back 会校验当前步骤，并自动切换 display */}
-        <Button disabled={formStep.current === 0} onClick={() => formStep.back()}>
-          上一步
-        </Button>
-        {formStep.current < LAST_STEP ? (
-          <Button type="primary" onClick={() => formStep.next()}>
-            下一步
+    <OptionsProvider>
+      <Form form={form} layout="vertical">
+        <SchemaField schema={schema} />
+        <div style={{ display: 'flex', gap: 8 }}>
+          {/* next/back 会校验当前步骤，并自动切换 display */}
+          <Button disabled={formStep.current === 0} onClick={() => formStep.back()}>
+            上一步
           </Button>
-        ) : (
-          <Button type="primary" onClick={() => formStep.submit(values => setResult(JSON.stringify(values)))}>
-            提交
-          </Button>
-        )}
-      </div>
-      {result && <div style={{ marginTop: 12, color: '#389e0d' }}>提交成功：{result}</div>}
-    </Form>
+          {formStep.current < LAST_STEP ? (
+            <Button type="primary" onClick={() => formStep.next()}>
+              下一步
+            </Button>
+          ) : (
+            <Button type="primary" onClick={() => formStep.submit(values => setResult(JSON.stringify(values)))}>
+              提交
+            </Button>
+          )}
+        </div>
+        {result && <div style={{ marginTop: 12, color: '#389e0d' }}>提交成功：{result}</div>}
+      </Form>
+    </OptionsProvider>
   )
 })

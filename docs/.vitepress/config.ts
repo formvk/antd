@@ -19,11 +19,16 @@ const rootManifest = readJson<{ devDependencies: Record<string, string> }>('pack
 // 本地开发与预览未设置该变量时回退到根路径，无需改动访问方式
 const docsBase = process.env.DOCS_BASE ?? '/'
 
+// catalog: 协议不能直接用于沙箱模板，从 workspace 的 catalog 中读取真实版本范围
+const workspaceYaml = readFileSync(path.join(rootDir, 'pnpm-workspace.yaml'), 'utf8')
+const catalogVersion = (name: string) => workspaceYaml.match(new RegExp(`'${name}':\\s*(\\S+)`))?.[1] ?? 'latest'
+
 // 在线沙箱依赖与仓库实际依赖保持一致：
-// @formvk/antd 取包版本，@formvk/react 取包依赖，antd/dayjs/react 取实际安装版本
+// @formvk/antd 取包版本，@formvk/react / @formvk/models 取 catalog，antd/dayjs/react 取实际安装版本
 const reactDependencies = {
   '@formvk/antd': `^${componentManifest.version}`,
-  '@formvk/react': componentManifest.dependencies['@formvk/react'],
+  '@formvk/models': catalogVersion('@formvk/models'),
+  '@formvk/react': catalogVersion('@formvk/react'),
   antd: rootManifest.devDependencies.antd,
   dayjs: componentManifest.dependencies.dayjs,
   react: rootManifest.devDependencies.react,
@@ -107,6 +112,7 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide/install' },
       { text: '组件', link: '/components/' },
+      { text: '容器', link: '/containers/' },
     ],
     sidebar: {
       '/guide/': [
@@ -211,6 +217,18 @@ export default defineConfig({
                 { text: 'FormStep', link: '/components/form-step' },
               ],
             },
+          ],
+        },
+      ],
+      '/containers/': [
+        {
+          text: '容器',
+          items: [
+            { text: '总览', link: '/containers/' },
+            { text: 'SchemaForm', link: '/containers/schema-form' },
+            { text: '弹窗表单', link: '/containers/popup' },
+            { text: 'CrudTable', link: '/containers/crud-table' },
+            { text: '表格渲染器', link: '/containers/renders' },
           ],
         },
       ],

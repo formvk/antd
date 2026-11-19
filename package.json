@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@formvk/core": "catalog:",
+    "@formvk/models": "catalog:",
     "@formvk/react": "catalog:",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",

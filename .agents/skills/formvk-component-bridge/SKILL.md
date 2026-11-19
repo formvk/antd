@@ -37,7 +37,7 @@ packages/<ui>/
     ├── components/       # 字段控件
     ├── decorators/       # FormItem 等布局组件
     ├── arrays/           # ArrayItems 等数组组件
-    ├── shared/           # 组件 map 与 createSchemaField 工厂
+    ├── shared/           # 组件 map 与 createSchemaOptions 工厂
     └── index.ts
 ```
 
@@ -124,7 +124,7 @@ export const Select = connect(
 桥接包最终给出「组件 map + 带类型的 fragment」。优先使用 `f.Input` / `f.ArrayItems` 这类动态构造器：
 
 ```ts
-import { createSchema, createSchemaField } from '@formvk/react' // Vue 换成 @formvk/vue
+import { SchemaField, createSchema, createSchemaOptions } from '@formvk/react' // Vue 换成 @formvk/vue
 
 import { ArrayItems } from '../arrays/ArrayItems'
 import { Input } from '../components/Input'
@@ -134,7 +134,7 @@ import { FormItem } from '../decorators/FormItem'
 export const components = { Input, Select, FormItem }
 export const arrayComponents = { ArrayItems }
 
-export const { SchemaField, fragment: f } = createSchemaField({
+export const { OptionsProvider, fragment: f } = createSchemaOptions({
   components,
   arrayComponents,
   defaultDecorator: 'FormItem',
@@ -149,6 +149,7 @@ export const schema = createSchema({
 - `components` 是扁平 map：`name → component`，同一个 map 同时服务字段、装饰器、嵌套节点。
 - `voidComponents` / `arrayComponents` 会自动合并进运行时 map，不需要在 `components` 里重复注册。
 - 分类优先级 `array > void > field`；同一个名字只放一个分类。
+- `OptionsProvider` 是应用级上下文：只在本项目最外层注入一次，内部所有 `SchemaField` 与容器组件自动继承。不要在每个表单、每个字段组件里重复包裹；只有子树需要独立注册表时才嵌套新的 Provider。
 - `f.Input` 等价于 `f.Field({ component: 'Input' })`，但会自动补组件名并校验 `componentProps`。
 - `f.ArrayItems(items, schema?)` 只有在声明 `arrayComponents` 后才存在，第一个参数是数组项 creator。
 - `defaultDecorator` 只给「有 title 且未写 decorator 的 string 字段」补装饰器，void / object / array 必须显式声明。
@@ -209,6 +210,7 @@ vitest + happy-dom。至少覆盖：
 - 用 `disabled` 模拟只读展示，错误信息与格式化都会丢；使用 `mapReadPretty`。
 - 装饰器里把 React props 整体展开到原生元素，具名插槽会变成非法属性。
 - 组件名未注册时静默回退成同名原生标签，页面看似正常但样式与行为全错。
+- 在每个表单里重复包一层 `OptionsProvider`：注册表是应用级上下文，顶层注入一次即可。
 - 未传组件 map 时 `componentProps` 无类型，`f.Input` 也不存在。
 - 同名组件同时放进多个分类 map，低优先级分类失效。
 - React 只用 `connect(target)` 不套 mapper 时没有 `observer`，需要自己包。

@@ -29,10 +29,10 @@
 `TextArea` 为独立具名导出，基于 antd `Input.TextArea`，属性与 antd 保持一致，阅读态同样渲染为 `TextInput`：
 
 ```tsx
-import { createSchema, createSchemaField } from '@formvk/react'
+import { createSchema, createSchemaOptions } from '@formvk/react'
 import { Input, TextArea } from '@formvk/antd'
 
-const { SchemaField, fragment: f } = createSchemaField({
+const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: { Input, TextArea },
 })
 

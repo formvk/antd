@@ -31,7 +31,7 @@ JSON Schema 标准校验字段（`maxLength` / `minLength` / `minimum` / `maximu
 
 ## fragment 构造器
 
-`createSchemaField` 返回的 `fragment`（通常简写为 `f`）由注册表推导而来：注册了 `Input`，就有 `f.Input`；注册了 `FormItem`，就有 `f.FormItem`。
+`createSchemaOptions` 返回的 `fragment`（通常简写为 `f`）由注册表推导而来：注册了 `Input`，就有 `f.Input`；注册了 `FormItem`，就有 `f.FormItem`。
 
 | 构造器 | 用途 |
 | --- | --- |
@@ -63,7 +63,7 @@ createSchema({ name: f.Field({ title: '姓名', component: 'Input' }) })
 createSchema({ name: f.Field({ title: '姓名', component: Input }) })
 ```
 
-组件引用同样适用于带层级的组件，例如 `FormTabPane`、`FormCollapsePanel`、`SelectTableColumn`，内核会通过组件的 `displayName` / `name` 识别其语义。
+组件引用同样适用于带层级的组件，例如 `TabPane`、`CollapsePanel`、`Column`，内核会通过组件的 `displayName` / `name` 识别其语义。
 
 ## 表达式与作用域
 

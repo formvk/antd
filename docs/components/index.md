@@ -1,6 +1,6 @@
 # 组件总览
 
-`@formvk/antd` 提供与 formily-antd 对齐的表单组件桥接层，基于 Ant Design v6。每个组件都提供独立文档与可运行示例，左侧菜单按「表单与布局 / 基础字段 / 数组组件 / 高级组件」分组。
+`@formvk/antd` 提供与 formily-antd 对齐的表单组件桥接层，基于 Ant Design v6。每个组件都提供独立文档与可运行示例，左侧菜单按「表单与布局 / 基础字段 / 数组组件 / 高级组件」分组。弹窗表单、CRUD 表格等组合场景请使用 [容器](/containers/)。
 
 ## 表单与布局
 
@@ -56,5 +56,5 @@
 | [FormStep](/components/form-step)       | 分步表单            |
 
 ::: tip
-本包不提供 `FormDialog` 与 `FormDrawer`。
+弹窗表单与 CRUD 表格由容器提供：见 [弹窗表单](/containers/popup) 与 [CrudTable](/containers/crud-table)。
 :::

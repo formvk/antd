@@ -4,13 +4,13 @@
 
 ## 第一步：注册数组组件
 
-数组组件需要注册到 `createSchemaField` 的 `arrayComponents`，操作组件注册到 `voidComponents`：
+数组组件需要注册到 `createSchemaOptions` 的 `arrayComponents`，操作组件注册到 `voidComponents`：
 
 ```tsx
 import { Addition, ArrayItems, FormItem, Input, Remove } from '@formvk/antd'
-import { createSchema, createSchemaField } from '@formvk/react'
+import { createSchema, createSchemaOptions } from '@formvk/react'
 
-const { SchemaField, fragment: f } = createSchemaField({
+const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: { Input },
   voidComponents: { FormItem, Addition, Remove },
   arrayComponents: { ArrayItems },
@@ -87,13 +87,13 @@ f.ArrayItems(f.Object({ /* ... */ }), {
 
 ## 表格选择：SelectTable
 
-`SelectTable` 的候选数据来自 `componentProps.dataSource`，列通过 `SelectTableColumn` 声明：
+`SelectTable` 的候选数据来自 `componentProps.dataSource`，列通过 `Column` 声明：
 
 ```tsx
-import { SelectTable, SelectTableColumn } from '@formvk/antd'
+import { Column, SelectTable } from '@formvk/antd'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  voidComponents: { FormItem, Column: SelectTableColumn },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  voidComponents: { FormItem, Column },
   arrayComponents: { SelectTable },
   defaultDecorator: 'FormItem',
 })

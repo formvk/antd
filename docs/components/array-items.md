@@ -1,6 +1,6 @@
 # ArrayItems
 
-列表形态的数组组件，每个元素渲染在独立的行容器中，是最常用的数组形态。注册到 `createSchemaField` 的 `arrayComponents`。
+列表形态的数组组件，每个元素渲染在独立的行容器中，是最常用的数组形态。注册到 `createSchemaOptions` 的 `arrayComponents`。
 
 <demo react="../demos/array-items.tsx" title="ArrayItems 示例" description="新增、删除与字段校验" />
 
@@ -12,7 +12,7 @@
 ## 用法
 
 ```tsx
-const { SchemaField, fragment: f } = createSchemaField({
+const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: { Input },
   voidComponents: {
     FormItem,

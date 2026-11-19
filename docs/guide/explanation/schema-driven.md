@@ -10,9 +10,9 @@
 | --- | --- | --- |
 | 表单实例 | `createForm()` | 状态中心：维护字段图（graph）、值、校验反馈、生命周期 |
 | Schema | `createSchema()` + `fragment` | 声明式描述：有哪些字段、用什么组件、如何联动与校验 |
-| 渲染器 | `createSchemaField()` 得到的 `SchemaField` | 把 Schema 翻译成 React 组件树，并把字段与组件连接起来 |
+| 渲染器 | `SchemaField` + `createSchemaOptions()` 的 `OptionsProvider` | 把 Schema 翻译成 React 组件树，并把字段与组件连接起来 |
 
-`createSchemaField` 的注册表（`components` / `voidComponents` / `arrayComponents`）建立了「Schema 中的组件名 → 真实 React 组件」的映射；`fragment`（`f`）则由同一份注册表推导，保证 `f.Input` 这样的构造器与注册表里的组件严格对应。
+`createSchemaOptions` 的注册表（`components` / `voidComponents` / `arrayComponents`）经 `OptionsProvider` 提供给后代 `SchemaField`，建立「Schema 中的组件名 → 真实 React 组件」的映射；`fragment`（`f`）则由同一份注册表推导，保证 `f.Input` 这样的构造器与注册表里的组件严格对应。`OptionsProvider` 是应用级上下文，在应用最外层注入一次即可，后代所有表单与容器自动继承。
 
 ## 字段是状态的唯一持有者
 

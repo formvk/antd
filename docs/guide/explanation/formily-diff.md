@@ -11,11 +11,13 @@ Formily 的 `@formily/*` 体系整体替换为 `@formvk/*`：
 import { createForm, createSchemaField } from '@formily/core' // 或 @formily/react
 
 // Formvk
-import { createForm, createSchemaField, createSchema } from '@formvk/react'
+import { SchemaField, createForm, createSchema, createSchemaOptions } from '@formvk/react'
 import { Form, FormItem, Input } from '@formvk/antd'
 ```
 
 `@formvk/antd` 只包含组件桥接层，内核能力（表单实例、字段、Hooks）从 `@formvk/react` 导入。
+
+`createSchemaField` 已移除，改用 `createSchemaOptions` 生成 `OptionsProvider` 与 `fragment`；`OptionsProvider` 在应用最外层注入一次，后代 `SchemaField` 与容器组件自动继承。
 
 ## Schema 字段去掉 x- 前缀
 
@@ -39,7 +41,7 @@ import { Form, FormItem, Input } from '@formvk/antd'
 Formvk 推荐通过 `createSchema` + `fragment` 构造器描述表单，能获得完整的类型推断（组件名、`componentProps`、联动作用域都会根据注册表收窄）：
 
 ```tsx
-const { fragment: f } = createSchemaField({ components: { Input } })
+const { fragment: f } = createSchemaOptions({ components: { Input } })
 
 const schema = createSchema({
   name: f.Input({ title: '姓名', required: true }),

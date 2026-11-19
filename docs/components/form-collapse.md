@@ -1,6 +1,6 @@
 # FormCollapse
 
-折叠面板布局容器，子面板通过 `FormCollapsePanel` 声明，适合分组多、默认只展开部分内容的长表单。
+折叠面板布局容器，子面板通过 `CollapsePanel` 声明，适合分组多、默认只展开部分内容的长表单。
 
 <demo react="../demos/form-collapse.tsx" title="FormCollapse 示例" description="受控实例、默认展开与手风琴模式" />
 
@@ -20,11 +20,11 @@
 | `accordion` | `boolean` | 是否手风琴模式 |
 | `onChange` | `(keys) => void` | 展开项变化时触发 |
 
-### FormCollapsePanel
+### CollapsePanel
 
 | 子组件 | 说明 |
 | --- | --- |
-| `FormCollapsePanel` | 面板，`componentProps` 同 antd `CollapsePanelProps`（`key`、`header` 等） |
+| `CollapsePanel` | 面板，`componentProps` 同 antd `CollapsePanelProps`（`key`、`header` 等） |
 
 ### 受控实例
 

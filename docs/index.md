@@ -29,25 +29,29 @@ features:
 开始前请先完成[安装](/guide/install)。
 
 ```tsx
-import { Form, FormItem, Input, Submit } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, Submit, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { SchemaField, createForm, createSchema, createSchemaOptions } from '@formvk/react'
 
 const form = createForm()
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: { FormItem },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
 export default () => (
-  <Form form={form}>
-    <SchemaField
-      schema={createSchema({
-        username: f.Input({ title: '用户名' }),
-      })}
-    />
-    <Submit onSubmit={values => console.log(values)}>提交</Submit>
-  </Form>
+  // OptionsProvider 只需在应用最外层注入一次
+  <OptionsProvider>
+    <Form form={form}>
+      <SchemaField
+        schema={createSchema({
+          username: f.Input({ title: '用户名' }),
+        })}
+      />
+      <Submit onSubmit={values => console.log(values)}>提交</Submit>
+    </Form>
+  </OptionsProvider>
 )
 ```

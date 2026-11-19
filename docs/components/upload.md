@@ -31,10 +31,10 @@
 `UploadDragger` 为独立具名导出，基于 antd `Upload.Dragger`，属性与 `Upload` 相同：
 
 ```tsx
-import { createSchemaField } from '@formvk/react'
+import { createSchemaOptions } from '@formvk/react'
 import { Upload, UploadDragger } from '@formvk/antd'
 
-const { SchemaField } = createSchemaField({
+const { OptionsProvider } = createSchemaOptions({
   components: { Upload, UploadDragger },
 })
 ```

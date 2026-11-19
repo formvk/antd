@@ -1,10 +1,11 @@
-import { Form, FormItem, Input, Reset, Select, Submit } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, Reset, Submit, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input, Select },
-  voidComponents: { FormItem },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -36,28 +37,30 @@ export default () => {
   const [submitted, setSubmitted] = useState('')
 
   return (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <Form form={form}>
-        <SchemaField schema={schema} />
-        <div style={{ display: 'flex', gap: 8 }}>
-          <Submit onSubmit={values => setSubmitted(JSON.stringify(values, null, 2))}>提交</Submit>
-          <Reset>重置</Reset>
-        </div>
-      </Form>
-      {submitted && (
-        <pre
-          style={{
-            margin: 0,
-            padding: 12,
-            borderRadius: 8,
-            background: '#f6f8fa',
-            fontSize: 13,
-            overflow: 'auto',
-          }}
-        >
-          {submitted}
-        </pre>
-      )}
-    </div>
+    <OptionsProvider>
+      <div style={{ display: 'grid', gap: 16 }}>
+        <Form form={form}>
+          <SchemaField schema={schema} />
+          <div style={{ display: 'flex', gap: 8 }}>
+            <Submit onSubmit={values => setSubmitted(JSON.stringify(values, null, 2))}>提交</Submit>
+            <Reset>重置</Reset>
+          </div>
+        </Form>
+        {submitted && (
+          <pre
+            style={{
+              margin: 0,
+              padding: 12,
+              borderRadius: 8,
+              background: '#f6f8fa',
+              fontSize: 13,
+              overflow: 'auto',
+            }}
+          >
+            {submitted}
+          </pre>
+        )}
+      </div>
+    </OptionsProvider>
   )
 }

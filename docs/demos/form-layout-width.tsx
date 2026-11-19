@@ -1,10 +1,11 @@
-import { Form, FormItem, Input, Select } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input, Select },
-  voidComponents: { FormItem },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -33,16 +34,18 @@ export default () => {
   const [form] = useState(() => createForm())
 
   return (
-    <Form
-      form={form}
-      layout="horizontal"
-      labelAlign="right"
-      wrapperAlign="left"
-      colon
-      labelWidth={100}
-      wrapperWidth={220}
-    >
-      <SchemaField schema={schema} />
-    </Form>
+    <OptionsProvider>
+      <Form
+        form={form}
+        layout="horizontal"
+        labelAlign="right"
+        wrapperAlign="left"
+        colon
+        labelWidth={100}
+        wrapperWidth={220}
+      >
+        <SchemaField schema={schema} />
+      </Form>
+    </OptionsProvider>
   )
 }

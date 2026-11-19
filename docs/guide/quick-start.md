@@ -1,6 +1,6 @@
 # 快速开始
 
-一个完整的表单由三部分组成：表单实例（`createForm`）、SchemaField 工厂（`createSchemaField`）与 Schema（`createSchema`）。
+一个完整的表单由三部分组成：表单实例（`createForm`）、Schema 选项工厂（`createSchemaOptions`）与 Schema（`createSchema`）。
 
 ## 1. 创建表单实例
 
@@ -14,23 +14,29 @@ const form = createForm({
 })
 ```
 
-## 2. 注册组件并创建 SchemaField
+## 2. 注册组件并创建 Schema 选项
 
-`createSchemaField` 的注册表决定了 Schema 中可以使用哪些组件：
+`createSchemaOptions` 的注册表决定了 Schema 中可以使用哪些组件：
 
 ```tsx
-import { createSchemaField } from '@formvk/react'
-import { FormItem, Input, Select } from '@formvk/antd'
+import { createSchemaOptions } from '@formvk/react'
+import { arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
 
-export const { SchemaField, fragment: f } = createSchemaField({
-  // 字段组件
-  components: { Input, Select },
+export const { OptionsProvider, fragment: f } = createSchemaOptions({
+  // 字段组件（Input / Select 等）
+  components: fieldComponents,
   // 布局 / 装饰器组件（type: 'void'）
-  voidComponents: { FormItem },
+  voidComponents,
+  // 数组组件（ArrayItems / ArrayTable 等）
+  arrayComponents,
   // 声明了 title 且未显式指定 decorator 时，自动补 FormItem
   defaultDecorator: 'FormItem',
 })
 ```
+
+::: tip 应用级注入一次
+`OptionsProvider` 是应用级上下文，只需在应用最外层（如根组件、路由布局）注入一次。内部的 `Form`、`SchemaField` 以及 `SchemaForm` / `PopupForm` / `CrudTable` 等容器都会自动继承，不需要在每个表单里重复包裹。
+:::
 
 ## 3. 使用 fragment 描述表单
 
@@ -54,38 +60,32 @@ const schema = createSchema({
 ## 4. 渲染表单
 
 ```tsx
-import { Form, Submit, Reset } from '@formvk/antd'
-import { createForm } from '@formvk/react'
+import { Form, Reset, Submit } from '@formvk/antd'
+import { SchemaField, createForm } from '@formvk/react'
 
 const form = createForm()
 
+// 应用顶层注入一次，内部所有表单共用
 export default () => (
-  <Form form={form}>
-    <SchemaField schema={schema} />
-    <Submit onSubmit={values => console.log(values)}>提交</Submit>
-    <Reset>重置</Reset>
-  </Form>
+  <OptionsProvider>
+    <Form form={form}>
+      <SchemaField schema={schema} />
+      <Submit onSubmit={values => console.log(values)}>提交</Submit>
+      <Reset>重置</Reset>
+    </Form>
+  </OptionsProvider>
 )
 ```
 
 <demo react="../demos/basic-form.tsx" title="完整示例" description="修改字段后点击提交，可以看到表单收集到的值" />
 
-`Form` 会自动提供 `FormProvider` 与 `FormLayout`，因此 Schema 内的所有字段都能获取到表单实例与布局配置。
+`Form` 会自动提供 `FormProvider` 与 `FormLayout`，因此 Schema 内的所有字段都能获取到表单实例与布局配置。若某个子树需要独立的组件注册表，再在该子树内嵌套一个新的 `OptionsProvider` 即可。
 
 ## 5. 数组字段
 
-数组组件需要注册到 `arrayComponents`：
+数组组件需要注册到 `arrayComponents`；上面使用的分类命名空间已经包含全部数组组件：
 
 ```tsx
-import { ArrayItems, FormItem, Input } from '@formvk/antd'
-
-export const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: { FormItem },
-  arrayComponents: { ArrayItems },
-  defaultDecorator: 'FormItem',
-})
-
 const schema = createSchema({
   users: f.ArrayItems(f.Object({ name: f.Input({ title: '姓名' }) })),
 })

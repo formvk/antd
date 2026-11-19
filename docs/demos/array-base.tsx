@@ -1,36 +1,15 @@
-import {
-  Addition,
-  ArrayItems,
-  Copy,
-  Form,
-  FormItem,
-  Index,
-  Input,
-  MoveDown,
-  MoveUp,
-  Remove,
-  SortHandle,
-} from '@formvk/antd'
+import { ArrayItems, Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
 import type { IArrayBaseProps } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import type { FC, PropsWithChildren } from 'react'
 
 // ArrayItems 的公开类型未包含 IArrayBaseProps，这里收窄为带数组属性的组件类型
 const ArrayItemsField = ArrayItems as unknown as FC<PropsWithChildren<IArrayBaseProps>>
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: {
-    FormItem,
-    Addition,
-    Copy,
-    Remove,
-    MoveUp,
-    MoveDown,
-    Index,
-    SortHandle,
-  },
-  arrayComponents: { ArrayItems: ArrayItemsField },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents: { ...arrayComponents, ArrayItems: ArrayItemsField },
   defaultDecorator: 'FormItem',
 })
 
@@ -93,7 +72,9 @@ const schema = createSchema({
 })
 
 export default () => (
-  <Form form={form}>
-    <SchemaField schema={schema} />
-  </Form>
+  <OptionsProvider>
+    <Form form={form}>
+      <SchemaField schema={schema} />
+    </Form>
+  </OptionsProvider>
 )

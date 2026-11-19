@@ -29,11 +29,11 @@
 
 ## 用法
 
-- 作为字段装饰器：`f.Input({ decorator: 'Editable' })`，需要在 `createSchemaField` 的 `voidComponents` 中注册 `Editable`。
+- 作为字段装饰器：`f.Input({ decorator: 'Editable' })`，需要在 `createSchemaOptions` 的 `voidComponents` 中注册 `Editable`。
 - 作为容器：`component: 'EditablePopover'` 包裹多个子字段，编辑内容在 Popover 中展示。
 
 ```tsx
-const { SchemaField, fragment: f } = createSchemaField({
+const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: { Input },
   voidComponents: {
     FormItem,

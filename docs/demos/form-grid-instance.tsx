@@ -1,10 +1,11 @@
-import { Form, FormGrid, FormItem, Input, createFormGrid } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField, observer } from '@formvk/react'
+import { Form, arrayComponents, createFormGrid, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, observer, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: { FormItem, FormGrid },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -49,9 +50,11 @@ export default () => {
   const [form] = useState(() => createForm())
 
   return (
-    <Form form={form} layout="vertical">
-      <GridDigest />
-      <SchemaField schema={schema} />
-    </Form>
+    <OptionsProvider>
+      <Form form={form} layout="vertical">
+        <GridDigest />
+        <SchemaField schema={schema} />
+      </Form>
+    </OptionsProvider>
   )
 }

@@ -1,6 +1,6 @@
 # FormStep
 
-分步表单容器，每个步骤通过 `FormStepPane` 声明，步骤条的 `title` / `description` / `icon` 等属性与 antd `Steps` 一致。步骤切换由 `createFormStep` 受控实例驱动，并内置每步校验。
+分步表单容器，每个步骤通过 `StepPane` 声明，步骤条的 `title` / `description` / `icon` 等属性与 antd `Steps` 一致。步骤切换由 `createFormStep` 受控实例驱动，并内置每步校验。
 
 <demo react="../demos/form-step.tsx" title="FormStep 示例" description="上一步、下一步、校验与提交" />
 
@@ -19,11 +19,11 @@
 | `current` | `number` | 当前步骤索引 |
 | `onChange` | `(index) => void` | 步骤切换回调 |
 
-### FormStepPane
+### StepPane
 
 | 子组件 | 说明 |
 | --- | --- |
-| `FormStepPane` | 步骤面板，`componentProps` 同 antd `StepProps`（`title`、`description`、`icon` 等） |
+| `StepPane` | 步骤面板，`componentProps` 同 antd `StepProps`（`title`、`description`、`icon` 等） |
 
 ### 受控实例
 

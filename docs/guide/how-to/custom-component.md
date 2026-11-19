@@ -33,7 +33,7 @@ export const SelectField = observer(function SelectField(props: { options?: Opti
 注册到工厂后即可在 Schema 中使用：
 
 ```tsx
-const { SchemaField, fragment: f } = createSchemaField({
+const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: { SelectField },
   voidComponents: { FormItem },
   defaultDecorator: 'FormItem',

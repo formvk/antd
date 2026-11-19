@@ -1,5 +1,5 @@
-import { Form, FormItem, Input, Select } from '@formvk/antd'
-import { createExpression, createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { createExpression, createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
 type FeedbackLayout = 'loose' | 'terse' | 'popover' | 'none'
@@ -8,9 +8,10 @@ type FeedbackLayout = 'loose' | 'terse' | 'popover' | 'none'
 const CheckIcon = () => <span style={{ color: '#52c41a' }}>✓</span>
 const CloseIcon = () => <span style={{ color: '#ff4d4f' }}>✕</span>
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input, Select },
-  voidComponents: { FormItem },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -85,8 +86,10 @@ export default () => {
   const [form] = useState(() => createForm({ values: { feedbackLayout: 'loose' } }))
 
   return (
-    <Form form={form}>
-      <SchemaField schema={schema} />
-    </Form>
+    <OptionsProvider>
+      <Form form={form}>
+        <SchemaField schema={schema} />
+      </Form>
+    </OptionsProvider>
   )
 }

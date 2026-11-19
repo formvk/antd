@@ -1,10 +1,11 @@
-import { Editable, EditablePopover, Form, FormItem, Input } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: { FormItem, Editable, EditablePopover },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -33,11 +34,13 @@ export default () => {
   )
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <div style={{ color: '#666' }}>点击字段进入编辑态，失焦后恢复为阅读态。</div>
-      <Form form={form} layout="vertical">
-        <SchemaField schema={schema} />
-      </Form>
-    </div>
+    <OptionsProvider>
+      <div style={{ display: 'grid', gap: 12 }}>
+        <div style={{ color: '#666' }}>点击字段进入编辑态，失焦后恢复为阅读态。</div>
+        <Form form={form} layout="vertical">
+          <SchemaField schema={schema} />
+        </Form>
+      </div>
+    </OptionsProvider>
   )
 }

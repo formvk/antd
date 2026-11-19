@@ -1,6 +1,6 @@
 # FormTab
 
-标签页布局容器，子面板通过 `FormTabPane` 声明，按标签页分组字段。面板内字段校验失败时，对应标签上会展示错误数量。
+标签页布局容器，子面板通过 `TabPane` 声明，按标签页分组字段。面板内字段校验失败时，对应标签上会展示错误数量。
 
 <demo react="../demos/form-tab.tsx" title="FormTab 示例" description="多标签页分组字段与校验错误提示" />
 
@@ -19,11 +19,11 @@
 | `activeKey` | `string` | 当前激活的 tab |
 | `onChange` | `(key) => void` | 切换 tab 时触发 |
 
-### FormTabPane
+### TabPane
 
 | 子组件 | 说明 |
 | --- | --- |
-| `FormTabPane` | 标签页面板，`componentProps` 同 antd `TabPaneProps`（`key`、`tab`、`disabled` 等） |
+| `TabPane` | 标签页面板，`componentProps` 同 antd `TabPaneProps`（`key`、`tab`、`disabled` 等） |
 
 ### 受控实例
 
@@ -37,9 +37,9 @@
 ## 用法
 
 ```tsx
-const { SchemaField, fragment: f } = createSchemaField({
+const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: { Input },
-  voidComponents: { FormItem, FormTab, TabPane: FormTabPane },
+  voidComponents: { FormItem, FormTab, TabPane },
   defaultDecorator: 'FormItem',
 })
 

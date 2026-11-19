@@ -1,11 +1,12 @@
-import { Form, FormItem, Input, Placeholder, Select, Text } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField, observer } from '@formvk/react'
+import { Form, Placeholder, Text, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, observer, SchemaField } from '@formvk/react'
 import { Switch } from 'antd'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input, Select },
-  voidComponents: { FormItem },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -27,25 +28,27 @@ export default observer(() => {
   )
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <Form form={form} layout="vertical" previewTextPlaceholder="—">
-        <SchemaField schema={schema} />
-      </Form>
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <Switch
-          checked={form.readPretty}
-          onChange={checked => {
-            form.readPretty = checked
-          }}
-        />
-        切换阅读态（空值展示 previewTextPlaceholder）
-      </label>
-      <div>
-        占位符上下文：
-        <Placeholder value="N/A">
-          <Text value={undefined} />
-        </Placeholder>
+    <OptionsProvider>
+      <div style={{ display: 'grid', gap: 12 }}>
+        <Form form={form} layout="vertical" previewTextPlaceholder="—">
+          <SchemaField schema={schema} />
+        </Form>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Switch
+            checked={form.readPretty}
+            onChange={checked => {
+              form.readPretty = checked
+            }}
+          />
+          切换阅读态（空值展示 previewTextPlaceholder）
+        </label>
+        <div>
+          占位符上下文：
+          <Placeholder value="N/A">
+            <Text value={undefined} />
+          </Placeholder>
+        </div>
       </div>
-    </div>
+    </OptionsProvider>
   )
 })

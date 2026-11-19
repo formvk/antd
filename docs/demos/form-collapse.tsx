@@ -1,15 +1,12 @@
-import { Form, FormCollapse, FormCollapsePanel, FormItem, Input, createFormCollapse } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, arrayComponents, createFormCollapse, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { Button } from 'antd'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: {
-    FormItem,
-    FormCollapse,
-    CollapsePanel: FormCollapsePanel,
-  },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -46,12 +43,14 @@ export default () => {
   const [form] = useState(() => createForm())
 
   return (
-    <Form form={form} layout="vertical">
-      <SchemaField schema={schema} />
-      <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-        <Button onClick={() => collapse.toggleActiveKey('base')}>切换基本信息</Button>
-        <Button onClick={() => collapse.setActiveKeys(['contact'])}>切换到联系方式</Button>
-      </div>
-    </Form>
+    <OptionsProvider>
+      <Form form={form} layout="vertical">
+        <SchemaField schema={schema} />
+        <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+          <Button onClick={() => collapse.toggleActiveKey('base')}>切换基本信息</Button>
+          <Button onClick={() => collapse.setActiveKeys(['contact'])}>切换到联系方式</Button>
+        </div>
+      </Form>
+    </OptionsProvider>
   )
 }

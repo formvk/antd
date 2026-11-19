@@ -1,11 +1,12 @@
-import { Form, FormItem, Input, Select } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { Segmented } from 'antd'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input, Select },
-  voidComponents: { FormItem },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -32,14 +33,16 @@ export default () => {
   const [layout, setLayout] = useState<'horizontal' | 'vertical' | 'inline'>('horizontal')
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        layout：
-        <Segmented value={layout} onChange={value => setLayout(value as typeof layout)} options={layouts} />
-      </label>
-      <Form form={form} layout={layout}>
-        <SchemaField schema={schema} />
-      </Form>
-    </div>
+    <OptionsProvider>
+      <div style={{ display: 'grid', gap: 12 }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          layout：
+          <Segmented value={layout} onChange={value => setLayout(value as typeof layout)} options={layouts} />
+        </label>
+        <Form form={form} layout={layout}>
+          <SchemaField schema={schema} />
+        </Form>
+      </div>
+    </OptionsProvider>
   )
 }

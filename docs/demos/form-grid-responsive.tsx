@@ -1,11 +1,12 @@
-import { Form, FormGrid, FormItem, Input } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { Slider } from 'antd'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input },
-  voidComponents: { FormItem, FormGrid },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -34,14 +35,16 @@ export default () => {
   const [width, setWidth] = useState(620)
 
   return (
-    <div style={{ width, maxWidth: '100%' }}>
-      <label style={{ display: 'block', marginBottom: 12 }}>
-        容器宽度：{width}px
-        <Slider min={240} max={900} value={width} onChange={setWidth} />
-      </label>
-      <Form form={form} layout="vertical">
-        <SchemaField schema={schema} />
-      </Form>
-    </div>
+    <OptionsProvider>
+      <div style={{ width, maxWidth: '100%' }}>
+        <label style={{ display: 'block', marginBottom: 12 }}>
+          容器宽度：{width}px
+          <Slider min={240} max={900} value={width} onChange={setWidth} />
+        </label>
+        <Form form={form} layout="vertical">
+          <SchemaField schema={schema} />
+        </Form>
+      </div>
+    </OptionsProvider>
   )
 }

@@ -1,30 +1,39 @@
-import { createSchemaField } from '@formvk/react'
+import { createSchemaOptions, SchemaField as BaseSchemaField } from '@formvk/react'
+import type { ComponentProps } from 'react'
 
 import {
   ArrayItems,
+  CollapsePanel,
+  Column,
   FormCollapse,
-  FormCollapsePanel,
   FormGrid,
   FormItem,
   FormTab,
-  FormTabPane,
   Input,
   Select,
   SelectTable,
-  SelectTableColumn,
+  TabPane,
 } from '../index'
 
-export const { SchemaField, fragment: f } = createSchemaField({
+const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: { Input, Select },
   voidComponents: {
     FormItem,
     FormGrid,
     FormTab,
-    TabPane: FormTabPane,
+    TabPane,
     FormCollapse,
-    CollapsePanel: FormCollapsePanel,
-    Column: SelectTableColumn,
+    CollapsePanel,
+    Column,
   },
   arrayComponents: { ArrayItems, SelectTable },
   defaultDecorator: 'FormItem',
 })
+
+const SchemaField = (props: ComponentProps<typeof BaseSchemaField>) => (
+  <OptionsProvider>
+    <BaseSchemaField {...props} />
+  </OptionsProvider>
+)
+
+export { f, SchemaField }

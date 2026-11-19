@@ -45,4 +45,4 @@ const schema = createSchema({
 })
 ```
 
-`Index` 与操作组件会渲染在面板标题区，面板标题缺省取字段 `title`。子面板组件为 `ArrayCollapsePanel`。
+`Index` 与操作组件会渲染在面板标题区，面板标题缺省取字段 `title`。子面板组件为 `CollapsePanel`。

@@ -1,10 +1,11 @@
-import { Form, FormItem, Input, Select, Submit } from '@formvk/antd'
-import { createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, Submit, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  components: { Input, Select },
-  voidComponents: { FormItem },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -25,19 +26,21 @@ export default () => {
   const [result, setResult] = useState('')
 
   return (
-    <div style={{ display: 'grid', gap: 12 }}>
-      <Form
-        form={form}
-        layout="vertical"
-        onAutoSubmit={values => setResult(`提交成功：${JSON.stringify(values)}`)}
-        onAutoSubmitFailed={feedbacks =>
-          setResult(`提交失败：${feedbacks.map(item => item.messages?.join('')).join('；')}`)
-        }
-      >
-        <SchemaField schema={schema} />
-        <Submit>提交</Submit>
-      </Form>
-      {result && <div style={{ color: result.startsWith('提交成功') ? '#389e0d' : '#cf1322' }}>{result}</div>}
-    </div>
+    <OptionsProvider>
+      <div style={{ display: 'grid', gap: 12 }}>
+        <Form
+          form={form}
+          layout="vertical"
+          onAutoSubmit={values => setResult(`提交成功：${JSON.stringify(values)}`)}
+          onAutoSubmitFailed={feedbacks =>
+            setResult(`提交失败：${feedbacks.map(item => item.messages?.join('')).join('；')}`)
+          }
+        >
+          <SchemaField schema={schema} />
+          <Submit>提交</Submit>
+        </Form>
+        {result && <div style={{ color: result.startsWith('提交成功') ? '#389e0d' : '#cf1322' }}>{result}</div>}
+      </div>
+    </OptionsProvider>
   )
 }

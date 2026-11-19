@@ -1,10 +1,11 @@
-import { Form, FormItem, SelectTable, SelectTableColumn } from '@formvk/antd'
-import { FormConsumer, createForm, createSchema, createSchemaField } from '@formvk/react'
+import { Form, arrayComponents, fieldComponents, voidComponents } from '@formvk/antd'
+import { FormConsumer, createForm, createSchema, createSchemaOptions, SchemaField } from '@formvk/react'
 import { useState } from 'react'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  voidComponents: { FormItem, Column: SelectTableColumn },
-  arrayComponents: { SelectTable },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  components: fieldComponents,
+  voidComponents,
+  arrayComponents,
   defaultDecorator: 'FormItem',
 })
 
@@ -63,15 +64,17 @@ export default () => {
   const [form] = useState(() => createForm({ values: { users: [1], single: 2 } }))
 
   return (
-    <Form form={form}>
-      <SchemaField schema={schema} />
-      <FormConsumer>
-        {({ form: consumerForm }) => (
-          <pre style={{ margin: 0, padding: 12, background: '#f6f8fa', borderRadius: 8 }}>
-            {JSON.stringify(consumerForm.values, null, 2)}
-          </pre>
-        )}
-      </FormConsumer>
-    </Form>
+    <OptionsProvider>
+      <Form form={form}>
+        <SchemaField schema={schema} />
+        <FormConsumer>
+          {({ form: consumerForm }) => (
+            <pre style={{ margin: 0, padding: 12, background: '#f6f8fa', borderRadius: 8 }}>
+              {JSON.stringify(consumerForm.values, null, 2)}
+            </pre>
+          )}
+        </FormConsumer>
+      </Form>
+    </OptionsProvider>
   )
 }

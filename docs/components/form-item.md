@@ -1,9 +1,9 @@
 # FormItem
 
-字段装饰器，负责 label、必填标记、tooltip 与校验反馈的展示，并把表单级布局配置应用到单个字段。通常作为 `createSchemaField` 的默认装饰器使用：
+字段装饰器，负责 label、必填标记、tooltip 与校验反馈的展示，并把表单级布局配置应用到单个字段。通常作为 `createSchemaOptions` 的默认装饰器使用：
 
 ```tsx
-const { SchemaField, fragment: f } = createSchemaField({
+const { OptionsProvider, fragment: f } = createSchemaOptions({
   components: { Input },
   voidComponents: { FormItem },
   defaultDecorator: 'FormItem',

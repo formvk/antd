@@ -30,15 +30,15 @@
 
 ## 列组件
 
-`SelectTableColumn` 的 `componentProps` 支持 antd `Table` 的列属性（`ColumnType`），并通过 `dataIndex` 与字段名绑定，`key` 为必填。
+`Column` 的 `componentProps` 支持 antd `Table` 的列属性（`ColumnType`），并通过 `dataIndex` 与字段名绑定，`key` 为必填。
 
 ## 用法
 
 ```tsx
-import { FormItem, SelectTable, SelectTableColumn } from '@formvk/antd'
+import { Column, FormItem, SelectTable } from '@formvk/antd'
 
-const { SchemaField, fragment: f } = createSchemaField({
-  voidComponents: { FormItem, Column: SelectTableColumn },
+const { OptionsProvider, fragment: f } = createSchemaOptions({
+  voidComponents: { FormItem, Column },
   arrayComponents: { SelectTable },
   defaultDecorator: 'FormItem',
 })

@@ -1,6 +1,6 @@
 # ArrayTable
 
-可编辑表格形态的数组组件，列通过 `ArrayTableColumn` 声明，适合字段规整、数据量较大的对象数组。
+可编辑表格形态的数组组件，列通过 `Column` 声明，适合字段规整、数据量较大的对象数组。
 
 <demo react="../demos/array-table.tsx" title="ArrayTable 示例" description="列声明、操作列、分页与排序" />
 
@@ -28,7 +28,7 @@
 
 | 组件 | 说明 |
 | --- | --- |
-| `ArrayTableColumn` | 列容器，`componentProps` 同 antd `ColumnType` |
+| `Column` | 列容器，`componentProps` 同 antd `ColumnType` |
 | `ArrayTableAddition` | 表格底部的新增按钮 |
 | `Index` | 序号列内容 |
 | `SortHandle` | 拖拽排序手柄 |
