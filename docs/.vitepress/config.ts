@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 import { defineConfig } from 'vitepress'
 import { vitepressDemoPlugin } from 'vitepress-demo-plugin/markdown'
+import llmstxt from 'vitepress-plugin-llms'
 
 const rootDir = fileURLToPath(new URL('../..', import.meta.url))
 
@@ -99,6 +100,7 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: [llmstxt()],
     resolve: {
       alias: {
         '@formvk/antd': path.resolve(rootDir, 'packages/components/src/index.ts'),
@@ -123,6 +125,7 @@ export default defineConfig({
       { text: '指南', link: '/guide/install' },
       { text: '组件', link: '/components/' },
       { text: '容器', link: '/containers/' },
+      { text: '内核', link: 'https://formvk.github.io/core/' },
     ],
     sidebar: {
       '/guide/': [

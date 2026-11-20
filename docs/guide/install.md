@@ -28,6 +28,8 @@ yarn add @formvk/antd @formvk/core @formvk/react @formvk/schema antd react react
 
 `@formvk/antd` 只提供组件桥接层：表单实例、`SchemaField` 工厂等内核能力需要从 `@formvk/react` 导入，因此建议显式安装 `@formvk/core`、`@formvk/react` 与 `@formvk/schema`。
 
+表单实例、Schema、响应式等内核能力的完整文档见 [Formvk Core](https://formvk.github.io/core/)。
+
 样式通过 `@ant-design/cssinjs` 在运行时注入，不需要额外引入 CSS 文件，也不需要配置 less。
 
 ## 下一步
