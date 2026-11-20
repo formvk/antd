@@ -1,25 +1,19 @@
 import type { TableModel } from '@formvk/models'
 import { observer } from '@formvk/reactive-react'
 import type { ISchema } from '@formvk/schema'
-import { Table } from 'antd'
-import type { TableProps } from 'antd'
-import { useEffect, useMemo } from 'react'
 import type { ComponentType, ReactNode } from 'react'
 
-import { TableRenderProvider } from '../../hooks'
-import { SchemaForm } from '../form'
-import { PopupForm } from '../popup'
+import { TableModelProvider } from '../../hooks'
 import type { DrawerFormProps, ModalFormProps } from '../popup'
+import type { DataTableProps, SearchFormProps } from './widgets'
+import { AddPopup, DataTable, EditPopup, SearchForm } from './widgets'
 
 /** 新增 / 编辑弹窗配置，`type` 默认 `drawer` */
 export type CrudTablePopupProps =
   | (Omit<DrawerFormProps, 'popup' | 'schema' | 'scope' | 'components'> & { type?: 'drawer' })
   | (Omit<ModalFormProps, 'popup' | 'schema' | 'scope' | 'components'> & { type: 'modal' })
 
-export interface CrudTableProps<IRecord extends object = any> extends Omit<
-  TableProps<IRecord>,
-  'dataSource' | 'pagination' | 'loading' | 'title'
-> {
+export interface CrudTableProps<IRecord extends object = any> extends Omit<DataTableProps<IRecord>, 'title'> {
   /** 表格模型，负责搜索、分页、记录与增删改的数据流转 */
   table: TableModel<IRecord>
   /** 搜索表单 schema */
@@ -34,8 +28,8 @@ export interface CrudTableProps<IRecord extends object = any> extends Omit<
   scope?: Record<string, unknown>
   /** 追加或覆盖内置组件 */
   components?: Record<string, ComponentType<any>>
-  /** 单元格空值占位符，供 `renders` 使用，默认 `--` */
-  placeholder?: ReactNode
+  /** 搜索表单配置，覆盖内部默认值 */
+  searchProps?: Omit<SearchFormProps, 'form' | 'schema' | 'scope' | 'components'>
   /** 新增与编辑弹窗的公共配置，可被 `addProps` / `editProps` 覆盖 */
   popupProps?: CrudTablePopupProps
   /** 新增弹窗配置，覆盖 `popupProps` */
@@ -44,63 +38,49 @@ export interface CrudTableProps<IRecord extends object = any> extends Omit<
   editProps?: CrudTablePopupProps
 }
 
-export const CrudTable = observer((props: CrudTableProps) => {
-  const { table, search, add, edit, title, scope, components, placeholder, popupProps, addProps, editProps, ...rest } =
-    props
-
-  useEffect(() => {
-    table.onMount()
-  }, [table])
-
-  const renderContext = useMemo(() => ({ table, placeholder, scope }), [table, placeholder, scope])
+/**
+ * 标准「搜索 + 表格 + 新增 / 编辑」组合。
+ * 需要自定义布局时，可改用 `TableModelProvider` 与 `SearchForm` / `DataTable` / `AddPopup` / `EditPopup` 自由组装
+ */
+function CrudTableWidget<IRecord extends object = any>(props: CrudTableProps<IRecord>) {
+  const {
+    table,
+    search,
+    add,
+    edit,
+    title,
+    scope,
+    components,
+    placeholder,
+    searchProps,
+    popupProps,
+    addProps,
+    editProps,
+    ...rest
+  } = props
 
   const addPopupConfig = {
     type: 'drawer',
     title: `新增${title ?? ''}`,
     ...popupProps,
     ...addProps,
-  } as Omit<DrawerFormProps, 'popup'>
+  } as CrudTablePopupProps
 
   const editPopupConfig = {
     type: 'drawer',
     title: `编辑${title ?? ''}`,
     ...popupProps,
     ...editProps,
-  } as Omit<DrawerFormProps, 'popup'>
+  } as CrudTablePopupProps
 
   return (
-    <TableRenderProvider value={renderContext}>
-      {search ? (
-        <SchemaForm
-          form={table.form}
-          schema={search}
-          scope={scope}
-          components={components}
-          onAutoSubmit={() => table.search()}
-        />
-      ) : null}
-      <Table
-        {...rest}
-        dataSource={table.records}
-        loading={table.form.submitting}
-        pagination={{
-          current: table.pagination.current,
-          pageSize: table.pagination.pageSize,
-          total: table.pagination.total,
-          onChange: (current, pageSize) =>
-            table.onSearch({
-              current,
-              pageSize,
-              total: table.pagination.total,
-            }),
-        }}
-      />
-      {add ? (
-        <PopupForm {...addPopupConfig} popup={table.addPopup} schema={add} scope={scope} components={components} />
-      ) : null}
-      {edit ? (
-        <PopupForm {...editPopupConfig} popup={table.editPopup} schema={edit} scope={scope} components={components} />
-      ) : null}
-    </TableRenderProvider>
+    <TableModelProvider value={table} placeholder={placeholder} scope={scope}>
+      {search ? <SearchForm {...searchProps} schema={search} scope={scope} components={components} /> : null}
+      <DataTable<IRecord> {...rest} />
+      {add ? <AddPopup {...addPopupConfig} schema={add} scope={scope} components={components} /> : null}
+      {edit ? <EditPopup {...editPopupConfig} schema={edit} scope={scope} components={components} /> : null}
+    </TableModelProvider>
   )
-})
+}
+
+export const CrudTable = observer(CrudTableWidget) as typeof CrudTableWidget

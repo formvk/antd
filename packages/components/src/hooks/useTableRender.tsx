@@ -18,6 +18,32 @@ export const TableRenderContext = createContext<TableRenderContextValue | null>(
 
 export const TableRenderProvider = TableRenderContext.Provider
 
+export interface TableModelProviderProps<Model extends TableModel = TableModel> {
+  /** 表格模型 */
+  value: Model
+  /** 单元格空值占位符 */
+  placeholder?: ReactNode
+  /** 表达式作用域 */
+  scope?: Record<string, unknown>
+  children?: ReactNode
+}
+
+/** 只注入表格模型的轻量 Provider，适合用 widgets 自行组合搜索、表格与弹窗 */
+export const TableModelProvider = <Model extends TableModel = TableModel>(props: TableModelProviderProps<Model>) => {
+  const { value, placeholder, scope, children } = props
+  const contextValue = useMemo(() => ({ table: value, placeholder, scope }), [value, placeholder, scope])
+  return <TableRenderContext.Provider value={contextValue}>{children}</TableRenderContext.Provider>
+}
+
+/** 合并上下文 scope、组件 scope 与模型状态，作为表达式作用域 */
+export function useTableScope(scope?: Record<string, unknown>) {
+  const { table, scope: contextScope } = useTableRenderContext()
+  return useMemo(
+    () => ({ ...contextScope, ...scope, $table: table, $state: table.state }),
+    [contextScope, scope, table]
+  )
+}
+
 export function useTableRenderContext<Model extends TableModel = TableModel>() {
   const context = useContext(TableRenderContext)
   if (!context) {

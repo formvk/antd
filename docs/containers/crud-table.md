@@ -51,6 +51,7 @@
 | `scope` | `Record<string, unknown>` | — | 表达式作用域，同时合并进表格渲染器参数 |
 | `components` | `SchemaReactComponents` | — | 可选，扁平组件映射；默认继承顶层 `OptionsProvider`，见 [容器总览](/containers/) |
 | `placeholder` | `ReactNode` | `--` | 单元格空值占位符，供 [`renders`](/containers/renders) 使用 |
+| `searchProps` | `SearchFormProps` | — | 搜索表单配置，覆盖内部默认的 `layout` / `feedbackLayout` / `wrapperWidth` |
 | `popupProps` | `CrudTablePopupProps` | — | 新增与编辑弹窗的公共配置 |
 | `addProps` | `CrudTablePopupProps` | — | 新增弹窗配置，覆盖 `popupProps` |
 | `editProps` | `CrudTablePopupProps` | — | 编辑弹窗配置，覆盖 `popupProps` |
@@ -95,6 +96,21 @@ const columns = [
 ```
 
 渲染器可读取 `table`、`$state`、`scope` 与单元格上下文，完整列表见 [表格渲染器](/containers/renders)。
+
+## 自由组合
+
+`CrudTable` 只是「搜索 + 表格 + 新增 / 编辑」的一层组合封装，适合简单场景。需要自定义布局时，改用 `TableModelProvider` 提供模型，再自由组装下列组件：
+
+<demo react="../demos/crud-table-widgets.tsx" title="Provider + 搜索表单 + 表格 + 弹窗自由组装" description="搜索区与表格放进 Card，新增按钮放到右上角，各组件共享同一个 TableModel" />
+
+| 组件 | 说明 |
+| --- | --- |
+| `TableModelProvider` | 注入 `TableModel`，可选 `placeholder` 与 `scope`，需包裹其余组件 |
+| `SearchForm` | 绑定 `table.form`，默认 `layout="inline"`，提交时调用 `table.search()` |
+| `DataTable` | 读取 `table.records` / `table.pagination` / 加载态，挂载时调用 `table.onMount()`，分页变化调用 `table.onSearch({ current, pageSize, total })` |
+| `AddPopup` / `EditPopup` | 基于 `PopupForm`，分别复用 `table.addPopup` / `table.editPopup` |
+
+`DataTable` 的 `columns` 支持 `{{ }}` 表达式，会与 `scope`、`$table`、`$state` 一起编译；`pagination={false}` 可关闭分页。`SearchForm` / `DataTable` 的 `scope` 与 `placeholder` 都支持单独覆盖，未传时继承 `TableModelProvider`。
 
 ## 行为说明
 
