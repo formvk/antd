@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-beta.3](https://github.com/formvk/antd/compare/v1.1.0-beta.2...v1.1.0-beta.3) (2026-11-20)
+
+### Features
+
+- 为弹窗组件增加 okText/cancelText 配置，支持国际化文案 ([bfabc3a](https://github.com/formvk/antd/commit/bfabc3ab11de9cd2f3621042f20dcd6ccc70f5f5))
+- **crud-table:** 拆分自由组合的表格 widgets 组件 ([158e0bc](https://github.com/formvk/antd/commit/158e0bce334ca7155b21bfd2ed93f9b8c246a1fd))
+
 # [1.1.0-beta.2](https://github.com/formvk/antd/compare/v1.1.0-beta.1...v1.1.0-beta.2) (2026-11-19)
 
 **Note:** Version bump only for package @formvk/antd-monorepo
