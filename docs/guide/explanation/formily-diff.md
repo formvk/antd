@@ -66,7 +66,7 @@ import { Text, TextInput, TextSelect, TextDatePicker } from '@formvk/antd'
 
 ## 不提供的组件
 
-本包不提供 `FormDialog` 与 `FormDrawer`。弹窗类交互建议直接使用 antd 的 `Modal` / `Drawer` 包裹 `Form` 实现，状态更透明，也便于与业务路由结合。
+本包不提供 `FormDialog` 与 `FormDrawer`。容器内的弹窗模型更合适：使用 `PopupModel` + [`PopupForm`](/containers/popup) 管理打开、提交与关闭，或在 `CrudTable` 中直接复用 `table.addPopup` / `table.editPopup`。
 
 ## 样式与技术栈
 

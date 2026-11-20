@@ -61,7 +61,7 @@ export default () => (
 
 - 包名替换为 `@formvk/*` 体系，`createForm`、`createSchemaOptions`、`createSchema` 等从 `@formvk/react` 导入
 - Schema 字段不再带 `x-` 前缀，使用 `component`、`decorator`、`componentProps`、`reactions` 等字段
-- 不提供 `FormDialog` 与 `FormDrawer`
+- 不提供 `FormDialog` 与 `FormDrawer`，容器内的弹窗模型（`PopupModel` + `PopupForm`）更合适
 - 样式通过 `@ant-design/cssinjs` 注入，无需额外引入 CSS 文件
 - `schema.component` / `schema.decorator` 既可以是注册名字符串，也可以直接传组件引用
 
