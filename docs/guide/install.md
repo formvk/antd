@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | React / React DOM | `>=18`（peerDependencies） | `19.3.1` |
 | antd | `^6.0.0`（peerDependencies） | `6.6.8` |
-| `@formvk/*` 内核包 | `~1.2.0-beta.1` | `~1.2.0-beta.1` |
+| `@formvk/*` 内核包 | `~1.2.0-beta.4` | `~1.2.0-beta.4` |
 | `@formvk/antd` | — | `1.0.1-beta.0` |
 | TypeScript | 可选，建议 `>=5.0` | `~6.0.3` |
 | Node.js（工程环境） | `>=22.18.0` | `>=22.18.0` |
