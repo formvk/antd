@@ -7,7 +7,7 @@
 - **cssinjs 样式**：基于 `@ant-design/cssinjs`，与 antd v6 主题保持一致，无需引入额外样式文件
 - **TypeScript**：完整类型声明，`createSchema` + `fragment` 自动推导组件与布局属性
 
-📖 文档站点：**https://formvk.github.io/antd/**
+📖 组件文档：**https://formvk.github.io/antd/** · 内核文档：**https://formvk.github.io/core/**
 
 ## 安装
 
@@ -55,7 +55,7 @@ export default () => (
 
 数组字段直接使用 `f.ArrayItems`，`arrayComponents` 已在顶层注册，无需重复配置。
 
-更多用法见文档：[快速开始](https://formvk.github.io/antd/guide/quick-start)、[Schema 写法](https://formvk.github.io/antd/guide/schema)、[组件总览](https://formvk.github.io/antd/components/)。
+更多用法见文档：[快速开始](https://formvk.github.io/antd/guide/quick-start)、[Schema 写法](https://formvk.github.io/antd/guide/schema)、[组件总览](https://formvk.github.io/antd/components/)、[内核文档](https://formvk.github.io/core/)。
 
 ## 与 formily-antd 的差异
 

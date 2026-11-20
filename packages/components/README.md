@@ -2,7 +2,7 @@
 
 Formvk 的 Ant Design v6 组件桥接层，用 Schema 驱动表单与 CRUD 页面开发。
 
-📖 文档站点：**https://formvk.github.io/antd/**
+📖 组件文档：**https://formvk.github.io/antd/** · 内核文档：**https://formvk.github.io/core/**
 
 ## 特性
 
@@ -88,6 +88,7 @@ export default () => (
 - [Schema 写法](https://formvk.github.io/antd/guide/schema)
 - [组件总览](https://formvk.github.io/antd/components/)
 - [CrudTable](https://formvk.github.io/antd/containers/crud-table)
+- [内核文档](https://formvk.github.io/core/)
 
 ## License
 
