@@ -1,7 +1,7 @@
 import type { TableModel } from '@formvk/models'
 import { observer } from '@formvk/reactive-react'
 import type { ISchema } from '@formvk/schema'
-import type { ComponentType, ReactNode } from 'react'
+import type { ComponentType } from 'react'
 
 import { TableModelProvider } from '../../hooks'
 import type { DrawerFormProps, ModalFormProps } from '../popup'
@@ -13,7 +13,7 @@ export type CrudTablePopupProps =
   | (Omit<DrawerFormProps, 'popup' | 'schema' | 'scope' | 'components'> & { type?: 'drawer' })
   | (Omit<ModalFormProps, 'popup' | 'schema' | 'scope' | 'components'> & { type: 'modal' })
 
-export interface CrudTableProps<IRecord extends object = any> extends Omit<DataTableProps<IRecord>, 'title'> {
+export interface CrudTableProps<IRecord extends object = any> extends DataTableProps<IRecord> {
   /** 表格模型，负责搜索、分页、记录与增删改的数据流转 */
   table: TableModel<IRecord>
   /** 搜索表单 schema */
@@ -22,8 +22,6 @@ export interface CrudTableProps<IRecord extends object = any> extends Omit<DataT
   add?: ISchema
   /** 编辑表单 schema */
   edit?: ISchema
-  /** 标题，用于拼接弹窗标题 */
-  title?: ReactNode
   /** 表达式作用域，同时合并进表格渲染器参数 */
   scope?: Record<string, unknown>
   /** 追加或覆盖内置组件 */
@@ -48,7 +46,6 @@ function CrudTableWidget<IRecord extends object = any>(props: CrudTableProps<IRe
     search,
     add,
     edit,
-    title,
     scope,
     components,
     placeholder,
@@ -59,19 +56,8 @@ function CrudTableWidget<IRecord extends object = any>(props: CrudTableProps<IRe
     ...rest
   } = props
 
-  const addPopupConfig = {
-    type: 'drawer',
-    title: `新增${title ?? ''}`,
-    ...popupProps,
-    ...addProps,
-  } as CrudTablePopupProps
-
-  const editPopupConfig = {
-    type: 'drawer',
-    title: `编辑${title ?? ''}`,
-    ...popupProps,
-    ...editProps,
-  } as CrudTablePopupProps
+  const addPopupConfig = { type: 'drawer', ...popupProps, ...addProps } as CrudTablePopupProps
+  const editPopupConfig = { type: 'drawer', ...popupProps, ...editProps } as CrudTablePopupProps
 
   return (
     <TableModelProvider value={table} placeholder={placeholder} scope={scope}>

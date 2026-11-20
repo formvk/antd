@@ -76,12 +76,13 @@ const Demo = () => {
         </Button>
         <CrudTable
           table={table}
-          title="用户"
           rowKey="id"
           search={searchSchema}
           add={formSchema}
           edit={formSchema}
           popupProps={{ type: 'modal', width: 480 }}
+          addProps={{ title: '新增用户' }}
+          editProps={{ title: '编辑用户' }}
           columns={[
             { title: '序号', width: 70, render: renders.serial() },
             { title: '用户名', dataIndex: 'username', render: renders.text() },

@@ -47,7 +47,6 @@
 | `search` | `ISchema` | — | 搜索表单 schema，不传则不渲染搜索区 |
 | `add` | `ISchema` | — | 新增表单 schema，不传则不渲染新增弹窗 |
 | `edit` | `ISchema` | — | 编辑表单 schema，不传则不渲染编辑弹窗 |
-| `title` | `ReactNode` | — | 弹窗标题后缀，如 `"用户"` 渲染为「新增用户 / 编辑用户」 |
 | `scope` | `Record<string, unknown>` | — | 表达式作用域，同时合并进表格渲染器参数 |
 | `components` | `SchemaReactComponents` | — | 可选，扁平组件映射；默认继承顶层 `OptionsProvider`，见 [容器总览](/containers/) |
 | `placeholder` | `ReactNode` | `--` | 单元格空值占位符，供 [`renders`](/containers/renders) 使用 |
@@ -55,7 +54,7 @@
 | `popupProps` | `CrudTablePopupProps` | — | 新增与编辑弹窗的公共配置 |
 | `addProps` | `CrudTablePopupProps` | — | 新增弹窗配置，覆盖 `popupProps` |
 | `editProps` | `CrudTablePopupProps` | — | 编辑弹窗配置，覆盖 `popupProps` |
-| 其他 | `TableProps` | — | 透传给 antd `Table`，`dataSource`、`pagination`、`loading`、`title` 由容器接管 |
+| 其他 | `TableProps` | — | 透传给 antd `Table`，`dataSource`、`pagination`、`loading` 由容器接管 |
 
 ## 弹窗配置
 
@@ -76,10 +75,10 @@
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `type` | `'modal' \| 'drawer'` | `'drawer'` | 弹窗形态 |
-| `title` | `ReactNode` | `新增{title}` / `编辑{title}` | 弹窗标题，传入时覆盖默认拼接结果 |
+| `title` | `ReactNode` | — | 弹窗标题，`CrudTable` 不生成默认标题 |
 | 其他 | `ModalProps \| DrawerProps` | — | 其余属性透传给对应的 antd 组件 |
 
-合并顺序为 `默认值 → popupProps → addProps / editProps`，后者覆盖前者。
+合并顺序为 `默认值 → popupProps → addProps / editProps`，后者覆盖前者。`CrudTable` 不内置弹窗标题文案，需要标题时请通过 `addProps` / `editProps` 传入。
 
 ## 表格渲染器
 

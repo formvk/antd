@@ -51,6 +51,8 @@
 | --- | --- | --- | --- |
 | `popup` | `PopupModel` | — | 同 `ModalForm` |
 | `onOk` / `onCancel` | 同上 | — | 同 `ModalForm` |
+| `okText` | `ReactNode` | antd locale 的 `Modal.okText` | 确定按钮文案 |
+| `cancelText` | `ReactNode` | antd locale 的 `Modal.cancelText` | 取消按钮文案 |
 | `schema` / `scope` / `components` / `children` | 同 [SchemaForm](/containers/schema-form) | — | 表单内容 |
 | 其他 | `DrawerProps` | — | 透传给 antd `Drawer`，`open`、`onClose`、`footer`、`size` 由容器接管 |
 
@@ -58,6 +60,7 @@
 
 - 点确定时先触发 `onOk`，未返回 `false` 才调用 `popup.onSubmit()`。
 - 点取消时先触发 `onCancel`，未返回 `false` 才调用 `popup.close()`。
+- 抽屉底部按钮文案默认取 `ConfigProvider` locale 中的 `Modal.okText` / `Modal.cancelText`，可通过 `okText` / `cancelText` 覆盖。
 - 校验中与提交中按钮通过 `popup.form.submitting` 显示 loading。
 - 提交函数返回假值时表单保持打开，便于展示服务端错误。
 - 表单内容继承应用最外层的 `OptionsProvider`，通常无需再传 `components`；弹窗内容通过 portal 渲染，上下文依然有效。

@@ -2,7 +2,9 @@ import type { PopupModel } from '@formvk/models'
 import { observer } from '@formvk/reactive-react'
 import { Button, Drawer, Space } from 'antd'
 import type { DrawerProps } from 'antd'
+import type { ReactNode } from 'react'
 
+import { useConfig } from '../../../hooks'
 import { SchemaForm } from '../../form'
 import type { SchemaFormProps } from '../../form'
 import type { PopupTriggerEvent } from './ModalForm'
@@ -15,10 +17,15 @@ export interface DrawerFormProps
   popup: PopupModel
   onOk?: (e: PopupTriggerEvent) => boolean | void | Promise<boolean | void>
   onCancel?: (e: PopupTriggerEvent) => boolean | void | Promise<boolean | void>
+  /** 确定按钮文案，默认取 antd 全球化配置中的 Modal 文案 */
+  okText?: ReactNode
+  /** 取消按钮文案，默认取 antd 全球化配置中的 Modal 文案 */
+  cancelText?: ReactNode
 }
 
 export const DrawerForm = observer((props: DrawerFormProps) => {
-  const { popup, onOk, onCancel, schema, scope, components, children, ...rest } = props
+  const { popup, onOk, onCancel, schema, scope, components, children, okText, cancelText, ...rest } = props
+  const { locale } = useConfig()
 
   const handleOk = async (e: PopupTriggerEvent) => {
     if ((await onOk?.(e)) === false) return
@@ -38,9 +45,9 @@ export const DrawerForm = observer((props: DrawerFormProps) => {
       onClose={handleCancel}
       footer={
         <Space>
-          <Button onClick={handleCancel}>取消</Button>
+          <Button onClick={handleCancel}>{cancelText ?? locale?.Modal?.cancelText ?? 'Cancel'}</Button>
           <Button type="primary" loading={popup.form.submitting} onClick={handleOk}>
-            确定
+            {okText ?? locale?.Modal?.okText ?? 'OK'}
           </Button>
         </Space>
       }
