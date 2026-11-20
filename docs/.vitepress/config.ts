@@ -127,6 +127,7 @@ export default defineConfig({
       { text: '容器', link: '/containers/' },
       { text: '内核', link: 'https://formvk.github.io/core/' },
     ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/formvk/antd' }],
     sidebar: {
       '/guide/': [
         {
