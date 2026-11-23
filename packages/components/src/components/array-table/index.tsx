@@ -244,7 +244,7 @@ const ArrayTablePagination: ReactFC<IArrayTablePaginationProps> = props => {
   const endIndex = startIndex + pageSize - 1
   const total = dataSource?.length || 0
   const totalPage = Math.ceil(total / pageSize)
-  const pages = Array.from(new Array(totalPage)).map((_, index) => {
+  const pages = Array.from({ length: totalPage }, (_, index) => {
     const page = index + 1
     return {
       label: page,

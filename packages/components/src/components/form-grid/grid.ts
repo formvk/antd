@@ -140,7 +140,7 @@ const resolveChildren = (grid: Grid<any>) => {
     if (columnIndex === 0) {
       rowIndex++
     }
-    if (shadowColumnIndex == 0) {
+    if (shadowColumnIndex === 0) {
       shadowRowIndex++
     }
     node.shadowRow = shadowRowIndex

@@ -61,7 +61,7 @@ export const createFormCollapse = (defaultActiveKeys?: ActiveKeys): IFormCollaps
         if (formCollapse.activeKeys.includes(key)) {
           return true
         }
-      } else if (formCollapse.activeKeys == key) {
+      } else if (formCollapse.activeKeys === key) {
         return true
       }
       return false
@@ -72,7 +72,7 @@ export const createFormCollapse = (defaultActiveKeys?: ActiveKeys): IFormCollaps
     },
     removeActiveKey(key: ActiveKey) {
       if (Array.isArray(formCollapse.activeKeys)) {
-        formCollapse.activeKeys = formCollapse.activeKeys.filter(item => item != key)
+        formCollapse.activeKeys = formCollapse.activeKeys.filter(item => item !== key)
       } else {
         formCollapse.activeKeys = ''
       }
@@ -128,14 +128,17 @@ const InternalFormCollapse: ReactFC<IFormCollapseProps> = observer(props => {
         rest.onChange?.(key)
         mergedFormCollapse?.setActiveKeys?.(key)
       }}
-      items={panels.map(({ props: panelProps, schema, name, key }) =>
-        Object.assign({}, panelProps, {
+      items={
+        // 复制而不是原地修改，避免污染 schema 上的 props
+        // oxlint-disable-next-line no-map-spread
+        panels.map(({ props: panelProps, schema, name, key }) => ({
+          ...panelProps,
           key,
           forceRender: true,
           label: badgedHeader(name, panelProps),
           children: <RecursionField schema={schema} name={name} />,
-        })
-      )}
+        }))
+      }
     />
   )
 })

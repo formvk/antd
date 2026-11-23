@@ -8,13 +8,13 @@ import { isStr } from '@formvk/shared'
  * 2. 组件引用（函数 / memo / forwardRef 对象），内核 getRawComponent 会直接使用；
  * 3. `{{...}}` 表达式字符串，渲染时才能确定最终组件。
  *
- * 只有字符串能直接 indexOf；组件引用退化为按 displayName / name 做身份匹配，
- * 避免 `component.indexOf is not a function` 崩溃。表达式字符串按不匹配处理。
+ * 只有字符串能直接做包含判断；组件引用退化为按 displayName / name 做身份匹配，
+ * 避免 `component.includes is not a function` 崩溃。表达式字符串按不匹配处理。
  */
 export const isComponentOf = (component: unknown, keyword: string): boolean => {
-  if (isStr(component)) return component.indexOf(keyword) > -1
+  if (isStr(component)) return component.includes(keyword)
   if (!component) return false
   const named = component as { displayName?: string; name?: string }
   const name = named.displayName || named.name
-  return isStr(name) ? name.indexOf(keyword) > -1 : false
+  return isStr(name) && name.includes(keyword)
 }

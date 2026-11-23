@@ -130,12 +130,8 @@ export const FormLayout: FC<PropsWithChildren<IFormLayoutProps>> = ({
     className
   )
   const newDeepLayout = useMemo(() => {
-    const layout: IFormLayoutContext = {
-      ...deepLayout,
-    }
-    if (!shallow) {
-      Object.assign(layout, props)
-    } else {
+    const layout: IFormLayoutContext = shallow ? { ...deepLayout } : { ...deepLayout, ...props }
+    if (shallow) {
       if (props.size) {
         layout.size = props.size
       }

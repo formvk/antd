@@ -36,7 +36,7 @@ export const ArrayTabs: FC<PropsWithChildren<TabsProps>> = observer(props => {
   const getKey = (index: number) => String(field.getRecordKey(index))
   const tabKeys = dataSource.map((_, index) => getKey(index))
   const onEdit = (targetKey: any, type: 'add' | 'remove') => {
-    if (type == 'add') {
+    if (type === 'add') {
       const id = dataSource.length
       if (field?.value?.length) {
         field.push(null)
@@ -44,7 +44,7 @@ export const ArrayTabs: FC<PropsWithChildren<TabsProps>> = observer(props => {
         field.push(null, null)
       }
       setActiveKey(getKey(id))
-    } else if (type == 'remove') {
+    } else if (type === 'remove') {
       const index = dataSource.findIndex((_, i) => getKey(i) === String(targetKey))
       if (index < 0) return
       if (index - 1 > -1) {

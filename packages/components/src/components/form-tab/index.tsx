@@ -95,16 +95,16 @@ export const FormTab: ReactFC<IFormTabProps> = observer(props => {
         rest.onChange?.(key)
         mergedFormTab?.setActiveKey?.(key)
       }}
-      items={tabs.map(({ props: tabProps, schema, name }, key) =>
-        Object.assign(
-          {
-            key,
-            label: <FeedbackBadge name={name} tab={tabProps.tab} />,
-          },
-          tabProps,
-          { children: <RecursionField schema={schema} name={name} /> }
-        )
-      )}
+      items={
+        // 复制而不是原地修改，避免污染 schema 上的 props
+        // oxlint-disable-next-line no-map-spread
+        tabs.map(({ props: tabProps, schema, name }, key) => ({
+          key,
+          label: <FeedbackBadge name={name} tab={tabProps.tab} />,
+          ...tabProps,
+          children: <RecursionField schema={schema} name={name} />,
+        }))
+      }
     />
   )
 })

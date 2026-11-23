@@ -43,7 +43,7 @@ function getInheritedBackgroundColor(el: HTMLElement) {
   const backgroundColor = window.getComputedStyle(el).backgroundColor
 
   // if we got a real value, return it
-  if (backgroundColor != defaultStyle) return backgroundColor
+  if (backgroundColor !== defaultStyle) return backgroundColor
 
   // if we've reached the top parent el without getting an explicit color, return default
   if (!el.parentElement) return defaultStyle
