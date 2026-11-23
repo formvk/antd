@@ -94,12 +94,15 @@ const InternalSortHandle = SortableHandle(props => {
   )
 })
 
-export const SortHandle = observer<CommonProps>(props => {
-  const array = useArray()
-  if (!array) return null
-  if (array.field?.pattern !== 'editable') return null
-  return <InternalSortHandle {...props} />
-})
+export const SortHandle = observer<CommonProps>(
+  props => {
+    const array = useArray()
+    if (!array) return null
+    if (array.field?.pattern !== 'editable') return null
+    return <InternalSortHandle {...props} />
+  },
+  { displayName: 'SortHandle' }
+)
 
 export const Index: FC<HTMLAttributes<HTMLSpanElement>> = props => {
   const index = useIndex()
@@ -111,42 +114,46 @@ export const Index: FC<HTMLAttributes<HTMLSpanElement>> = props => {
     </span>
   )
 }
+Index.displayName = 'Index'
 
-export const Addition = observer<IAdditionProps>(props => {
-  const self = useField()
-  const array = useArray()
-  const prefixCls = usePrefixCls('formvk-array-base')
-  const [wrapSSR, hashId] = useStyle(prefixCls)
-  if (!array) return null
-  if (array.field?.pattern !== 'editable' && array.field?.pattern !== 'disabled') return null
-  return wrapSSR(
-    <Button
-      type="dashed"
-      block
-      {...props}
-      disabled={self?.disabled}
-      className={cls(`${prefixCls}-addition`, hashId, props.className)}
-      onClick={e => {
-        if (array.props?.disabled) return
-        const defaultValue = getDefaultValue(props.defaultValue, array.schema)
-        if (props.method === 'unshift') {
-          array.field?.unshift?.(defaultValue)
-          array.props?.onAdd?.(0)
-        } else {
-          array.field?.push?.(defaultValue)
-          array.props?.onAdd?.((array?.field?.value?.length ?? 0) - 1)
-        }
-        if (props.onClick) {
-          props.onClick(e)
-        }
-      }}
-      icon={isUndef(props.icon) ? <PlusOutlined /> : props.icon}
-    >
-      {props.title || self?.title}
-    </Button>
-  )
-})
-export const Copy = observer<CopyProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+export const Addition = observer<IAdditionProps>(
+  props => {
+    const self = useField()
+    const array = useArray()
+    const prefixCls = usePrefixCls('formvk-array-base')
+    const [wrapSSR, hashId] = useStyle(prefixCls)
+    if (!array) return null
+    if (array.field?.pattern !== 'editable' && array.field?.pattern !== 'disabled') return null
+    return wrapSSR(
+      <Button
+        type="dashed"
+        block
+        {...props}
+        disabled={self?.disabled}
+        className={cls(`${prefixCls}-addition`, hashId, props.className)}
+        onClick={e => {
+          if (array.props?.disabled) return
+          const defaultValue = getDefaultValue(props.defaultValue, array.schema)
+          if (props.method === 'unshift') {
+            array.field?.unshift?.(defaultValue)
+            array.props?.onAdd?.(0)
+          } else {
+            array.field?.push?.(defaultValue)
+            array.props?.onAdd?.((array?.field?.value?.length ?? 0) - 1)
+          }
+          if (props.onClick) {
+            props.onClick(e)
+          }
+        }}
+        icon={isUndef(props.icon) ? <PlusOutlined /> : props.icon}
+      >
+        {props.title || self?.title}
+      </Button>
+    )
+  },
+  { displayName: 'Addition' }
+)
+export const Copy = observer<CopyProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true; displayName: string }>(
   ({ ref, copyRecord, ...props }) => {
     const self = useField()
     const array = useArray()
@@ -198,10 +205,13 @@ export const Copy = observer<CopyProps & { ref?: Ref<HTMLButtonElement> }, { for
       </Button>
     )
   },
-  { forwardRef: true }
+  { forwardRef: true, displayName: 'Copy' }
 )
 
-export const Remove = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+export const Remove = observer<
+  CommonProps & { ref?: Ref<HTMLButtonElement> },
+  { forwardRef: true; displayName: string }
+>(
   ({ ref, ...props }) => {
     const index = useIndex(props.index)
     const self = useField()
@@ -245,10 +255,13 @@ export const Remove = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, {
       </Button>
     )
   },
-  { forwardRef: true }
+  { forwardRef: true, displayName: 'Remove' }
 )
 
-export const MoveDown = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+export const MoveDown = observer<
+  CommonProps & { ref?: Ref<HTMLButtonElement> },
+  { forwardRef: true; displayName: string }
+>(
   ({ ref, ...props }) => {
     const index = useIndex(props.index)
     const self = useField()
@@ -289,10 +302,13 @@ export const MoveDown = observer<CommonProps & { ref?: Ref<HTMLButtonElement> },
       </Button>
     )
   },
-  { forwardRef: true }
+  { forwardRef: true, displayName: 'MoveDown' }
 )
 
-export const MoveUp = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, { forwardRef: true }>(
+export const MoveUp = observer<
+  CommonProps & { ref?: Ref<HTMLButtonElement> },
+  { forwardRef: true; displayName: string }
+>(
   ({ ref, ...props }) => {
     const index = useIndex(props.index)
     const self = useField()
@@ -329,7 +345,7 @@ export const MoveUp = observer<CommonProps & { ref?: Ref<HTMLButtonElement> }, {
       </Button>
     )
   },
-  { forwardRef: true }
+  { forwardRef: true, displayName: 'MoveUp' }
 )
 
 export const ArrayBase = InternalArrayBase

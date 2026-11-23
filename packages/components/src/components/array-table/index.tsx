@@ -453,4 +453,6 @@ export const ArrayTableAddition: ReactFC<IAdditionProps> = props => {
   )
 }
 
+ArrayTableAddition.displayName = 'ArrayTableAddition'
+
 export const ArrayTable = InternalArrayTable
